@@ -1,0 +1,200 @@
+name: freecad-ppd
+base: core20
+adopt-info: freecad
+summary: An open source parametric 3D CAD modeler
+description: |
+  FreeCAD is a parametric 3D modeler. Parametric modeling
+  allows you to easily modify your design by going back into
+  your model history and changing its parameters. FreeCAD is
+  open source (LGPL license) and completely modular, allowing
+  for very advanced extension and customization.
+
+  FreeCAD is multiplatfom, and reads and writes many open
+  file formats such as STEP, IGES, STL and others.
+
+grade: stable
+confinement: strict
+compression: lzo
+
+layout:
+  /usr/share/libdrm/amdgpu.ids:
+    symlink: $SNAP/kf5/usr/share/libdrm/amdgpu.ids
+  /usr/share/openmpi:
+    symlink: $SNAP/usr/share/openmpi
+  /etc/openmpi:
+    bind: $SNAP/etc/openmpi
+  /usr/lib/x86_64-linux-gnu/openmpi:
+    bind: $SNAP/usr/lib/x86_64-linux-gnu/openmpi
+  /usr/bin/orted:
+    symlink: $SNAP/usr/bin/orted
+  /etc/matplotlibrc:
+    bind-file: $SNAP/etc/matplotlibrc
+  /usr/share/matplotlib:
+    symlink: $SNAP/usr/share/matplotlib
+
+environment:
+  LD_LIBRARY_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lapack # numpy
+  LD_PRELOAD: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libstubchown.so
+  FREECAD_USER_DATA: $SNAP_USER_COMMON
+  GIT_EXEC_PATH: $SNAP/usr/lib/git-core
+  GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
+  GIT_CONFIG_NOSYSTEM: 1
+  ELMER_HOME: $SNAP/usr
+
+apps:
+  freecad:
+    command: usr/bin/FreeCAD
+    extensions: [kde-neon]
+    common-id: org.freecadweb.FreeCAD.desktop
+    desktop: usr/share/applications/org.freecadweb.FreeCAD.desktop
+    plugs: &plugs
+      - home
+      - opengl
+      - removable-media
+      - gsettings
+      - network      
+  cmd:
+    command: usr/bin/FreeCADCmd
+    extensions: [kde-neon]
+    plugs: *plugs
+    
+
+package-repositories:
+  - type: apt
+    ppa: elmer-csc-ubuntu/elmer-csc-ppa
+  - type: apt
+    ppa: openscad/releases
+
+parts:
+  stub-chown:
+    plugin: meson
+    source: snap/local/stub-chown
+    meson-parameters:
+      - --prefix=/usr
+
+  freecad:
+    plugin: cmake
+    source: https://github.com/FreeCAD/FreeCAD.git
+    source-tag: "0.19.2"
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DBUILD_QT5=ON
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DPYTHON_EXECUTABLE=/usr/bin/python3
+      - -DFREECAD_USE_EXTERNAL_ZIPIOS=ON
+      - -DFREECAD_USE_PYBIND11=ON
+      - -DFREECAD_USE_QT_FILEDIALOG=OFF
+    build-packages:
+      - g++
+      - git
+      - libboost-all-dev
+      - libsimage-dev # optional
+      - libspnav-dev # optional
+      - libeigen3-dev
+      - libgts-bin
+      - libgts-dev
+      - libkdtree++-dev
+      - libmedc-dev
+      - libopencv-dev
+      - libproj-dev
+      - libx11-dev
+      - libxerces-c-dev
+      - libzipios++-dev
+      - swig
+      - python3-dev
+      - libcoin-dev
+      - libocct-data-exchange-dev
+      - libocct-draw-dev
+      - libocct-foundation-dev
+      - libocct-modeling-algorithms-dev
+      - libocct-modeling-data-dev
+      - libocct-ocaf-dev
+      - libocct-visualization-dev
+      - occt-draw
+      - libvtk7-dev
+      - libpyside2-dev
+      - libshiboken2-dev
+      - pybind11-dev
+    stage-packages:
+      - libaec0
+      - libboost-filesystem1.71.0
+      - libboost-program-options1.71.0
+      - libboost-python1.71.0
+      - libboost-regex1.71.0
+      - libboost-system1.71.0
+      - libboost-thread1.71.0
+      - libhdf5-openmpi-103
+      - libhwloc15
+      - libilmbase24
+      - libjxr0
+      - libmedc11
+      - libmed11
+      - libopenexr24
+      - libopenmpi3
+      - libpython3.8
+      - libpython3.8-minimal
+      - libpython3.8-stdlib
+      - libraw19
+      - libspnav0
+      - libsz2
+      - libxerces-c3.2
+      - libzipios++0v5
+      - python3-numpy
+      - python3-matplotlib
+      - python3-six
+      - python3-pyparsing
+      - python3-setuptools-scm
+      - python3-cycler
+      - python3-dateutil
+      - python3-git
+      - python3-ply # OpenSCAD
+      - python3-pivy
+      - python3-pyside2.qtcore
+      - python3-pyside2.qtgui
+      - python3-pyside2.qtsvg
+      - python3-pyside2.qtwidgets
+      - graphviz
+      - calculix-ccx # FEM
+      - libcoin80c
+      - libfreeimage3
+      - libocct-data-exchange-7.3
+      - libocct-foundation-7.3
+      - libocct-modeling-algorithms-7.3
+      - libocct-modeling-data-7.3
+      - libocct-ocaf-7.3
+      - libocct-visualization-7.3
+      - libtbb2
+      - libvtk7.1p
+      - gmsh # FEM
+      - python3-tk # FEM
+      - elmerfem-csc # FEM
+      - openscad  # OpenSCAD
+    override-build: |
+      kde_sdk_dir="/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current"
+      mkdir -p /etc/xdg/qtchooser
+      cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
+      snapcraftctl build
+      sed -i -E \
+        "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecadweb.FreeCAD.svg|g" \
+        $SNAPCRAFT_PART_INSTALL/usr/share/applications/org.freecadweb.FreeCAD.desktop
+      cd $SNAPCRAFT_PART_SRC
+      version=$(git describe --tags --dirty | sed "s|_|-|")
+      snapcraftctl set-version "$version"
+    prime:
+      - -usr/share/doc/FreeCAD
+
+  cleanup:
+    after: [stub-chown, freecad]
+    plugin: nil
+    build-snaps: [kde-frameworks-5-qt-5-15-3-core20]
+    override-prime: |
+      set -eux
+      for snap in "kde-frameworks-5-qt-5-15-3-core20"; do  # List all content-snaps you're using here
+        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" "$SNAPCRAFT_PRIME/usr/{}" \;
+      done
+      for cruft in bug lintian man; do
+        rm -rf $SNAPCRAFT_PRIME/usr/share/$cruft
+      done
+      find $SNAPCRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
+      find $SNAPCRAFT_PRIME/usr/share -type d -empty -delete
