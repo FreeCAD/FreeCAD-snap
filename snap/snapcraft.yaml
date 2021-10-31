@@ -12,9 +12,16 @@ description: |
   FreeCAD is multiplatfom, and reads and writes many open
   file formats such as STEP, IGES, STL and others.
 
+  This is an unofficial snap meant to explore improvements
+  in packaging FreeCAD. It is mostly complete, but you
+  should also consider the more official `freecad` snap.
+  
+  Do _not_ complain to upstream about issues with this snap!
+
 grade: stable
 confinement: strict
 compression: lzo
+license: LGPL-2.0-or-later
 
 layout:
   /usr/share/libdrm/amdgpu.ids:
