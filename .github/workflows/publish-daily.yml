@@ -7,13 +7,17 @@ on:
     
 jobs:
   publish_amd64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
-    - uses: snapcore/action-build@v1
+    - name: install snapcraft
+      run: sudo snap install snapcraft --classic
+    - name: build snap
       id: build
-      with:
-        snapcraft-args: "--enable-experimental-extensions"
+      run: |
+        sudo snapcraft --enable-experimental-extensions --destructive-mode
+        snap=$(ls freecad*.snap)
+        echo "::set-output name=snap::$snap"
     - uses: snapcore/action-publish@v1
       with:
         store_login: ${{ secrets.STORE_LOGIN }}
