@@ -18,7 +18,7 @@ description: |
   
   Do _not_ complain to upstream about issues with this snap!
 
-grade: devel
+grade: stable
 confinement: strict
 compression: lzo
 license: LGPL-2.0-or-later
@@ -82,6 +82,7 @@ parts:
   freecad:
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
+    source-tag: "0.19.2"
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DCMAKE_INSTALL_LIBDIR=lib
