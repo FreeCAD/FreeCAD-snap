@@ -30,8 +30,8 @@ layout:
     symlink: $SNAP/usr/share/openmpi
   /etc/openmpi:
     bind: $SNAP/etc/openmpi
-  /usr/lib/x86_64-linux-gnu/openmpi:
-    bind: $SNAP/usr/lib/x86_64-linux-gnu/openmpi
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/openmpi:
+    bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/openmpi
   /usr/bin/orted:
     symlink: $SNAP/usr/bin/orted
   /etc/matplotlibrc:
@@ -89,9 +89,11 @@ parts:
       - -DBUILD_QT5=ON
       - -DCMAKE_BUILD_TYPE=Release
       - -DPYTHON_EXECUTABLE=/usr/bin/python3
+      - -DPYTHON_INCLUDE_DIR=/usr/include/python3.8
+      - -DPYTHON_LIBRARY=/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libpython3.8.so
       - -DFREECAD_USE_EXTERNAL_ZIPIOS=ON
       - -DFREECAD_USE_PYBIND11=ON
-      - -DFREECAD_USE_QT_FILEDIALOG=OFF
+      - -DFREECAD_USE_QT_FILEDIALOG=ON
     build-packages:
       - g++
       - git
