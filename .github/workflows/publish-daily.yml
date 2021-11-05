@@ -15,7 +15,7 @@ jobs:
     - name: build snap
       id: build
       run: |
-        sudo snapcraft --enable-experimental-extensions --destructive-mode
+        sudo -H snapcraft --enable-experimental-extensions --destructive-mode
         snap=$(ls freecad*.snap)
         echo "::set-output name=snap::$snap"
     - uses: snapcore/action-publish@v1
