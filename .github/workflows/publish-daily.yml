@@ -11,15 +11,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install snapcraft
-      run: sudo snap install snapcraft --classic
-    - name: build snap
-      id: build
       run: |
-        sudo -H snapcraft --enable-experimental-extensions --destructive-mode
-        snap=$(ls freecad*.snap)
-        echo "::set-output name=snap::$snap"
-    - uses: snapcore/action-publish@v1
-      with:
-        store_login: ${{ secrets.STORE_LOGIN }}
-        snap: ${{ steps.build.outputs.snap }}
-        release: edge
+        sudo snap install snapcraft --classic
+        echo ${{ secrets.STORE_LOGIN }} | snapcraft login --with -
+    - name: build & publish snap
+      run: |
+        sudo snapcraft --enable-experimental-extensions --destructive-mode
+        sudo snapcraft upload --release=edge freecad-ppd*.snap
