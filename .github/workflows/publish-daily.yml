@@ -13,7 +13,9 @@ jobs:
     - name: install snapcraft
       run: |
         sudo snap install snapcraft --classic
-        echo ${{ secrets.STORE_LOGIN }} | snapcraft login --with -
+        echo "$STORE_LOGIN" | snapcraft login --with -
+      env:
+        STORE_LOGIN: ${{ secrets.STORE_LOGIN }}
     - name: build & publish snap
       run: |
         sudo snapcraft --enable-experimental-extensions --destructive-mode
