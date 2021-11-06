@@ -5,6 +5,11 @@
 
 [![freecad-ppd](https://snapcraft.io/freecad-ppd/badge.svg)](https://snapcraft.io/freecad-ppd)
 
+There are two maintained channels for this snap:
+
+- `stable` contains the latest upstream release, i.e. the most recent tagged commit. **Use this if you don't know what you're doing.**
+- `edge` contains automated (daily) builds from the latest master commit. **Use this to test new features. Might be unstable.**
+
 FreeCAD is a parametric 3D modeler. Parametric modeling
 allows you to easily modify your design by going back into
 your model history and changing its parameters. FreeCAD is
