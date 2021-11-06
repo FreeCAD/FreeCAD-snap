@@ -93,7 +93,7 @@ parts:
       - -DPYTHON_LIBRARY=/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libpython3.8.so
       - -DFREECAD_USE_EXTERNAL_ZIPIOS=ON
       - -DFREECAD_USE_PYBIND11=ON
-      - -DFREECAD_USE_QT_FILEDIALOG=ON
+      - -DFREECAD_USE_QT_FILEDIALOG=OFF
     build-packages:
       - g++
       - git
