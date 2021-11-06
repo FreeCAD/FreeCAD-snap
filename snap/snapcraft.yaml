@@ -38,6 +38,8 @@ layout:
     bind-file: $SNAP/etc/matplotlibrc
   /usr/share/matplotlib:
     symlink: $SNAP/usr/share/matplotlib
+  /usr/share/qt5:
+    symlink: $SNAP/kf5/usr/share/qt5
 
 environment:
   LD_LIBRARY_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lapack # numpy
@@ -47,6 +49,7 @@ environment:
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
   GIT_CONFIG_NOSYSTEM: 1
   ELMER_HOME: $SNAP/usr
+  QTWEBENGINE_DISABLE_SANDBOX: 1
 
 apps:
   freecad:
@@ -60,6 +63,7 @@ apps:
       - removable-media
       - gsettings
       - network      
+      - browser-support
   cmd:
     command: usr/bin/FreeCADCmd
     extensions: [kde-neon]
