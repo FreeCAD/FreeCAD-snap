@@ -18,6 +18,12 @@ description: |
   
   Do _not_ complain to upstream about issues with this snap!
 
+  Commands:
+    freecad-ppd.freecad:  Run FreeCAD
+        freecad-ppd.cmd:  Run FreeCAD command line interface
+        freecad-ppd.pip:  Install python packages for user (not system-wide). 
+                          E.g. `freecad-ppd.pip install py_slvs` for Assembly3. 
+
 grade: devel
 confinement: strict
 compression: lzo
@@ -50,6 +56,8 @@ environment:
   GIT_CONFIG_NOSYSTEM: 1
   ELMER_HOME: $SNAP/usr
   QTWEBENGINE_DISABLE_SANDBOX: 1
+  PIP_TARGET: $SNAP_USER_COMMON/Mod/snap-user-packages
+  PYTHONPATH: $SNAP_USER_COMMON/Mod/snap-user-packages:$SNAP/lib/python3.8/site-packages:$SNAP/usr/lib/python3/dist-packages
 
 apps:
   freecad:
@@ -68,7 +76,9 @@ apps:
     command: usr/bin/FreeCADCmd
     extensions: [kde-neon]
     plugs: *plugs
-    
+  pip:
+    command: bin/pip
+    plugs: *plugs
 
 package-repositories:
   - type: apt
@@ -197,8 +207,13 @@ parts:
     prime:
       - -usr/share/doc/FreeCAD
 
+  pip:
+    plugin: python
+    python-packages:
+      - pip
+
   cleanup:
-    after: [stub-chown, freecad]
+    after: [stub-chown, freecad, pip]
     plugin: nil
     build-snaps: [kde-frameworks-5-qt-5-15-3-core20]
     override-prime: |
