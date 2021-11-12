@@ -50,7 +50,7 @@ layout:
 environment:
   LD_LIBRARY_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lapack # numpy
   LD_PRELOAD: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libstubchown.so
-  FREECAD_USER_DATA: $SNAP_USER_COMMON
+  FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
   GIT_CONFIG_NOSYSTEM: 1
