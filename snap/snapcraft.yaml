@@ -1,6 +1,6 @@
 name: freecad-ppd
 base: core20
-adopt-info: freecad
+version: "0.19.2"
 summary: An open source parametric 3D CAD modeler
 description: |
   FreeCAD is a parametric 3D modeler. Parametric modeling
@@ -202,11 +202,6 @@ parts:
       sed -i -E \
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecadweb.FreeCAD.svg|g" \
         $SNAPCRAFT_PART_INSTALL/usr/share/applications/org.freecadweb.FreeCAD.desktop
-      cd $SNAPCRAFT_PART_SRC
-      version=$(git describe --tags --dirty | sed "s|_|-|")
-      snapcraftctl set-version "$version"
-    prime:
-      - -usr/share/doc/FreeCAD
 
   pip:
     plugin: python
