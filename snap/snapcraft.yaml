@@ -18,6 +18,12 @@ description: |
   
   Do _not_ complain to upstream about issues with this snap!
 
+  Commands:
+    freecad-ppd.freecad:  Run FreeCAD
+        freecad-ppd.cmd:  Run FreeCAD command line interface
+        freecad-ppd.pip:  Install python packages for user (not system-wide). 
+                          E.g. `freecad-ppd.pip install py_slvs` for Assembly3. 
+
 grade: stable
 confinement: strict
 compression: lzo
@@ -38,15 +44,20 @@ layout:
     bind-file: $SNAP/etc/matplotlibrc
   /usr/share/matplotlib:
     symlink: $SNAP/usr/share/matplotlib
+  /usr/share/qt5:
+    symlink: $SNAP/kf5/usr/share/qt5
 
 environment:
   LD_LIBRARY_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lapack # numpy
   LD_PRELOAD: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libstubchown.so
-  FREECAD_USER_DATA: $SNAP_USER_COMMON
+  FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
   GIT_CONFIG_NOSYSTEM: 1
   ELMER_HOME: $SNAP/usr
+  QTWEBENGINE_DISABLE_SANDBOX: 1
+  PIP_TARGET: $SNAP_USER_COMMON/.FreeCAD/Mod/snap-user-packages
+  PYTHONPATH: $SNAP_USER_COMMON/.FreeCAD/Mod/snap-user-packages:$SNAP/lib/python3.8/site-packages:$SNAP/usr/lib/python3/dist-packages
 
 apps:
   freecad:
@@ -60,11 +71,14 @@ apps:
       - removable-media
       - gsettings
       - network      
+      - browser-support
   cmd:
     command: usr/bin/FreeCADCmd
     extensions: [kde-neon]
     plugs: *plugs
-    
+  pip:
+    command: bin/pip
+    plugs: *plugs
 
 package-repositories:
   - type: apt
@@ -133,6 +147,7 @@ parts:
       - libboost-regex1.71.0
       - libboost-system1.71.0
       - libboost-thread1.71.0
+      - libboost-date-time1.71.0 
       - libhdf5-openmpi-103
       - libhwloc15
       - libilmbase24
@@ -193,8 +208,13 @@ parts:
     prime:
       - -usr/share/doc/FreeCAD
 
+  pip:
+    plugin: python
+    python-packages:
+      - pip
+
   cleanup:
-    after: [stub-chown, freecad]
+    after: [stub-chown, freecad, pip]
     plugin: nil
     build-snaps: [kde-frameworks-5-qt-5-15-3-core20]
     override-prime: |
