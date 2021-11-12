@@ -202,7 +202,10 @@ parts:
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecadweb.FreeCAD.svg|g" \
         $SNAPCRAFT_PART_INSTALL/usr/share/applications/org.freecadweb.FreeCAD.desktop
       cd $SNAPCRAFT_PART_SRC
-      version=$(git describe --tags --dirty | sed "s|_|-|")
+      version_major=$(grep "set(PACKAGE_VERSION_MAJOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
+      version_minor=$(grep "set(PACKAGE_VERSION_MINOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
+      git_hash=$(git rev-parse --short=8 HEAD)
+      version="$version_major.$version_minor~$git_hash"
       snapcraftctl set-version "$version"
     prime:
       - -usr/share/doc/FreeCAD
