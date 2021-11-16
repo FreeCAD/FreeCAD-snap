@@ -85,6 +85,8 @@ package-repositories:
     ppa: elmer-csc-ubuntu/elmer-csc-ppa
   - type: apt
     ppa: openscad/releases
+  - type: apt
+    ppa: freecad-maintainers/occt-releases
 
 parts:
   stub-chown:
@@ -181,12 +183,12 @@ parts:
       - calculix-ccx # FEM
       - libcoin80c
       - libfreeimage3
-      - libocct-data-exchange-7.3
-      - libocct-foundation-7.3
-      - libocct-modeling-algorithms-7.3
-      - libocct-modeling-data-7.3
-      - libocct-ocaf-7.3
-      - libocct-visualization-7.3
+      - libocct-data-exchange-7.5
+      - libocct-foundation-7.5
+      - libocct-modeling-algorithms-7.5
+      - libocct-modeling-data-7.5
+      - libocct-ocaf-7.5
+      - libocct-visualization-7.5
       - libtbb2
       - libvtk7.1p
       - gmsh # FEM
@@ -207,8 +209,6 @@ parts:
       git_hash=$(git rev-parse --short=8 HEAD)
       version="$version_major.$version_minor~$git_hash"
       snapcraftctl set-version "$version"
-    prime:
-      - -usr/share/doc/FreeCAD
 
   pip:
     plugin: python
