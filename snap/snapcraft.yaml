@@ -85,6 +85,8 @@ package-repositories:
     ppa: elmer-csc-ubuntu/elmer-csc-ppa
   - type: apt
     ppa: openscad/releases
+  - type: apt
+    ppa: freecad-maintainers/occt-releases
 
 parts:
   stub-chown:
@@ -93,7 +95,15 @@ parts:
     meson-parameters:
       - --prefix=/usr
 
+  patches:
+    plugin: dump
+    source: snap/local/freecad-patches
+    organize: 
+      "*": freecad-patches/ 
+    prime: [-*]
+
   freecad:
+    after: [patches]
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
     source-tag: "0.19.2"
@@ -182,18 +192,23 @@ parts:
       - calculix-ccx # FEM
       - libcoin80c
       - libfreeimage3
-      - libocct-data-exchange-7.3
-      - libocct-foundation-7.3
-      - libocct-modeling-algorithms-7.3
-      - libocct-modeling-data-7.3
-      - libocct-ocaf-7.3
-      - libocct-visualization-7.3
+      - libocct-data-exchange-7.5
+      - libocct-foundation-7.5
+      - libocct-modeling-algorithms-7.5
+      - libocct-modeling-data-7.5
+      - libocct-ocaf-7.5
+      - libocct-visualization-7.5
       - libtbb2
       - libvtk7.1p
       - gmsh # FEM
       - python3-tk # FEM
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
+    override-pull: |
+      snapcraftctl pull
+      for p in $SNAPCRAFT_STAGE/freecad-patches/*.patch; do
+        patch -p1 < "$p"
+      done
     override-build: |
       kde_sdk_dir="/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current"
       mkdir -p /etc/xdg/qtchooser
