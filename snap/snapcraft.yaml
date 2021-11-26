@@ -201,7 +201,7 @@ parts:
       - libocct-visualization-7.5
       - libtbb2
       - libvtk7.1p
-      - gmsh # FEM
+      # - gmsh # FEM
       - python3-tk # FEM
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
