@@ -109,6 +109,7 @@ parts:
       - -DFREECAD_USE_EXTERNAL_ZIPIOS=ON
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=OFF
+      - -DBUILD_FLAT_MESH=ON
     build-packages:
       - g++
       - git
