@@ -226,6 +226,7 @@ parts:
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DENABLE_BUILD_DYNAMIC=1
+      - -DENABLE_MED=0
       - -DENABLE_FLTK=0
 
   pip:
