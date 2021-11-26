@@ -192,7 +192,6 @@ parts:
       - libocct-visualization-7.5
       - libtbb2
       - libvtk7.1p
-      - gmsh # FEM
       - python3-tk # FEM
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
@@ -211,13 +210,23 @@ parts:
       version="$version_major.$version_minor~$git_hash"
       snapcraftctl set-version "$version"
 
+  gmsh: # FEM
+    after: [freecad]
+    plugin: cmake
+    source: https://gitlab.onelab.info/gmsh/gmsh.git
+    source-tag: gmsh_4_8_4
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DENABLE_BUILD_DYNAMIC=1
+      - -DENABLE_FLTK=0
+
   pip:
     plugin: python
     python-packages:
       - pip
 
   cleanup:
-    after: [stub-chown, freecad, pip]
+    after: [stub-chown, freecad, pip, gmsh]
     plugin: nil
     build-snaps: [kde-frameworks-5-qt-5-15-3-core20]
     override-prime: |
