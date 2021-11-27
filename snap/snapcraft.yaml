@@ -96,6 +96,7 @@ parts:
       - --prefix=/usr
 
   freecad:
+    plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
