@@ -225,6 +225,7 @@ parts:
     source-tag: gmsh_4_8_4
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DCMAKE_BUILD_TYPE=Release
       - -DENABLE_BUILD_DYNAMIC=1
       - -DENABLE_MED=0
       - -DENABLE_FLTK=0
