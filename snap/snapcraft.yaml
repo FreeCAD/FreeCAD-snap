@@ -175,6 +175,8 @@ parts:
       - libsz2
       - libxerces-c3.2
       - libzipios++0v5
+      - python3-tk # FEM
+      - python3-yaml # FEM
       - python3-numpy
       - python3-matplotlib
       - python3-six
@@ -201,7 +203,6 @@ parts:
       - libocct-visualization-7.5
       - libtbb2
       - libvtk7.1p
-      - python3-tk # FEM
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
     override-pull: |
