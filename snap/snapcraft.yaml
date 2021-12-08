@@ -207,6 +207,7 @@ parts:
       - openscad  # OpenSCAD
     override-pull: |
       snapcraftctl pull
+      shopt -s nullglob
       for p in $SNAPCRAFT_STAGE/freecad-patches/*.patch; do
         patch -p1 < "$p"
       done
