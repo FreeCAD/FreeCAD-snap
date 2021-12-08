@@ -1,6 +1,6 @@
 name: freecad-ppd
 base: core20
-version: "0.19.2"
+version: "0.19.3"
 summary: An open source parametric 3D CAD modeler
 description: |
   FreeCAD is a parametric 3D modeler. Parametric modeling
@@ -106,7 +106,7 @@ parts:
     after: [patches]
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
-    source-tag: "0.19.2"
+    source-tag: ${SNAPCRAFT_PROJECT_VERSION}
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DCMAKE_INSTALL_LIBDIR=lib
