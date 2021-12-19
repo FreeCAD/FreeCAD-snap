@@ -182,6 +182,7 @@ parts:
       - python3-pyside2.qtgui
       - python3-pyside2.qtsvg
       - python3-pyside2.qtwidgets
+      - python3-pyside2.qtnetwork
       - graphviz
       - calculix-ccx # FEM
       - libcoin80c
