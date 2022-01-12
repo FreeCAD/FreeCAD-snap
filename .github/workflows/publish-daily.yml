@@ -18,5 +18,5 @@ jobs:
         STORE_LOGIN: ${{ secrets.STORE_LOGIN }}
     - name: build & publish snap
       run: |
-        sudo snapcraft --enable-experimental-extensions --destructive-mode
+        sudo snapcraft --destructive-mode
         sudo snapcraft upload --release=edge freecad-ppd*.snap

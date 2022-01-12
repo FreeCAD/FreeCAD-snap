@@ -56,8 +56,11 @@ environment:
   GIT_CONFIG_NOSYSTEM: 1
   ELMER_HOME: $SNAP/usr
   QTWEBENGINE_DISABLE_SANDBOX: 1
-  PIP_TARGET: $SNAP_USER_COMMON/Mod/snap-user-packages
-  PYTHONPATH: $SNAP_USER_COMMON/Mod/snap-user-packages:$SNAP/lib/python3.8/site-packages:$SNAP/usr/lib/python3/dist-packages
+  PYTHONPYCACHEPREFIX: $SNAP_USER_COMMON/.pycache
+  PYTHONUSERBASE: $SNAP_USER_COMMON/.local
+  PIP_USER: 1
+  PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.8/site-packages:$SNAP/lib/python3.8/site-packages:$SNAP/usr/lib/python3/dist-packages
+  SNAP_PYTHONPATH: *pypath
 
 apps:
   freecad:
@@ -95,6 +98,12 @@ parts:
     source: snap/local/stub-chown
     meson-parameters:
       - --prefix=/usr
+
+  snap-setup-mod:
+    plugin: dump
+    source: snap/local/snap-setup-mod
+    organize:
+      "*": usr/Mod/SnapSetup/
 
   freecad:
     plugin: cmake
@@ -215,7 +224,6 @@ parts:
       snapcraftctl set-version "$version"
 
   gmsh: # FEM
-    after: [freecad]
     plugin: cmake
     source: https://gitlab.onelab.info/gmsh/gmsh.git
     source-tag: gmsh_4_9_3
@@ -230,9 +238,13 @@ parts:
     plugin: python
     python-packages:
       - pip
+    stage-packages:
+      - python3-distutils
+    stage:
+      - -pyvenv.cfg
 
   cleanup:
-    after: [stub-chown, freecad, pip, gmsh]
+    after: [stub-chown, freecad, pip, gmsh, snap-setup-mod]
     plugin: nil
     build-snaps: [kde-frameworks-5-qt-5-15-3-core20]
     override-prime: |
