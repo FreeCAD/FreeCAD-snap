@@ -12,11 +12,11 @@ description: |
   FreeCAD is multiplatfom, and reads and writes many open
   file formats such as STEP, IGES, STL and others.
 
-  This is an unofficial snap meant to explore improvements
-  in packaging FreeCAD. It is mostly complete, but you
-  should also consider the more official `freecad` snap.
-  
-  Do _not_ complain to upstream about issues with this snap!
+  This is an unofficial snap, so do _not_ complain to 
+  upstream about issues with this snap!
+
+  Please also consider RealThunder's well-known FreeCAD fork
+  `freecad-realthunder`: https://snapcraft.io/freecad-realthunder
 
   Commands:
     freecad-ppd.freecad:  Run FreeCAD
