@@ -4,6 +4,8 @@
 
 [![freecad-ppd](https://snapcraft.io/freecad-ppd/badge.svg)](https://snapcraft.io/freecad-ppd)
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/freecad-ppd)
+
 ## About FreeCAD
 
 FreeCAD is a parametric 3D modeler. Parametric modeling
@@ -38,4 +40,5 @@ There are multiple apps/commands included in the snap:
 There's also a snap that packages the well-known experimental FreeCAD fork by RealThunder: https://snapcraft.io/freecad-realthunder
 Try it for some exciting new features and improvements.
 
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/freecad-ppd)
+[![freecad-realthunder](https://snapcraft.io/freecad-realthunder/badge.svg)](https://snapcraft.io/freecad-realthunder)
+
