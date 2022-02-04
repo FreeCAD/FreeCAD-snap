@@ -1,0 +1,23 @@
+name: Build Branch
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - stable
+    
+jobs:
+  build_amd64:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: install snapcraft
+      run: |
+        sudo snap install snapcraft --classic
+    - name: build snap
+      run: |
+        sudo snapcraft --destructive-mode
+    - uses: actions/upload-artifact@v2
+      with:
+        name: snap
+        path: freecad-ppd*.snap
