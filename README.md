@@ -21,10 +21,11 @@ Visit the upstream project: https://www.freecad.org/ and https://github.com/Free
 
 ## Channels
 
-There are two maintained channels for this snap:
+There are three maintained channels for this snap:
 
 - `stable` contains the latest upstream release, i.e. the most recent tagged commit. **Use this if you don't know what you're doing.**
 - `edge` contains automated (daily) builds from the latest master commit. **Use this to test new features. Might be unstable.**
+- `beta` contains automated weekly promotions from `edge`. **Use this if you want edge with fewer updates.**
 
 ## Apps/Commands
 
