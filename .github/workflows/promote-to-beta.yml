@@ -1,0 +1,25 @@
+name: Promote to Beta
+
+on:
+  schedule:
+    - cron: "0 4 * * 0" # Every Sunday at 4:00
+  workflow_dispatch: # or manually
+    
+jobs:
+  publish_amd64:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: install snapcraft
+      run: |
+        sudo snap install snapcraft --classic
+        echo "$STORE_LOGIN" | snapcraft login --with -
+      env:
+        STORE_LOGIN: ${{ secrets.STORE_LOGIN }}
+    - name: promote from edge to beta
+      run: |
+        edge_revision="$(curl -H 'Snap-Device-Series: 16' \
+          'https://api.snapcraft.io/v2/snaps/info/freecad-ppd' \
+          | jq '."channel-map"[] | select(.channel.risk=="edge").revision')"
+
+        snapcraft release freecad-ppd "$edge_revision" beta
