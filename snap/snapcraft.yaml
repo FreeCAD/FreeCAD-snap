@@ -1,6 +1,6 @@
 name: freecad-ppd
 base: core20
-version: "0.19.3"
+version: "0.19.4"
 summary: An open source parametric 3D CAD modeler
 description: |
   FreeCAD is a parametric 3D modeler. Parametric modeling
@@ -238,7 +238,7 @@ parts:
   gmsh: # FEM
     plugin: cmake
     source: https://gitlab.onelab.info/gmsh/gmsh.git
-    source-tag: gmsh_4_9_3
+    source-tag: gmsh_4_9_5
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DCMAKE_BUILD_TYPE=Release
