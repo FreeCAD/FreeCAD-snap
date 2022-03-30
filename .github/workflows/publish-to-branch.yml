@@ -1,0 +1,34 @@
+name: Publish to Branch
+
+on:
+  workflow_dispatch: # only manually
+    inputs:
+      ref:
+        description: FreeCAD commit/branch/tag
+        required: true
+        default: master
+      branch:
+        description: Snapcraft branch
+        required: true
+        default: test
+
+
+jobs:
+  publish_amd64:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: install snapcraft
+      run: |
+        sudo snap install snapcraft --classic
+        echo "$STORE_LOGIN" | snapcraft login --with -
+      env:
+        STORE_LOGIN: ${{ secrets.STORE_LOGIN }}
+    - name: install yq
+      run: sudo snap install yq
+    - name: modify snapcraft.yaml
+      run: yq -i '.parts.freecad.source-commit = "${{ github.event.inputs.ref }}"' snap/snapcraft.yaml
+    - name: build & publish snap
+      run: |
+        sudo snapcraft --destructive-mode
+        sudo snapcraft upload --release='latest/edge/${{ github.event.inputs.branch }}' freecad-ppd*.snap
