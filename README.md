@@ -1,10 +1,8 @@
-# freecad-ppd: Unofficial snap package for FreeCAD
+# freecad: Official snap package for FreeCAD
 
-> This is an unoffical package, so **do _not_ complain to upstream about issues with this snap!**
+[![freecad](https://snapcraft.io/freecad/badge.svg)](https://snapcraft.io/freecad)
 
-[![freecad-ppd](https://snapcraft.io/freecad-ppd/badge.svg)](https://snapcraft.io/freecad-ppd)
-
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/freecad-ppd)
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/freecad)
 
 ## About FreeCAD
 
@@ -31,10 +29,10 @@ There are three maintained channels for this snap:
 
 There are multiple apps/commands included in the snap:
 
-- `freecad-ppd.freecad`:  Run FreeCAD
-- `freecad-ppd.cmd`:      Run FreeCAD command line interface
-- `freecad-ppd.pip`:      Install python packages for user (not system-wide). 
-                          E.g. `freecad-ppd.pip install py_slvs` for Assembly3. 
+- `freecad.freecad`:  Run FreeCAD
+- `freecad.cmd`:      Run FreeCAD command line interface
+- `freecad.pip`:      Install python packages for user (not system-wide). 
+                      E.g. `freecad.pip install py_slvs` for Assembly3. 
                           
 ## FreeCAD Link Branch by RealThunder
 

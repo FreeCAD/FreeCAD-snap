@@ -31,4 +31,4 @@ jobs:
     - name: build & publish snap
       run: |
         sudo snapcraft --destructive-mode
-        sudo snapcraft upload --release='latest/edge/${{ github.event.inputs.branch }}' freecad-ppd*.snap
+        sudo snapcraft upload --release='latest/edge/${{ github.event.inputs.branch }}' freecad*.snap

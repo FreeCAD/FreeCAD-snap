@@ -19,7 +19,7 @@ jobs:
     - name: promote from edge to beta
       run: |
         edge_revision="$(curl -H 'Snap-Device-Series: 16' \
-          'https://api.snapcraft.io/v2/snaps/info/freecad-ppd' \
+          'https://api.snapcraft.io/v2/snaps/info/freecad' \
           | jq '."channel-map"[] | select(.channel.risk=="edge").revision')"
 
-        snapcraft release freecad-ppd "$edge_revision" beta
+        snapcraft release freecad "$edge_revision" beta

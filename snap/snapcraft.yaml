@@ -1,4 +1,4 @@
-name: freecad-ppd
+name: freecad
 base: core20
 adopt-info: freecad
 summary: An open source parametric 3D CAD modeler
@@ -19,10 +19,10 @@ description: |
   `freecad-realthunder`: https://snapcraft.io/freecad-realthunder
 
   Commands:
-    freecad-ppd.freecad:  Run FreeCAD
-        freecad-ppd.cmd:  Run FreeCAD command line interface
-        freecad-ppd.pip:  Install python packages for user (not system-wide). 
-                          E.g. `freecad-ppd.pip install py_slvs` for Assembly3. 
+    freecad.freecad:  Run FreeCAD
+        freecad.cmd:  Run FreeCAD command line interface
+        freecad.pip:  Install python packages for user (not system-wide). 
+                      E.g. `freecad.pip install py_slvs` for Assembly3. 
 
 grade: devel
 confinement: strict
