@@ -19,4 +19,4 @@ jobs:
     - name: build & publish snap
       run: |
         sudo snapcraft --destructive-mode
-        sudo snapcraft upload --release=candidate freecad-ppd*.snap
+        sudo snapcraft upload --release=candidate freecad*.snap
