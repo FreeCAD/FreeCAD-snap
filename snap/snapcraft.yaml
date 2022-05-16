@@ -1,4 +1,4 @@
-name: freecad-ppd
+name: freecad
 base: core20
 version: "0.19.4"
 summary: An open source parametric 3D CAD modeler
@@ -12,17 +12,11 @@ description: |
   FreeCAD is multiplatfom, and reads and writes many open
   file formats such as STEP, IGES, STL and others.
 
-  This is an unofficial snap meant to explore improvements
-  in packaging FreeCAD. It is mostly complete, but you
-  should also consider the more official `freecad` snap.
-  
-  Do _not_ complain to upstream about issues with this snap!
-
   Commands:
-    freecad-ppd.freecad:  Run FreeCAD
-        freecad-ppd.cmd:  Run FreeCAD command line interface
-        freecad-ppd.pip:  Install python packages for user (not system-wide). 
-                          E.g. `freecad-ppd.pip install py_slvs` for Assembly3. 
+                freecad:  Run FreeCAD
+            freecad.cmd:  Run FreeCAD command line interface
+            freecad.pip:  Install python packages for user (not system-wide). 
+                          E.g. `freecad.pip install py_slvs` for Assembly3. 
 
 grade: stable
 confinement: strict
