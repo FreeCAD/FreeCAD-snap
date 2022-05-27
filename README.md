@@ -34,10 +34,3 @@ There are multiple apps/commands included in the snap:
 - `freecad.pip`:      Install python packages for user (not system-wide). 
                       E.g. `freecad.pip install py_slvs` for Assembly3. 
                           
-## FreeCAD Link Branch by RealThunder
-
-There's also a snap that packages the well-known experimental FreeCAD fork by RealThunder: https://snapcraft.io/freecad-realthunder
-Try it for some exciting new features and improvements.
-
-[![freecad-realthunder](https://snapcraft.io/freecad-realthunder/badge.svg)](https://snapcraft.io/freecad-realthunder)
-
