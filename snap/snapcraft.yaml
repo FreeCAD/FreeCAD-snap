@@ -1,6 +1,6 @@
 name: freecad
 base: core20
-version: "0.19.4"
+version: "0.20beta1"
 summary: An open source parametric 3D CAD modeler
 description: |
   FreeCAD is a parametric 3D modeler. Parametric modeling
@@ -13,10 +13,10 @@ description: |
   file formats such as STEP, IGES, STL and others.
 
   Commands:
-                freecad:  Run FreeCAD
-            freecad.cmd:  Run FreeCAD command line interface
-            freecad.pip:  Install python packages for user (not system-wide). 
-                          E.g. `freecad.pip install py_slvs` for Assembly3. 
+        freecad:      Run FreeCAD
+        freecad.cmd:  Run FreeCAD command line interface
+        freecad.pip:  Install python packages for user (not system-wide). 
+                      E.g. `freecad.pip install py_slvs` for Assembly3. 
 
 grade: stable
 confinement: strict
@@ -46,6 +46,8 @@ layout:
     symlink: $SNAP/kf5/usr/share/qt5
   /usr/bin/dot:
     symlink: $SNAP/usr/bin/dot
+  /etc/povray:
+    symlink: $SNAP/etc/povray
 
 environment:
   LD_LIBRARY_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lapack # numpy
@@ -90,8 +92,6 @@ package-repositories:
     ppa: elmer-csc-ubuntu/elmer-csc-ppa
   - type: apt
     ppa: openscad/releases
-  - type: apt
-    ppa: freecad-maintainers/occt-releases
 
 parts:
   stub-chown:
@@ -100,13 +100,6 @@ parts:
     meson-parameters:
       - --prefix=/usr
 
-  patches:
-    plugin: dump
-    source: snap/local/freecad-patches
-    organize: 
-      "*": freecad-patches/ 
-    prime: [-*]
-
   snap-setup-mod:
     plugin: dump
     source: snap/local/snap-setup-mod
@@ -114,7 +107,6 @@ parts:
       "*": usr/Mod/SnapSetup/
 
   freecad:
-    after: [patches]
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
     source-tag: ${SNAPCRAFT_PROJECT_VERSION}
@@ -130,6 +122,10 @@ parts:
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
+    build-snaps:
+      - freecad-deps-core20
+    stage-snaps:
+      - freecad-deps-core20
     build-packages:
       - g++
       - git
@@ -149,18 +145,11 @@ parts:
       - swig
       - python3-dev
       - libcoin-dev
-      - libocct-data-exchange-dev
-      - libocct-draw-dev
-      - libocct-foundation-dev
-      - libocct-modeling-algorithms-dev
-      - libocct-modeling-data-dev
-      - libocct-ocaf-dev
-      - libocct-visualization-dev
-      - occt-draw
       - libvtk7-dev
       - libpyside2-dev
       - libshiboken2-dev
       - pybind11-dev
+      - libfreeimage-dev
     stage-packages:
       - libaec0
       - libboost-filesystem1.71.0
@@ -198,30 +187,22 @@ parts:
       - python3-git
       - python3-ply # OpenSCAD
       - python3-pivy
+      - python3-markdown # Addon manager
       - python3-pyside2.qtcore
       - python3-pyside2.qtgui
       - python3-pyside2.qtsvg
       - python3-pyside2.qtwidgets
+      - python3-pyside2.qtnetwork
+      - python3-pyside2.qtwebenginewidgets
       - python3-pyside2.qtuitools
       - calculix-ccx # FEM
       - libcoin80c
       - libfreeimage3
-      - libocct-data-exchange-7.5
-      - libocct-foundation-7.5
-      - libocct-modeling-algorithms-7.5
-      - libocct-modeling-data-7.5
-      - libocct-ocaf-7.5
-      - libocct-visualization-7.5
       - libtbb2
       - libvtk7.1p
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
-    override-pull: |
-      snapcraftctl pull
-      shopt -s nullglob
-      for p in $SNAPCRAFT_STAGE/freecad-patches/*.patch; do
-        patch -p1 < "$p"
-      done
+      - povray
     override-build: |
       kde_sdk_dir="/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current"
       mkdir -p /etc/xdg/qtchooser
@@ -230,17 +211,6 @@ parts:
       sed -i -E \
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecadweb.FreeCAD.svg|g" \
         $SNAPCRAFT_PART_INSTALL/usr/share/applications/org.freecadweb.FreeCAD.desktop
-
-  gmsh: # FEM
-    plugin: cmake
-    source: https://gitlab.onelab.info/gmsh/gmsh.git
-    source-tag: gmsh_4_9_5
-    cmake-parameters:
-      - -DCMAKE_INSTALL_PREFIX=/usr
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DENABLE_BUILD_DYNAMIC=1
-      - -DENABLE_MED=0
-      - -DENABLE_FLTK=0
 
   pip:
     plugin: python
@@ -264,7 +234,7 @@ parts:
         ${SNAPCRAFT_PART_INSTALL}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/graphviz/
 
   cleanup:
-    after: [stub-chown, freecad, pip, gmsh, snap-setup-mod, graphviz]
+    after: [stub-chown, freecad, pip, snap-setup-mod, graphviz]
     plugin: nil
     build-snaps: [kde-frameworks-5-91-qt-5-15-3-core20]
     override-prime: |
