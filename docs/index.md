@@ -39,7 +39,7 @@ Then simply pressing the **Run workflow** button will trigger said build. When b
 snap install freecad --channel <experimental-build-name>
 ```
 
-When you're done testing the build, to return to the original build you were running just swap out the build name; for example: `stable` or `edge` 
+When you're done testing the build, to return to the original build you were running just swap out the build name and refresh; for example: `stable` or `edge` 
 ```shell
 snap install freecad --channel edge
 ```
