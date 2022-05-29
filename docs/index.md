@@ -41,5 +41,5 @@ snap install freecad --channel <experimental-build-name>
 
 When you're done testing the build, to return to the original build you were running just swap out the build name and refresh; for example: `stable` or `edge` 
 ```shell
-snap install freecad --channel edge
+snap refresh freecad --channel edge
 ```
