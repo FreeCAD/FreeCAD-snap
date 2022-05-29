@@ -26,7 +26,7 @@ There is an option to build Snaps from experimental commits, branches, or even g
 
 ![Publish-to-Branch](assets/images/Snap-Publish-to-Branch-screenshot.png)
 
-In the the screenshot above the first field labeled **`FreeCAD commit/branch/tag`** is able to recieve the following inputs:  
+In the the screenshot above the first field labeled **`FreeCAD commit/branch/tag`** is able to receive the following inputs:  
 
 * **`commit`** this is a specific git hash of an open Pull Request in FreeCAD/FreeCAD  
 * **`branch`** is for special FreeCAD/FreeCAD branches one would like to compile. Simply adding the name of said branch is enough. For example: 'Toponaming' (note branch should exist first).
