@@ -34,7 +34,7 @@ In the the screenshot above the first field labeled **`FreeCAD commit/branch/tag
 
 The secound field in the above screenshot **`Snapcraft branch`** is simply the unique build name you can grant to this specific build. 
 
-Then simply pressing the **Run workflow** button will trigger said build. When build is complete, the method to run this build is simple. In the CLI invoke:  
+Then simply pressing the **Run workflow** button will trigger said build. When build is complete, the method to install this build is simple. In the CLI invoke:  
 ```shell
 snap install freecad --channel <experimental-build-name>
 ```
