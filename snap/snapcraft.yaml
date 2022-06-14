@@ -1,6 +1,6 @@
 name: freecad
 base: core20
-version: "0.20beta1"
+version: "0.20"
 summary: An open source parametric 3D CAD modeler
 description: |
   FreeCAD is a parametric 3D modeler. Parametric modeling
