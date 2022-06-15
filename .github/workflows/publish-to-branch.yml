@@ -19,7 +19,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install snapcraft
-      run: sudo snap install snapcraft --classic
+      run: |
+        sudo snap install snapcraft --classic
+        sudo apt install gnome-keyring
     - name: install yq
       run: sudo snap install yq
     - name: modify snapcraft.yaml

@@ -11,7 +11,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install snapcraft
-      run: sudo snap install snapcraft --classic
+      run: |
+        sudo snap install snapcraft --classic
+        sudo apt install gnome-keyring
     - name: build snap
       run: sudo snapcraft --destructive-mode
     - name: publish snap
