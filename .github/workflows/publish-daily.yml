@@ -11,12 +11,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install snapcraft
-      run: |
-        sudo snap install snapcraft --classic
-        snapcraft login
+      run: sudo snap install snapcraft --classic
+    - name: build snap
+      run: sudo snapcraft --destructive-mode
+    - name: publish snap
       env:
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-    - name: build & publish snap
-      run: |
-        sudo snapcraft --destructive-mode
-        sudo snapcraft upload --release=edge freecad*.snap
+      run: sudo snapcraft upload --release=edge freecad*.snap

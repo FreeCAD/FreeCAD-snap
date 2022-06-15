@@ -13,10 +13,9 @@ jobs:
     - name: install snapcraft
       run: |
         sudo snap install snapcraft --classic
-        snapcraft login
+    - name: promote from edge to beta
       env:
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-    - name: promote from edge to beta
       run: |
         edge_revision="$(curl -H 'Snap-Device-Series: 16' \
           'https://api.snapcraft.io/v2/snaps/info/freecad' \
