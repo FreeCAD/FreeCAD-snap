@@ -11,12 +11,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install snapcraft
-      run: |
-        sudo snap install snapcraft --classic
-        sudo apt install gnome-keyring
+      run: sudo snap install snapcraft --classic
     - name: build snap
-      run: sudo snapcraft --destructive-mode
+      run: sudo -H snapcraft --destructive-mode
     - name: publish snap
       env:
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-      run: sudo snapcraft upload --release=edge freecad*.snap
+      run: snapcraft upload --release=edge freecad*.snap
