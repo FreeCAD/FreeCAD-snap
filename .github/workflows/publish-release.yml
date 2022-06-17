@@ -11,12 +11,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install snapcraft
-      run: |
-        sudo snap install snapcraft --classic
-        echo "$STORE_LOGIN" | snapcraft login --with -
-      env:
-        STORE_LOGIN: ${{ secrets.STORE_LOGIN }}
-    - name: build & publish snap
+      run: sudo snap install snapcraft --classic
+    - name: build snap
       run: |
         sudo snapcraft --destructive-mode
-        sudo snapcraft upload --release=candidate freecad*.snap
+        sudo rm -rf $HOME/.config/snapcraft
+    - name: publish snap
+      env:
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
+      run: snapcraft upload --release=candidate freecad*.snap
