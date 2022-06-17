@@ -19,17 +19,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install snapcraft
-      run: |
-        sudo snap install snapcraft --classic
-        sudo apt install gnome-keyring
+      run: sudo snap install snapcraft --classic
     - name: install yq
       run: sudo snap install yq
     - name: modify snapcraft.yaml
       run: yq -i '.parts.freecad.source-commit = "${{ github.event.inputs.ref }}"' snap/snapcraft.yaml
     - name: build snap
-      run: sudo snapcraft --destructive-mode
+      run: |
+        sudo snapcraft --destructive-mode
+        sudo rm -rf $HOME/.config/snapcraft
     - name: publish snap
       env:
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-      run: sudo snapcraft upload --release='latest/edge/${{ github.event.inputs.branch }}' freecad*.snap
+      run: snapcraft upload --release='latest/edge/${{ github.event.inputs.branch }}' freecad*.snap
 

@@ -11,9 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install snapcraft
-      run: |
-        sudo snap install snapcraft --classic
-        sudo apt install gnome-keyring
+      run: sudo snap install snapcraft --classic
     - name: promote from edge to beta
       env:
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
