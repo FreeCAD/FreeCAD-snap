@@ -22,7 +22,7 @@ grade: stable
 confinement: strict
 compression: lzo
 license: LGPL-2.0-or-later
-assumes: [snapd2.55] # for cups interface
+assumes: [snapd2.55.3] # for cups interface & private shared memory
 
 layout:
   /usr/share/libdrm/amdgpu.ids:
@@ -52,14 +52,17 @@ layout:
   /usr/share/povray-3.7: # Raytracing
     symlink: $SNAP/usr/share/povray-3.7
     
-# this is not used or needed for anything other than to trigger automatic
-# installation of the cups snap via "default-provider: cups"
 plugs:
+  # this is not used or needed for anything other than to trigger automatic
+  # installation of the cups snap via "default-provider: cups"
   foo-install-cups:
     interface: content
     content: foo
     default-provider: cups
     target: $SNAP_DATA/foo
+  # Necessary to enable semaphores for numba, OpenMP etc.
+  shared-memory:
+    private: true
 
 environment:
   LD_LIBRARY_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lapack # numpy
@@ -93,6 +96,7 @@ apps:
       - browser-support
       - unity7
       - cups
+      - shared-memory
   cmd:
     command: usr/bin/FreeCADCmd
     extensions: [kde-neon]
@@ -263,7 +267,7 @@ parts:
         ${SNAPCRAFT_PART_INSTALL}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/graphviz/
 
   cleanup:
-    after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz, snapcraft-preload]
+    after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
     plugin: nil
     build-snaps: [kde-frameworks-5-91-qt-5-15-3-core20]
     override-prime: |
