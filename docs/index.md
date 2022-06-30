@@ -24,6 +24,8 @@ This automatically sets the `PovrayExecutable` parameter to the correct path ins
 
 There is an option to build Snaps from experimental commits, branches, or even git release tags. 
 
+**Note:** it is possible to build experimental builds from true forks of FreeCAD master branch ([ref](https://github.com/FreeCAD/FreeCAD/pull/7118#issuecomment-1171458436))
+
 ![Publish-to-Branch](assets/images/Snap-Publish-to-Branch-screenshot.png)
 
 In the the screenshot above the first field labeled **`FreeCAD commit/branch/tag`** is able to receive the following inputs:  
