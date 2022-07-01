@@ -20,6 +20,19 @@ This automatically sets the `PovrayExecutable` parameter to the correct path ins
 
 **Convention**: One function per workbench, don't overwrite the user's settings.
 
+## Publishing Daily
+
+The github action called 'Publish Daily' is an automated process that is triggered every evening to publish a new 'edge' build. It can also be triggered manually to build on-demand. 
+
+![Publish-Daily](assets/images/Snap-Publish-Daily.png)
+
+In the screenshot above clicking the 'Run workflow' button will open a dialog with 2 buttons:
+
+The `Branch:` button indicates what branch of FreeCAD-snap you'd like to trigger. Default is 'master'.
+
+The green `Run workflow` button actually triggers the build to start. Once this is clicked, the build takes whatever time it takes to build FreeCAD from source and then push the new build to the 'edge' channel. After that all the user has to do is `snap refresh` and the latest 'edge' will auto-download to their machine
+
+
 ## Publishing to Branch
 
 There is an option to build Snaps from experimental commits, branches, or even git release tags. 
