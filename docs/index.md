@@ -61,7 +61,7 @@ snap refresh freecad --channel edge
 
 ## Running multiple snaps AKA 'Parallel Installs' (parallel but separate)
 
-By default, snap packages that have several 'channels' will share configs between them. For testing purposes sometimes this isn't wanted, the solution per the snapcraft docs is using the [parellel install](https://snapcraft.io/docs/parallel-installs) feature. 
+By default, snap packages that have several 'channels' will share configs between them. For testing purposes sometimes this isn't wanted, the solution per the snapcraft docs is using the [parallel install](https://snapcraft.io/docs/parallel-installs) feature. 
 
 > Parallel installs enable you to run multiple instances of the same snap on the same system. Each instance is completely isolated from all other instances, including its name, configuration, interface connections, data locations, services, applications and aliases.
 
