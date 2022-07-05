@@ -68,3 +68,13 @@ By default, snap packages that have several 'channels' will share configs betwee
 Note: at the time of writing this the parallel install feature is still considered experimental
 
 In the context of FreeCAD, this feature would be useful for example if there are experimental changes (in an experimental build) to the FreeCAD config files that could corrupt the snap stable or snap edge channel FreeCAD config files.   
+
+Example: Install edge snap in parallel to the stable snap
+
+```shell
+# Enable experimental parallel instances feature
+$ sudo snap set system experimental.parallel-instances=true
+# Install freecad snap from channel edge as 'freecad_edge'
+$ sudo snap install freecad_edge --channel=edge
+# run FreeCAD from this parallel install
+$ freecad_edge
