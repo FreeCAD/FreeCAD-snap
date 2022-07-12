@@ -1,14 +1,17 @@
-name: Build Branch
+name: Build PR
 
 on:
-  push:
-    branches-ignore:
-      - master
-      - stable
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
     
 jobs:
   build_amd64:
     runs-on: ubuntu-20.04
+    if: contains(github.event.pull_request.labels.*.name, 'safe to publish')
     steps:
     - uses: actions/checkout@v2
     - name: install snapcraft
