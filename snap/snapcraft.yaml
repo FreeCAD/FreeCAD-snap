@@ -288,3 +288,4 @@ parts:
       done
       find $SNAPCRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
       find $SNAPCRAFT_PRIME/usr/share -type d -empty -delete
+      find $SNAPCRAFT_PRIME/usr/lib -type f,l -name 'libQt*.so*' -delete
