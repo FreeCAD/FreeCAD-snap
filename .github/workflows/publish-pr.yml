@@ -15,6 +15,9 @@ jobs:
       ${{ github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - name: echo workflow_run
+        run: |
+          echo '${{ toJSON(github.event.workflow_run) }}'
       - name: check if allowed
         uses: actions/github-script@v6.1.0
         with:
