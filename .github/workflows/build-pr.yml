@@ -11,7 +11,15 @@ on:
 jobs:
   build_amd64:
     runs-on: ubuntu-20.04
-    if: contains(github.event.pull_request.labels.*.name, 'safe to publish')
+    if: |
+      (
+        github.event.action == 'labeled' && 
+        github.event.label.name == 'safe to publish'
+      ) || 
+      (
+        github.event.action != 'labeled' && 
+        contains(github.event.pull_request.labels.*.name, 'safe to publish')
+      )
     steps:
     - uses: actions/checkout@v2
     - name: install snapcraft
