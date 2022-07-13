@@ -205,7 +205,7 @@ parts:
       - python3-six
       - python3-pyparsing
       - python3-setuptools-scm
-      - python3-cycler
+      # - python3-cycler
       - python3-dateutil
       - python3-git
       - python3-ply # OpenSCAD
