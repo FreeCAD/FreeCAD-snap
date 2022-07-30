@@ -91,6 +91,20 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber,
-              body: `A build from commit ${prCommit} has been published to channel ${snapChannel} as revision ${snapRevision}.`
+              body: `A build from commit ${prCommit} has been published to channel ${snapChannel} as revision ${snapRevision}.
+
+              ## Installation instructions
+
+              \`\`\`bash
+                $ sudo snap install --channel=${snapChannel} freecad
+
+                # If you already have the freecad snap installed
+                $ sudo snap refresh --channel=${snapChannel} freecad 
+
+                # Experimental: Parallel install (see https://snapcraft.io/docs/parallel-installs)
+                $ sudo snap set system experimental.parallel-instances=true
+                $ sudo snap install --channel=${snapChannel} freecad_pr${prNumber}
+                $ freecad_pr${prNumber} # Run it
+              \`\`\``
             });
 
