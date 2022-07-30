@@ -83,6 +83,7 @@ environment:
   SNAP_PYTHONPATH: *pypath
   QT_QPA_PLATFORM: xcb # Coin3D cannot run on Wayland
   POVINI: $SNAP/etc/povray/3.7/povray.ini # Raytracing
+  BUILD_ME: 2
 
 apps:
   freecad:
@@ -129,7 +130,8 @@ parts:
 
   freecad:
     plugin: cmake
-    source: https://github.com/FreeCAD/FreeCAD.git
+    source: https://github.com/WandererFan/FreeCAD.git
+    source-branch: hlrThreadrc1
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DCMAKE_INSTALL_LIBDIR=lib
