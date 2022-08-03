@@ -59,7 +59,9 @@ When you're done testing the build, to return to the original build you were run
 snap refresh freecad --channel edge
 ```
 
-## Running multiple snaps AKA 'Parallel Installs' (parallel but separate)
+## Parallel Installs
+
+Running multiple snaps AKA 'Parallel Installs' (parallel but separate).
 
 By default, snap packages that have several 'channels' will share configs between them. For testing purposes sometimes this isn't wanted, the solution per the snapcraft docs is using the [parallel install](https://snapcraft.io/docs/parallel-installs) feature. 
 
