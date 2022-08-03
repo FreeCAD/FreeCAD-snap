@@ -96,6 +96,7 @@ jobs:
               ## Installation instructions
 
               \`\`\`bash
+                # Note: not all distros require 'sudo'
                 $ sudo snap install --channel=${snapChannel} freecad
 
                 # If you already have the freecad snap installed
@@ -105,6 +106,9 @@ jobs:
                 $ sudo snap set system experimental.parallel-instances=true
                 $ sudo snap install --channel=${snapChannel} freecad_pr${prNumber}
                 $ freecad_pr${prNumber} # Run it
+
+                # To switch back to preferred snap (swap out 'edge' for 'stable' if necessary)
+                $ snap refresh freecad --channel=edge freecad
               \`\`\``
             });
 
