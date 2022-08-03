@@ -102,7 +102,7 @@ jobs:
                 # If you already have the freecad snap installed
                 $ sudo snap refresh --channel=${snapChannel} freecad 
 
-                # Experimental: Parallel install (see https://snapcraft.io/docs/parallel-installs)
+                # Experimental: Parallel install (see https://github.com/FreeCAD/FreeCAD-snap/blob/master/docs/index.md#parallel-installs)
                 $ sudo snap set system experimental.parallel-instances=true
                 $ sudo snap install --channel=${snapChannel} freecad_pr${prNumber}
                 $ freecad_pr${prNumber} # Run it
