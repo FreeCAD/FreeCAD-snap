@@ -47,7 +47,7 @@ In the the screenshot above the first field labeled **`FreeCAD commit/branch/tag
 * **`branch`** is for special FreeCAD/FreeCAD branches one would like to compile. Simply adding the name of said branch is enough. For example: 'Toponaming' (note branch should exist first).
 * **`tag`** is for building snaps from a specific FreeCAD/FreeCAD release tag. 
 
-The secound field in the above screenshot **`Snapcraft branch`** is simply the unique build name you can grant to this specific build. 
+The second field in the above screenshot **`Snapcraft branch`** is simply the unique build name you can grant to this specific build. 
 
 Then simply pressing the **Run workflow** button will trigger said build. When build is complete, the method to install this build is simple. In the CLI invoke:  
 ```shell
@@ -80,3 +80,62 @@ $ sudo snap set system experimental.parallel-instances=true
 $ sudo snap install freecad_edge --channel=edge
 # run FreeCAD from this parallel install
 $ freecad_edge
+```
+
+## Build snaps from FreeCAD branches or forks
+
+It is possible to build snaps from any branch of fork of the FreeCAD repository. This option is also open to outside users that can simply make a PR to trigger and re-trigger a build.
+
+1. Fork the FreeCAD-snap repo.
+1. Create a new branch to work on.
+1. Open *[snap/snapcraft.yaml](./snap/snapcraft.yaml)* in a text editor
+1. Locate the `freecad` block of the yaml file
+1. Modify the `source:` variable to reflect the specific fork of FreeCAD master to build. Note: must end with `.git` extension.
+1. Add a  `source-branch:` variable to indicate what specific branch of said fork to build.  In the **example below** is a before and after in which we're building a snap of user @WandererFan's `hlrThreadrc1` branch from his FreeCAD clone ([borrowed from actual example](https://github.com/FreeCAD/FreeCAD-snap/pull/44)):  
+    ```yaml
+     freecad:
+      plugin: cmake
+      source: https://github.com/FreeCAD/FreeCAD.git
+    ```
+    ```yaml
+      freecad:
+       plugin: cmake
+       source: https://github.com/WandererFan/FreeCAD.git
+       source-branch: hlrThreadrc1
+1. Save the `snap/snapcraft.yaml` changes to the branch and make Pull Request to FreeCAD-snap.
+1. Ask a maintainer to assign the 'safe to publish' green tag to the PR.
+1. Result: the snap should build and output 'Installation Instructions'.
+1. PR should be closed when said experimental snap builds aren't further necessary. 
+1. **Important note:** each commit to the branch will need a manual retrigger in order to re-build the snap. See below:
+
+### Triggering re-builds
+
+As mentioned above, new commits to a branch will not retrigger the rebuilding of a snap. It needs to be done manually. 
+1. Open the same `snap/snapcraft.yaml` above
+1. Find the `environment:` block
+1. Add `BUILD_ME: 1` to the end of the block
+1. Push change to the open PR
+1. Note: To retrigger, iterate `BUILD_ME:`.
+    ```yaml
+    environment:
+      LD_LIBRARY_PATH: $SNAP/usr/lib/   $SNAPCRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/   $SNAPCRAFT_ARCH_TRIPLET/lapack # numpy
+      LD_PRELOAD: $SNAP/usr/lib/    $SNAPCRAFT_ARCH_TRIPLET/libstubchown.so
+      ...
+      ...
+      ...
+      POVINI: $SNAP/etc/povray/3.7/povray.ini #     Raytracing
+    ```
+  
+    ```yaml
+      environment:
+      LD_LIBRARY_PATH: $SNAP/usr/lib/   $SNAPCRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/   $SNAPCRAFT_ARCH_TRIPLET/lapack # numpy
+      LD_PRELOAD: $SNAP/usr/lib/    $SNAPCRAFT_ARCH_TRIPLET/libstubchown.so
+      ...
+      ...
+      ...
+      POVINI: $SNAP/etc/povray/3.7/povray.ini #     Raytracing
+      BUILD_ME: 1
+      ```
+1. When task is complete and no more snap builds are needed, simply close the PR and delete the branch.
+
+See example https://github.com/FreeCAD/FreeCAD-snap/pull/44
