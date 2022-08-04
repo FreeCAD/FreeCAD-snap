@@ -20,23 +20,7 @@ jobs:
       - name: echo workflow_run
         run: |
           echo '${{ toJSON(github.event.workflow_run) }}'
-      - name: check if allowed
-        uses: actions/github-script@v6.1.0
-        with:
-          script: |
-            const pr = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: ${{ github.event.workflow_run.pull_requests[0].number }}
-            });
-            if (pr && pr.data.labels) {
-              const index = pr.data.labels.findIndex(label => (label.name === "safe to publish"));
-              if (index !== -1) {
-                return;
-              }
-            }
-            core.setFailed("Pull request needs the 'safe to publish' label");
-      - name: download snap
+      - name: download artifacts
         uses: actions/github-script@v3.1.0
         with:
           script: |
@@ -48,8 +32,14 @@ jobs:
             const snapArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == "snap"
             })[0];
+            const prDataArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "pr-data"
+            })[0];
             if (snapArtifact == null) {
               return core.setFailed("Missing artifact");
+            }
+            if (prDataArtifact == null) {
+              return core.setFailed("Missing PR data artifact");
             }
             const snapDownload = await github.actions.downloadArtifact({
                owner: context.repo.owner,
@@ -57,8 +47,40 @@ jobs:
                artifact_id: snapArtifact.id,
                archive_format: 'zip',
             });
+            const prDataDownload = await github.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: prDataArtifact.id,
+               archive_format: 'zip',
+            });
             const fs = require('fs');
             fs.writeFileSync('${{github.workspace}}/snap.zip', Buffer.from(snapDownload.data));
+            fs.writeFileSync('${{github.workspace}}/pr-data.zip', Buffer.from(prDataDownload.data));
+      - name: unzip pr-data
+        run: unzip pr-data.zip
+      - name: get PR data
+        id: get_pr_data
+        run: |
+          pr_number="$(cat pr-number)"
+          pr_commit="$(cat pr-commit)"
+          echo "::set-output name=pr_number::$pr_number"
+          echo "::set-output name=pr_commit::$pr_commit"
+      - name: check if allowed
+        uses: actions/github-script@v6.1.0
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ steps.get_pr_data.outputs.pr_number }}
+            });
+            if (pr && pr.data.labels) {
+              const index = pr.data.labels.findIndex(label => (label.name === "safe to publish"));
+              if (index !== -1) {
+                return;
+              }
+            }
+            core.setFailed("Pull request needs the 'safe to publish' label");
       - name: unzip snap
         run: unzip snap.zip
       - name: install snapcraft
@@ -68,7 +90,7 @@ jobs:
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
         run: |
-          pr_number="${{ github.event.workflow_run.pull_requests[0].number }}"
+          pr_number="${{ steps.get_pr_number.outputs.pr_number }}"
           snap_channel="edge/pr-${pr_number}"
           snapcraft upload --release="$snap_channel" freecad*.snap
           # get revision
@@ -83,8 +105,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
-            const prNumber = Number(${{ github.event.workflow_run.pull_requests[0].number }});
-            const prCommit = "${{ github.event.workflow_run.pull_requests[0].head.sha }}";
+            const prNumber = Number(${{ steps.get_pr_data.outputs.pr_number }});
+            const prCommit = "${{ steps.get_pr_data.outputs.pr_commit }}";
             const snapRevision = '${{ steps.upload_snap.outputs.snap_revision }}';
             const snapChannel = '${{ steps.upload_snap.outputs.snap_channel }}';
             await github.issues.createComment({

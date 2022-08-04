@@ -30,7 +30,16 @@ jobs:
     - name: build snap
       run: |
         sudo snapcraft --destructive-mode
-    - uses: actions/upload-artifact@v2
+    - name: save PR data
+      run: |
+        mkdir -p ./pr-data
+        echo '${{ github.event.number }}' > ./pr-data/pr-number
+        echo '${{ github.event.pull_request.head.sha }}' > ./pr-data/pr-commit
+    - uses: actions/upload-artifact@v3
       with:
         name: snap
         path: freecad*.snap
+    - uses: actions/upload-artifact@v3
+      with:
+        name: pr-data
+        path: pr-data/
