@@ -33,32 +33,6 @@ The `Branch:` button indicates what branch of FreeCAD-snap you'd like to trigger
 The green `Run workflow` button actually triggers the build to start. Once this is clicked, the build takes whatever time it takes to build FreeCAD from source and then push the new build to the 'edge' channel. After that all the user has to do is `snap refresh` and the latest 'edge' will auto-download to their machine
 
 
-## Publishing to Branch
-
-There is an option to build Snaps from experimental commits, branches, or even git release tags. 
-
-**Note:** It is possible to create experimental builds from any true fork of the upstream FreeCAD repository ([ref](https://github.com/FreeCAD/FreeCAD/pull/7118#issuecomment-1171458436))
-
-![Publish-to-Branch](assets/images/Snap-Publish-to-Branch-screenshot.png)
-
-In the the screenshot above the first field labeled **`FreeCAD commit/branch/tag`** is able to receive the following inputs:  
-
-* **`commit`** this is a specific git hash of an open Pull Request in FreeCAD/FreeCAD  
-* **`branch`** is for special FreeCAD/FreeCAD branches one would like to compile. Simply adding the name of said branch is enough. For example: 'Toponaming' (note branch should exist first).
-* **`tag`** is for building snaps from a specific FreeCAD/FreeCAD release tag. 
-
-The second field in the above screenshot **`Snapcraft branch`** is simply the unique build name you can grant to this specific build. 
-
-Then simply pressing the **Run workflow** button will trigger said build. When build is complete, the method to install this build is simple. In the CLI invoke:  
-```shell
-snap install freecad --channel <experimental-build-name>
-```
-
-When you're done testing the build, to return to the original build you were running just swap out the build name and refresh; for example: `stable` or `edge` 
-```shell
-snap refresh freecad --channel edge
-```
-
 ## Parallel Installs
 
 Running multiple snaps AKA 'Parallel Installs' (parallel but separate).
