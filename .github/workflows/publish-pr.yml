@@ -90,7 +90,7 @@ jobs:
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
         run: |
-          pr_number="${{ steps.get_pr_number.outputs.pr_number }}"
+          pr_number="${{ steps.get_pr_data.outputs.pr_number }}"
           snap_channel="edge/pr-${pr_number}"
           snapcraft upload --release="$snap_channel" freecad*.snap
           # get revision
