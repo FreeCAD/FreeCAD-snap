@@ -187,7 +187,7 @@ parts:
       - libmed11
       - libopenexr24
       - libopenmpi3
-      - libpsm-infinipath1
+      - on amd64: [libpsm-infinipath1]
       - libpython3.8
       - libpython3.8-minimal
       - libpython3.8-stdlib
@@ -235,6 +235,9 @@ parts:
       sed -i -E \
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecadweb.FreeCAD.svg|g" \
         $SNAPCRAFT_PART_INSTALL/usr/share/applications/org.freecadweb.FreeCAD.desktop
+      if [ "$SNAPCRAFT_TARGET_ARCH" = amd64 ]; then
+        ln -sf ../libpsm1/libpsm_infinipath.so.1.16  $SNAPCRAFT_PART_INSTALL/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libpsm_infinipath.so.1
+      fi
       cd $SNAPCRAFT_PART_SRC
       version_major=$(grep "set(PACKAGE_VERSION_MAJOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
       version_minor=$(grep "set(PACKAGE_VERSION_MINOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
