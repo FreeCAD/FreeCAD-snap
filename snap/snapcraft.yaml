@@ -129,7 +129,7 @@ parts:
 
   freecad:
     plugin: cmake
-    source: https://github.com/Matteo-Grellier/FreeCAD
+    source: https://github.com/Matteo-Grellier/FreeCAD.git
     source-branch: Blending
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
