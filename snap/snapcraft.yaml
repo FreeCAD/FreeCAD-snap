@@ -228,7 +228,7 @@ parts:
       - povray # Raytracing
       - povray-includes # Raytracing
     override-build: |
-      kde_sdk_dir="/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current"
+      kde_sdk_dir="/snap/kde-frameworks-5-96-qt-5-15-5-core20-sdk/current"
       mkdir -p /etc/xdg/qtchooser
       cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
       snapcraftctl build
@@ -280,10 +280,10 @@ parts:
   cleanup:
     after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
     plugin: nil
-    build-snaps: [kde-frameworks-5-91-qt-5-15-3-core20]
+    build-snaps: [kde-frameworks-5-96-qt-5-15-5-core20]
     override-prime: |
       set -eux
-      for snap in "kde-frameworks-5-91-qt-5-15-3-core20"; do  # List all content-snaps you're using here
+      for snap in "kde-frameworks-5-96-qt-5-15-5-core20"; do  # List all content-snaps you're using here
         cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" "$SNAPCRAFT_PRIME/usr/{}" \;
       done
       for cruft in bug lintian man; do
