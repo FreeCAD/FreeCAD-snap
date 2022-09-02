@@ -113,6 +113,14 @@ package-repositories:
     ppa: elmer-csc-ubuntu/elmer-csc-ppa
   - type: apt
     ppa: openscad/releases
+  - type: apt
+    components:
+      - main
+    suites:
+      - focal
+    key-id: 444DABCF3667D0283F894EDDE6D4736255751E5D
+    url: http://origin.archive.neon.kde.org/user
+    key-server: keyserver.ubuntu.com
 
 parts:
   stub-chown:
@@ -231,6 +239,8 @@ parts:
       kde_sdk_dir="/snap/kde-frameworks-5-96-qt-5-15-5-core20-sdk/current"
       mkdir -p /etc/xdg/qtchooser
       cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
+      mkdir -p /workspace/usr/bin
+      ln -s /usr/bin/shiboken2 /workspace/usr/bin/shiboken2
       snapcraftctl build
       sed -i -E \
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecadweb.FreeCAD.svg|g" \
@@ -291,4 +301,6 @@ parts:
       done
       find $SNAPCRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
       find $SNAPCRAFT_PRIME/usr/share -type d -empty -delete
-      find $SNAPCRAFT_PRIME/usr/lib -type f,l -name 'libQt*.so*' -delete
+      find $SNAPCRAFT_PRIME/usr/lib -type f,l \
+        -name 'libQt*.so*' `# remove all Qt libs pulled in from Ubuntu repos` \
+        -not -name 'libQt5Gamepad.so*' -delete `# for OpenSCAD`
