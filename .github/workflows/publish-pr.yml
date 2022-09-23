@@ -17,9 +17,6 @@ jobs:
         github.event.workflow_run.conclusion == 'success'
       )
     steps:
-      - name: echo workflow_run
-        run: |
-          echo '${{ toJSON(github.event.workflow_run) }}'
       - name: download artifacts
         uses: actions/github-script@v3.1.0
         with:
