@@ -83,7 +83,7 @@ environment:
   SNAP_PYTHONPATH: *pypath
   QT_QPA_PLATFORM: xcb # Coin3D cannot run on Wayland
   POVINI: $SNAP/etc/povray/3.7/povray.ini # Raytracing
-  BUILD_ME: 4
+  BUILD_ME: 5
 
 apps:
   freecad:
