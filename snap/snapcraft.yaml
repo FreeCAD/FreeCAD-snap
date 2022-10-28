@@ -138,7 +138,7 @@ parts:
   freecad:
     plugin: cmake
     source: https://github.com/mac-the-bike/FreeCAD.git
-    sourche-branch: erase-version-2
+    source-branch: erase-version-2
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DCMAKE_INSTALL_LIBDIR=lib
