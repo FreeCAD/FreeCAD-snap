@@ -1,5 +1,13 @@
 # FreeCAD Snap Documentation
 
+## How to make a new stable release
+
+  * Create a PR that updates the `snap/snapcraft.yaml` file (see https://github.com/FreeCAD/FreeCAD-snap/pull/75 for example) and merge it to the stable branch  
+  **Result:** Once merged this will build a **candidate** release.
+  * Test the 'candidate' release. If no issues present then...
+  * Login to https://snapcraft.io/freecad/releases and promote the **candidate** release to **stable**  
+  **Result:** Stable will now be the latest stable branch
+
 ## How to add snap-specific workarounds or changes
 
 Edit [snap/local/snap-setup-mod/Init.py](https://github.com/FreeCAD/FreeCAD-snap/blob/master/snap/local/snap-setup-mod/Init.py), which is called on every start of FreeCAD.
