@@ -121,3 +121,7 @@ As mentioned above, new commits to a branch will not retrigger the rebuilding of
 1. When task is complete and no more snap builds are needed, simply close the PR and delete the branch.
 
 See example https://github.com/FreeCAD/FreeCAD-snap/pull/44
+
+## Updating KDE Framwwork version
+
+Every so often it is necessary to update the KDE Framework. See https://github.com/FreeCAD/FreeCAD-snap/pull/80. 
