@@ -125,3 +125,5 @@ See example https://github.com/FreeCAD/FreeCAD-snap/pull/44
 ## Updating KDE Frameworks version
 
 Every so often it is necessary to update the KDE Frameworks. See https://github.com/FreeCAD/FreeCAD-snap/pull/80. 
+
+This is related to the `kde-neon` extension, read the official documentation (may be outdated) https://snapcraft.io/docs/kde-neon-extension.
