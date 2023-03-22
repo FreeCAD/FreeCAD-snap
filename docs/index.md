@@ -122,6 +122,6 @@ As mentioned above, new commits to a branch will not retrigger the rebuilding of
 
 See example https://github.com/FreeCAD/FreeCAD-snap/pull/44
 
-## Updating KDE Framwwork version
+## Updating KDE Frameworks version
 
-Every so often it is necessary to update the KDE Framework. See https://github.com/FreeCAD/FreeCAD-snap/pull/80. 
+Every so often it is necessary to update the KDE Frameworks. See https://github.com/FreeCAD/FreeCAD-snap/pull/80. 
