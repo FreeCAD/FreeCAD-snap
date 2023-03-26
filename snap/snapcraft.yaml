@@ -1,6 +1,9 @@
 name: freecad
 base: core20
 adopt-info: freecad
+donation: https://wiki.freecad.org/Donate
+issues: https://github.com/FreeCAD/FreeCAD-snap/issues
+website: https://freecad.org
 summary: An open source parametric 3D CAD modeler
 description: |
   FreeCAD is a parametric 3D modeler. Parametric modeling
