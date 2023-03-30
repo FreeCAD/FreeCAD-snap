@@ -207,6 +207,7 @@ parts:
       - libsz2
       - libxerces-c3.2
       - libzipios++0v5
+      - pycollada
       - python3-tk # FEM
       - python3-yaml # FEM
       - python3-numba # FEM (fcFEM)
