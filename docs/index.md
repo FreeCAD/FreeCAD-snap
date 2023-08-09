@@ -127,3 +127,14 @@ See example https://github.com/FreeCAD/FreeCAD-snap/pull/44
 Every so often it is necessary to update the KDE Frameworks. See https://github.com/FreeCAD/FreeCAD-snap/pull/80. 
 
 This is related to the `kde-neon` extension, read the official documentation (may be outdated) https://snapcraft.io/docs/kde-neon-extension.
+
+## Checking if a 3rd party depedency is available
+
+Different package ecosystems name their dependencies differently. 
+Questions:  
+1. Where does Snap pull dependencies from ?  
+2. How does one query to ascertain the correct name of the dependency ?
+
+Answers:
+1. Dependencies are listed using their apt package names and are retrieved from the set of repositories officially supported by the distribution (make sure you pulling an apt package for the correct distro version that the snap packaging is utilizing).
+2. https://packages.ubuntu.com (it may be beneficial to cross-reference https://repology.org)
