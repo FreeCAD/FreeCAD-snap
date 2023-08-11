@@ -156,7 +156,6 @@ parts:
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DCMAKE_INSTALL_LIBDIR=lib
-      - -DBUILD_QT5=ON
       - -DCMAKE_BUILD_TYPE=Release
       - -DPYTHON_EXECUTABLE=/usr/bin/python3
       - -DPYTHON_INCLUDE_DIR=/usr/include/python3.10
@@ -235,7 +234,6 @@ parts:
       - python3-git
       - python3-ply # OpenSCAD
       - python3-pivy
-      - python3-markdown # Addon manager
       - python3-pyside2.qtcore
       - python3-pyside2.qtgui
       - python3-pyside2.qtsvg
@@ -250,8 +248,6 @@ parts:
       - libvtk7.1p
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
-      - povray # Raytracing
-      - povray-includes # Raytracing
     override-build: |
       kde_sdk_dir="/snap/kf5-5-108-qt-5-15-10-core22-sdk/current"
       mkdir -p /etc/xdg/qtchooser
