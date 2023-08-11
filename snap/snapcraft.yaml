@@ -136,7 +136,7 @@ package-repositories:
 parts:
   stub-chown:
     plugin: meson
-    source: $CRAFT_PROJECT_DIR/local/stub-chown
+    source: $CRAFT_PROJECT_DIR/snap/local/stub-chown
     source-type: local
     build-packages:
     - meson
@@ -145,7 +145,7 @@ parts:
 
   snap-setup-mod:
     plugin: dump
-    source: $CRAFT_PROJECT_DIR/local/snap-setup-mod
+    source: $CRAFT_PROJECT_DIR/snap/local/snap-setup-mod
     source-type: local
     organize:
       "*": usr/Mod/SnapSetup/
