@@ -9,12 +9,6 @@ def add_snap_pythonpath():
     for path in pythonpath.split(":"):
       sys.path.insert(0, path)
 
-def configure_mod_raytracing():
-  import FreeCAD
-  param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Raytracing")
-  if not param.GetString("PovrayExecutable", ""):
-    param.SetString("PovrayExecutable", "/snap/freecad/current/usr/bin/povray")
-
 def configure_mod_mesh():
   import FreeCAD
   param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Mesh/Meshing")
@@ -28,6 +22,5 @@ def fix_theme():
     param.SetBool("ThemeSearchPaths", False)
 
 add_snap_pythonpath()
-configure_mod_raytracing()
 configure_mod_mesh()
 fix_theme()
