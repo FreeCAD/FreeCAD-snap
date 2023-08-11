@@ -250,8 +250,6 @@ parts:
       - libvtk7.1p
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
-      - povray # Raytracing
-      - povray-includes # Raytracing
     override-build: |
       kde_sdk_dir="/snap/kf5-5-108-qt-5-15-10-core22-sdk/current"
       mkdir -p /etc/xdg/qtchooser
