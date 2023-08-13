@@ -229,6 +229,7 @@ parts:
       - python3-packaging # Path
       - python3-pyparsing
       - python3-setuptools-scm
+      - python3-collada # DAE import
       - python3-cycler
       - python3-dateutil
       - python3-git
