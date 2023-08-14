@@ -99,8 +99,8 @@ apps:
   freecad:
     command: usr/bin/FreeCAD
     extensions: [kde-neon]
-    common-id: org.freecadweb.FreeCAD.desktop
-    desktop: usr/share/applications/org.freecadweb.FreeCAD.desktop
+    common-id: org.freecad.FreeCAD.desktop
+    desktop: usr/share/applications/org.freecad.FreeCAD.desktop
     plugs: &plugs
       - home
       - opengl
@@ -257,8 +257,8 @@ parts:
       ln -s /usr/bin/shiboken2 /workspace/usr/bin/shiboken2
       snapcraftctl build
       sed -i -E \
-        "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecadweb.FreeCAD.svg|g" \
-        $CRAFT_PART_INSTALL/usr/share/applications/org.freecadweb.FreeCAD.desktop
+        "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg|g" \
+        $CRAFT_PART_INSTALL/usr/share/applications/org.freecad.FreeCAD.desktop
       if [ "$CRAFT_TARGET_ARCH" = amd64 ]; then
         ln -sf ../libpsm1/libpsm_infinipath.so.1.16  $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET/libpsm_infinipath.so.1
       fi
