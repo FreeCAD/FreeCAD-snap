@@ -35,6 +35,8 @@ layout:
     symlink: $SNAP/kf5/usr/share/X11
   /usr/share/libdrm/amdgpu.ids:
     bind-file: $SNAP/kf5/usr/share/libdrm/amdgpu.ids
+  /usr/bin/mpirun:
+    symlink: $SNAP/usr/bin/orterun
   /usr/share/openmpi:
     symlink: $SNAP/usr/share/openmpi
   /etc/openmpi:
