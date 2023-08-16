@@ -257,7 +257,7 @@ parts:
       cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
       mkdir -p /workspace/usr/bin
       ln -s /usr/bin/shiboken2 /workspace/usr/bin/shiboken2
-      craftctl build
+      craftctl default
       sed -i -E \
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg|g" \
         $CRAFT_PART_INSTALL/usr/share/applications/org.freecad.FreeCAD.desktop
@@ -269,7 +269,7 @@ parts:
       version_minor=$(grep "set(PACKAGE_VERSION_MINOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
       git_hash=$(git rev-parse --short=8 HEAD)
       version="${version_major}.${version_minor}-g$git_hash"
-      craftctl set-version "$version"
+      craftctl set version="$version"
 
   python-packages:
     plugin: python
