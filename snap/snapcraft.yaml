@@ -41,14 +41,14 @@ layout:
     symlink: $SNAP/usr/share/openmpi
   /etc/openmpi:
     bind: $SNAP/etc/openmpi
-  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/openmpi:
-    bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/openmpi
+  /usr/lib/$CRAFT_ARCH_TRIPLET/openmpi:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/openmpi
   /usr/bin/orted:
     symlink: $SNAP/usr/bin/orted
   /usr/share/pmix:
     symlink: $SNAP/usr/share/pmix
-  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pmix:
-    symlink: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pmix
+  /usr/lib/$CRAFT_ARCH_TRIPLET/pmix:
+    symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/pmix
   /etc/matplotlibrc:
     bind-file: $SNAP/etc/matplotlibrc
   /usr/share/matplotlib:
@@ -257,7 +257,7 @@ parts:
       cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
       mkdir -p /workspace/usr/bin
       ln -s /usr/bin/shiboken2 /workspace/usr/bin/shiboken2
-      snapcraftctl build
+      craftctl build
       sed -i -E \
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg|g" \
         $CRAFT_PART_INSTALL/usr/share/applications/org.freecad.FreeCAD.desktop
@@ -269,7 +269,7 @@ parts:
       version_minor=$(grep "set(PACKAGE_VERSION_MINOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
       git_hash=$(git rev-parse --short=8 HEAD)
       version="${version_major}.${version_minor}-g$git_hash"
-      snapcraftctl set-version "$version"
+      craftctl set-version "$version"
 
   python-packages:
     plugin: python
