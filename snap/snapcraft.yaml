@@ -185,6 +185,7 @@ parts:
       - libproj-dev
       - libx11-dev
       - libxerces-c-dev
+      - libyaml-cpp-dev
       - libzipios++-dev
       - swig
       - python3-dev
