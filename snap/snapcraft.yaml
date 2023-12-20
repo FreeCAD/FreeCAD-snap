@@ -81,7 +81,7 @@ plugs:
     target: $SNAP/kf5
 
 environment:
-  LD_LIBRARY_PATH: "$SNAP/usr/lib/:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/:$SNAP/kf5/usr/lib/$CRAFT_ARCH_TRIPLET/:$SNAP/kf5/usr/lib:/$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/lapack:$LD_LIBRARY_PATH"
+  LD_LIBRARY_PATH: "$SNAP/lib:$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib/$CRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/lapack:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/dri:$LD_LIBRARY_PATH"
   LD_PRELOAD: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/libstubchown.so
   FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
@@ -170,6 +170,7 @@ parts:
       - freecad-deps-core22/candidate
     stage-snaps:
       - freecad-deps-core22/candidate
+      - on amd64: [luxcore/edge]
     build-packages:
       - g++
       - git
@@ -305,6 +306,9 @@ parts:
       cp \
         /usr/lib/${CRAFT_ARCH_TRIPLET}/graphviz/config* \
         ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET}/graphviz/
+    stage:
+      - -usr/lib/x86_64-linux-gnu/libjpeg.so.8.2.2
+      - -usr/share/doc/libjpeg-turbo8/copyright 
 
   cleanup:
     after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]

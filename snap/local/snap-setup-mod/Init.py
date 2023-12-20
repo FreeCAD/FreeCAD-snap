@@ -15,6 +15,14 @@ def configure_mod_mesh():
   if not param.GetString("gmshExe", ""):
     param.SetString("gmshExe", "/snap/freecad/current/usr/bin/gmsh")
 
+def configure_mod_render():
+  import FreeCAD
+  param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Render")
+  if not param.GetString("LuxCorePath", ""):
+    param.SetString("LuxCorePath", "/snap/freecad/current/usr/bin/luxcoreui")
+  if not param.GetString("LuxCoreConsolePath", ""):
+    param.SetString("LuxCoreConsolePath", "/snap/freecad/current/usr/bin/luxcoreconsole")
+
 def fix_theme():
   import FreeCAD
   param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Bitmaps/Theme")
@@ -23,4 +31,5 @@ def fix_theme():
 
 add_snap_pythonpath()
 configure_mod_mesh()
+configure_mod_render()
 fix_theme()
