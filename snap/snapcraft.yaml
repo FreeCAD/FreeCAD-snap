@@ -170,7 +170,7 @@ parts:
       - freecad-deps-core22/candidate
     stage-snaps:
       - freecad-deps-core22/candidate
-      - on amd64: [luxcore/edge]
+      - on amd64: [luxcore/stable]
     build-packages:
       - g++
       - git
