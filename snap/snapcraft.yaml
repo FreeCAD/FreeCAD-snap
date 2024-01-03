@@ -307,7 +307,8 @@ parts:
         /usr/lib/${CRAFT_ARCH_TRIPLET}/graphviz/config* \
         ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET}/graphviz/
     stage:
-      - -usr/lib/x86_64-linux-gnu/libjpeg.so.8.2.2
+      # These files are also included by the freecad part and thus conflict
+      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libjpeg.so.8.2.2
       - -usr/share/doc/libjpeg-turbo8/copyright 
 
   cleanup:
