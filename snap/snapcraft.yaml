@@ -170,7 +170,6 @@ parts:
       - freecad-deps-core22/candidate
     stage-snaps:
       - freecad-deps-core22/candidate
-      - on amd64: [luxcore/stable]
     build-packages:
       - g++
       - git
@@ -275,7 +274,7 @@ parts:
 
   python-packages:
     plugin: python
-    source: .
+    source: snap # avoid spurious rebuild
     source-type: local
     build-packages:
       - libsuitesparse-dev
@@ -306,13 +305,33 @@ parts:
       cp \
         /usr/lib/${CRAFT_ARCH_TRIPLET}/graphviz/config* \
         ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET}/graphviz/
+
+  luxcore:
+    plugin: nil
+    stage-snaps:
+      - on amd64: 
+        - luxcore/stable
     stage:
-      # These files are also included by the freecad part and thus conflict
+      # These files are also included by freecad and thus conflict
+      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libdrm_amdgpu.so.1.0.0
+      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libdrm_intel.so.1.0.0
+      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libdrm_nouveau.so.2.0.0
+      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libdrm_radeon.so.1.0.1
       - -usr/lib/${CRAFT_ARCH_TRIPLET}/libjpeg.so.8.2.2
-      - -usr/share/doc/libjpeg-turbo8/copyright 
+      - -usr/lib/${CRAFT_ARCH_TRIPLET}/liblcms2.so.2
+      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libwayland-client.so.0
+      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libwayland-cursor.so.0
+      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libwayland-egl.so.1
+      - -usr/share/doc/libdrm-amdgpu1/changelog.Debian.gz
+      - -usr/share/doc/libdrm-intel1/changelog.Debian.gz
+      - -usr/share/doc/libdrm-nouveau2/changelog.Debian.gz
+      - -usr/share/doc/libdrm-radeon1/changelog.Debian.gz
+      - -usr/share/doc/libjpeg-turbo8/copyright
+      - -usr/share/doc/liblcms2-2/copyright
+      - -usr/share/doc/libwayland-cursor0/changelog.Debian.gz
 
   cleanup:
-    after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
+    after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz, luxcore]
     plugin: nil
     build-snaps: [kf5-5-108-qt-5-15-10-core22-sdk]
     override-prime: |
