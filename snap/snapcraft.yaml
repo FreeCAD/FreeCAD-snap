@@ -274,7 +274,7 @@ parts:
 
   python-packages:
     plugin: python
-    source: snap # avoid spurious rebuild
+    source: docs # avoid spurious rebuild
     source-type: local
     build-packages:
       - libsuitesparse-dev
@@ -316,6 +316,7 @@ parts:
       '*.so*': usr/lib/$CRAFT_ARCH_TRIPLET/
     stage-packages:
       - libgtk-3-0
+      - libyaml-cpp0.7 # Missing when applying materials
     stage:
       - etc/
       - usr/
