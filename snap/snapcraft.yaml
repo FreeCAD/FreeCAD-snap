@@ -307,28 +307,19 @@ parts:
         ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET}/graphviz/
 
   luxcore:
-    plugin: nil
-    stage-snaps:
-      - on amd64: 
-        - luxcore/stable
+    plugin: dump
+    source: https://github.com/LuxCoreRender/LuxCore/releases/download/latest/luxcorerender-latest-linux64.tar.bz2
+    source-type: tar
+    organize:
+      luxcoreui: usr/bin/luxcoreui
+      scenes : usr/share/luxcore/scenes
+      '*.so*': usr/lib/$CRAFT_ARCH_TRIPLET/
+    stage-packages:
+      - libgtk-3-0
     stage:
-      # These files are also included by freecad and thus conflict
-      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libdrm_amdgpu.so.1.0.0
-      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libdrm_intel.so.1.0.0
-      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libdrm_nouveau.so.2.0.0
-      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libdrm_radeon.so.1.0.1
-      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libjpeg.so.8.2.2
-      - -usr/lib/${CRAFT_ARCH_TRIPLET}/liblcms2.so.2
-      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libwayland-client.so.0
-      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libwayland-cursor.so.0
-      - -usr/lib/${CRAFT_ARCH_TRIPLET}/libwayland-egl.so.1
-      - -usr/share/doc/libdrm-amdgpu1/changelog.Debian.gz
-      - -usr/share/doc/libdrm-intel1/changelog.Debian.gz
-      - -usr/share/doc/libdrm-nouveau2/changelog.Debian.gz
-      - -usr/share/doc/libdrm-radeon1/changelog.Debian.gz
-      - -usr/share/doc/libjpeg-turbo8/copyright
-      - -usr/share/doc/liblcms2-2/copyright
-      - -usr/share/doc/libwayland-cursor0/changelog.Debian.gz
+      - etc/
+      - usr/
+      - -usr/lib/$CRAFT_ARCH_TRIPLET/libtbb.so*
 
   cleanup:
     after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz, luxcore]
