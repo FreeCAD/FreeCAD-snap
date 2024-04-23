@@ -88,7 +88,6 @@ environment:
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
   GIT_CONFIG_NOSYSTEM: 1
   ELMER_HOME: $SNAP/usr
-  QTWEBENGINE_DISABLE_SANDBOX: 1
   PYTHONPYCACHEPREFIX: $SNAP_USER_COMMON/.pycache
   PYTHONUSERBASE: $SNAP_USER_COMMON/.local
   PIP_USER: 1
@@ -244,7 +243,6 @@ parts:
       - python3-pyside2.qtsvg
       - python3-pyside2.qtwidgets
       - python3-pyside2.qtnetwork
-      - python3-pyside2.qtwebenginewidgets
       - python3-pyside2.qtuitools
       - calculix-ccx # FEM
       - libcoin80c
