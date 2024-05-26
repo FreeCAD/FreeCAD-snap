@@ -278,6 +278,7 @@ parts:
     build-packages:
       - libsuitesparse-dev
     stage-packages:
+      - ifcopenshell # pip
       - python3-distutils # pip
       - libamd2 # scikit-sparse
       - libcamd2 # scikit-sparse
