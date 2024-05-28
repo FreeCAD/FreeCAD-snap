@@ -286,6 +286,7 @@ parts:
       - libcolamd2 # scikit-sparse
       - libsuitesparseconfig5 # scikit-sparse
     python-packages:
+      - ifcopenshell # BIM
       - pip
       - scikit-sparse
     stage:
