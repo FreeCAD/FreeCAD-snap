@@ -8,6 +8,14 @@
   * Login to https://snapcraft.io/freecad/releases and promote the **candidate** release to **stable**  
   **Result:** Stable will now be the latest stable branch
 
+## How to update the Snap store credentials
+
+This must be done once per year by someone with Maintainer access to this repo and the Snap Store login credentials. As of this writing, those people are @yorik, @luzpaz, and @chennes. On a Linux command line with `snapcraft` installed, generate new credentials with:
+```
+snapcraft export-login <credentials-filename>
+```
+Copy the contents of this file to the clipboard and go to the [FreeCAD-snap GitHub secrets page](https://github.com/FreeCAD/FreeCAD-snap/settings/secrets/actions). Edit the STORE_LOGIN secret to be the contents of the generated key.
+
 ## How to add snap-specific workarounds or changes
 
 Edit [snap/local/snap-setup-mod/Init.py](https://github.com/FreeCAD/FreeCAD-snap/blob/master/snap/local/snap-setup-mod/Init.py), which is called on every start of FreeCAD.
