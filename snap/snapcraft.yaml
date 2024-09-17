@@ -21,8 +21,8 @@ description: |
   Commands:
         freecad:      Run FreeCAD
         freecad.cmd:  Run FreeCAD command line interface
-        freecad.pip:  Install python packages for user (not system-wide). 
-                      E.g. `freecad.pip install py_slvs` for Assembly3. 
+        freecad.pip:  Install python packages for user (not system-wide).
+                      E.g. `freecad.pip install py_slvs` for Assembly3.
 
 grade: devel
 confinement: strict
@@ -61,7 +61,7 @@ layout:
     symlink: $SNAP/usr/bin/unflatten
   /usr/share/povray-3.7: # Raytracing
     symlink: $SNAP/usr/share/povray-3.7
-    
+
 plugs:
   # this is not used or needed for anything other than to trigger automatic
   # installation of the cups snap via "default-provider: cups"
@@ -107,7 +107,7 @@ apps:
       - opengl
       - removable-media
       - gsettings
-      - network      
+      - network
       - browser-support
       - unity7
       - cups
