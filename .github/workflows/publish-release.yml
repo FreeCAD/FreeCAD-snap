@@ -7,16 +7,15 @@ on:
 
 jobs:
   publish_amd64:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: install snapcraft
-      run: sudo snap install snapcraft --classic
-    - name: build snap
-      run: |
-        sudo snapcraft --destructive-mode
-        sudo rm -rf $HOME/.config/snapcraft
-    - name: publish snap
-      env:
-        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-      run: snapcraft upload --release=candidate freecad*.snap
+    - uses: actions/checkout@v3
+    - uses: snapcore/action-build@v1
+      id: build
+      with:
+        snapcraft-args: "--enable-experimental-extensions"
+    - uses: snapcore/action-publish@v1
+      with:
+        store_login: ${{ secrets.STORE_LOGIN }}
+        snap: ${{ steps.build.outputs.snap }}
+        release: candidate

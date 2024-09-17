@@ -1,0 +1,22 @@
+name: Publish Daily
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Every day at 0:00
+  workflow_dispatch: # or manually
+    
+jobs:
+  publish_amd64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: install snapcraft
+      run: sudo snap install snapcraft --classic
+    - name: build snap
+      run: |
+        sudo snapcraft --destructive-mode
+        sudo rm -rf $HOME/.config/snapcraft
+    - name: publish snap
+      env:
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
+      run: snapcraft upload --release=edge freecad*.snap
