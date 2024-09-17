@@ -42,14 +42,14 @@ layout:
     symlink: $SNAP/usr/share/openmpi
   /etc/openmpi:
     bind: $SNAP/etc/openmpi
-  /usr/lib/$CRAFT_ARCH_TRIPLET/openmpi:
-    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/openmpi
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/openmpi:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/openmpi
   /usr/bin/orted:
     symlink: $SNAP/usr/bin/orted
   /usr/share/pmix:
     symlink: $SNAP/usr/share/pmix
-  /usr/lib/$CRAFT_ARCH_TRIPLET/pmix:
-    symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/pmix
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pmix:
+    symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pmix
   /etc/matplotlibrc:
     bind-file: $SNAP/etc/matplotlibrc
   /usr/share/matplotlib:
@@ -82,8 +82,8 @@ plugs:
     target: $SNAP/kf5
 
 environment:
-  LD_LIBRARY_PATH: "$SNAP/usr/lib/:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/:$SNAP/kf5/usr/lib/$CRAFT_ARCH_TRIPLET/:$SNAP/kf5/usr/lib:/$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/lapack:$LD_LIBRARY_PATH"
-  LD_PRELOAD: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/libstubchown.so
+  LD_LIBRARY_PATH: "$SNAP/usr/lib/:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf5/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf5/usr/lib:/$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack:$LD_LIBRARY_PATH"
+  LD_PRELOAD: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libstubchown.so
   FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
@@ -162,7 +162,7 @@ parts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DPYTHON_EXECUTABLE=/usr/bin/python3
       - -DPYTHON_INCLUDE_DIR=/usr/include/python3.10
-      - -DPYTHON_LIBRARY=/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so
+      - -DPYTHON_LIBRARY=/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libpython3.10.so
       - -DFREECAD_USE_EXTERNAL_ZIPIOS=ON
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=ON
@@ -196,7 +196,6 @@ parts:
       - libshiboken2-dev
       - pybind11-dev
       - libfreeimage-dev
-      - openscad
     stage-packages:
       - libaec0
       - libboost-filesystem1.74.0
@@ -264,7 +263,7 @@ parts:
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg|g" \
         $CRAFT_PART_INSTALL/usr/share/applications/org.freecad.FreeCAD.desktop
       if [ "$CRAFT_TARGET_ARCH" = amd64 ]; then
-        ln -sf ../libpsm1/libpsm_infinipath.so.1.16  $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET/libpsm_infinipath.so.1
+        ln -sf ../libpsm1/libpsm_infinipath.so.1.16  $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libpsm_infinipath.so.1
       fi
       cd $CRAFT_PART_SRC
       version_major=$(grep "set(PACKAGE_VERSION_MAJOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
@@ -305,8 +304,8 @@ parts:
     override-build: |
       dot -c
       cp \
-        /usr/lib/${CRAFT_ARCH_TRIPLET}/graphviz/config* \
-        ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET}/graphviz/
+        /usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/graphviz/config* \
+        ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/graphviz/
 
   cleanup:
     after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
