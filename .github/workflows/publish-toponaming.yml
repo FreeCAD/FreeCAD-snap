@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: "0 0 * * *" # Every day at 0:00
   workflow_dispatch: # or manually
-    
+
 jobs:
   publish_amd64:
     runs-on: ubuntu-20.04

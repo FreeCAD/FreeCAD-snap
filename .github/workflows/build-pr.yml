@@ -6,7 +6,7 @@ on:
       - opened
       - synchronize
       - labeled
-    
+
 jobs:
   build_amd64:
     runs-on: ubuntu-latest
@@ -14,16 +14,16 @@ jobs:
       github.event.pull_request.state == 'open' &&
       (
         (
-          github.event.action == 'labeled' && 
+          github.event.action == 'labeled' &&
           github.event.label.name == 'safe to publish'
-        ) || 
+        ) ||
         (
-          github.event.action != 'labeled' && 
+          github.event.action != 'labeled' &&
           contains(github.event.pull_request.labels.*.name, 'safe to publish')
         )
       )
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: install snapcraft
       run: |
         sudo snap install snapcraft --classic
@@ -35,11 +35,11 @@ jobs:
         mkdir -p ./pr-data
         echo '${{ github.event.number }}' > ./pr-data/pr-number
         echo '${{ github.event.pull_request.head.sha }}' > ./pr-data/pr-commit
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: snap
         path: freecad*.snap
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: pr-data
         path: pr-data/

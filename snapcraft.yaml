@@ -1,0 +1,327 @@
+name: freecad
+base: core22
+version: "1.0.0rc1"
+adopt-info: freecad
+donation: https://wiki.freecad.org/Donate
+issues: https://github.com/FreeCAD/FreeCAD-snap/issues
+website: https://freecad.org
+summary: An open source parametric 3D CAD modeler
+description: |
+  FreeCAD is a parametric 3D modeler. Parametric modeling
+  allows you to easily modify your design by going back into
+  your model history and changing its parameters. FreeCAD is
+  open source (LGPL license) and completely modular, allowing
+  for very advanced extension and customization.
+
+  FreeCAD is multiplatfom, and reads and writes many open
+  file formats such as STEP, IGES, STL and others.
+
+  Please also consider RealThunder's well-known FreeCAD fork
+  `freecad-realthunder`: https://snapcraft.io/freecad-realthunder
+
+  Commands:
+        freecad:      Run FreeCAD
+        freecad.cmd:  Run FreeCAD command line interface
+        freecad.pip:  Install python packages for user (not system-wide).
+                      E.g. `freecad.pip install py_slvs` for Assembly3.
+
+grade: devel
+confinement: strict
+compression: lzo
+license: LGPL-2.0-or-later
+assumes: [snapd2.55.3] # for cups interface & private shared memory
+
+layout:
+  /usr/share/X11:
+    symlink: $SNAP/kf5/usr/share/X11
+  /usr/share/libdrm/amdgpu.ids:
+    bind-file: $SNAP/kf5/usr/share/libdrm/amdgpu.ids
+  /usr/bin/mpirun: # ElmerSolver_mpi
+    symlink: $SNAP/usr/bin/orterun
+  /usr/share/openmpi:
+    symlink: $SNAP/usr/share/openmpi
+  /etc/openmpi:
+    bind: $SNAP/etc/openmpi
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/openmpi:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/openmpi
+  /usr/bin/orted:
+    symlink: $SNAP/usr/bin/orted
+  /usr/share/pmix:
+    symlink: $SNAP/usr/share/pmix
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pmix:
+    symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pmix
+  /etc/matplotlibrc:
+    bind-file: $SNAP/etc/matplotlibrc
+  /usr/share/matplotlib:
+    symlink: $SNAP/usr/share/matplotlib
+  /usr/share/qt5:
+    symlink: $SNAP/kf5/usr/share/qt5
+  /usr/bin/dot: # Graphviz for dependency graph
+    symlink: $SNAP/usr/bin/dot
+  /usr/bin/unflatten: # Graphviz for dependency graph
+    symlink: $SNAP/usr/bin/unflatten
+  /usr/share/povray-3.7: # Raytracing
+    symlink: $SNAP/usr/share/povray-3.7
+
+plugs:
+  # this is not used or needed for anything other than to trigger automatic
+  # installation of the cups snap via "default-provider: cups"
+  foo-install-cups:
+    interface: content
+    content: foo
+    default-provider: cups
+    target: $SNAP_DATA/foo
+  # Necessary to enable semaphores for numba, OpenMP etc.
+  shared-memory:
+    private: true
+  # QT5 libs
+  kf5-5-108-qt-5-15-10-core22:
+    content: kf5-5-108-qt-5-15-10-core22-all
+    interface: content
+    default-provider: kf5-5-108-qt-5-15-10-core22
+    target: $SNAP/kf5
+
+environment:
+  LD_LIBRARY_PATH: "$SNAP/usr/lib/:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf5/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf5/usr/lib:/$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack:$LD_LIBRARY_PATH"
+  LD_PRELOAD: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libstubchown.so
+  FREECAD_USER_HOME: $SNAP_USER_COMMON
+  GIT_EXEC_PATH: $SNAP/usr/lib/git-core
+  GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
+  GIT_CONFIG_NOSYSTEM: 1
+  ELMER_HOME: $SNAP/usr
+  PYTHONPYCACHEPREFIX: $SNAP_USER_COMMON/.pycache
+  PYTHONUSERBASE: $SNAP_USER_COMMON/.local
+  PIP_USER: 1
+  PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.10/site-packages:$SNAP/lib/python3.10/site-packages:$SNAP/usr/lib/python3/dist-packages
+  SNAP_PYTHONPATH: *pypath
+  QT_QPA_PLATFORM: xcb # Coin3D cannot run on Wayland
+  POVINI: $SNAP/etc/povray/3.7/povray.ini # Raytracing
+
+apps:
+  freecad:
+    command: usr/bin/FreeCAD
+    extensions: [kde-neon]
+    common-id: org.freecad.FreeCAD.desktop
+    desktop: usr/share/applications/org.freecad.FreeCAD.desktop
+    plugs: &plugs
+      - home
+      - opengl
+      - removable-media
+      - gsettings
+      - network
+      - browser-support
+      - unity7
+      - cups
+      - shared-memory
+    command-chain:
+      - snap/command-chain/desktop-launch
+  cmd:
+    command: usr/bin/FreeCADCmd
+    extensions: [kde-neon]
+    plugs: *plugs
+  pip:
+    command: bin/pip
+    plugs: *plugs
+
+package-repositories:
+  - type: apt
+    ppa: elmer-csc-ubuntu/elmer-csc-ppa
+  - type: apt
+    components:
+      - main
+    suites:
+      - jammy
+    key-id: 444DABCF3667D0283F894EDDE6D4736255751E5D
+    url: http://origin.archive.neon.kde.org/user
+    key-server: keyserver.ubuntu.com
+
+parts:
+  stub-chown:
+    plugin: meson
+    source: $CRAFT_PROJECT_DIR/snap/local/stub-chown
+    source-type: local
+    build-packages:
+    - meson
+    meson-parameters:
+      - --prefix=/usr
+
+  snap-setup-mod:
+    plugin: dump
+    source: $CRAFT_PROJECT_DIR/snap/local/snap-setup-mod
+    source-type: local
+    organize:
+      "*": usr/Mod/SnapSetup/
+
+  freecad:
+    plugin: cmake
+    source: https://github.com/FreeCAD/FreeCAD.git
+    source-tag: 1.0rc1
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DPYTHON_EXECUTABLE=/usr/bin/python3
+      - -DPYTHON_INCLUDE_DIR=/usr/include/python3.10
+      - -DPYTHON_LIBRARY=/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libpython3.10.so
+      - -DFREECAD_USE_EXTERNAL_ZIPIOS=ON
+      - -DFREECAD_USE_PYBIND11=ON
+      - -DFREECAD_USE_QT_FILEDIALOG=ON
+      - -DBUILD_FLAT_MESH=ON
+    build-snaps:
+      - freecad-deps-core22/candidate
+    stage-snaps:
+      - freecad-deps-core22/candidate
+    build-packages:
+      - g++
+      - git
+      - libboost-all-dev
+      - libsimage-dev # optional
+      - libspnav-dev # optional
+      - libeigen3-dev
+      - libgts-bin
+      - libgts-dev
+      - libkdtree++-dev
+      - libmedc-dev
+      - libopencv-dev
+      - libproj-dev
+      - libx11-dev
+      - libxerces-c-dev
+      - libyaml-cpp-dev
+      - libzipios++-dev
+      - swig
+      - python3-dev
+      - libcoin-dev
+      - libvtk7-dev
+      - libpyside2-dev
+      - libshiboken2-dev
+      - pybind11-dev
+      - libfreeimage-dev
+      - openscad
+    stage-packages:
+      - libaec0
+      - libboost-filesystem1.74.0
+      - libboost-program-options1.74.0
+      - libboost-python1.74.0
+      - libboost-regex1.74.0
+      - libboost-system1.74.0
+      - libboost-thread1.74.0
+      - libboost-date-time1.74.0
+      - libhdf5-openmpi-103
+      - libhwloc15
+      - libilmbase25
+      - libjxr0
+      - libmedc11
+      - libmed11
+      - libopenexr25
+      - libopenmpi3
+      - on amd64: [libpsm-infinipath1]
+      - libpython3.10
+      - libpython3.10-minimal
+      - libpython3.10-stdlib
+      - libraw20
+      - libspnav0
+      - libsz2
+      - libxerces-c3.2
+      - libyaml-cpp0.7
+      - libzipios++0v5
+      - python3-tk # FEM
+      - python3-yaml # FEM
+      - python3-numba # FEM (fcFEM)
+      - python3-scipy # FEM
+      - python3-numpy
+      - python3-matplotlib
+      - python3-six
+      - python3-packaging # Path
+      - python3-pyparsing
+      - python3-setuptools-scm
+      - python3-collada # DAE import
+      - python3-cycler
+      - python3-dateutil
+      - python3-git
+      - python3-ply # OpenSCAD
+      - python3-pivy
+      - python3-pyside2.qtcore
+      - python3-pyside2.qtgui
+      - python3-pyside2.qtsvg
+      - python3-pyside2.qtwidgets
+      - python3-pyside2.qtnetwork
+      - python3-pyside2.qtuitools
+      - calculix-ccx # FEM
+      - libcoin80c
+      - libfreeimage3
+      - libtbb2
+      - libvtk7.1p
+      - elmerfem-csc # FEM
+      - openscad  # OpenSCAD
+    override-build: |
+      kde_sdk_dir="/snap/kf5-5-108-qt-5-15-10-core22-sdk/current"
+      mkdir -p /etc/xdg/qtchooser
+      cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
+      mkdir -p /workspace/usr/bin
+      ln -s /usr/bin/shiboken2 /workspace/usr/bin/shiboken2
+      craftctl default
+      sed -i -E \
+        "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg|g" \
+        $CRAFT_PART_INSTALL/usr/share/applications/org.freecad.FreeCAD.desktop
+      if [ "$CRAFT_ARCH_BUILD_FOR" = amd64 ]; then
+        ln -sf ../libpsm1/libpsm_infinipath.so.1.16  $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libpsm_infinipath.so.1
+      fi
+      cd $CRAFT_PART_SRC
+      version_major=$(grep "set(PACKAGE_VERSION_MAJOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
+      version_minor=$(grep "set(PACKAGE_VERSION_MINOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
+      git_hash=$(git rev-parse --short=8 HEAD)
+      version="${version_major}.${version_minor}-g$git_hash"
+      craftctl set version="$version"
+
+  python-packages:
+    plugin: python
+    source: .
+    source-type: local
+    build-packages:
+      - libsuitesparse-dev
+    stage-packages:
+      - python3-distutils # pip
+      - libamd2 # scikit-sparse
+      - libcamd2 # scikit-sparse
+      - libccolamd2 # scikit-sparse
+      - libcholmod3 # scikit-sparse
+      - libcolamd2 # scikit-sparse
+      - libsuitesparseconfig5 # scikit-sparse
+    python-packages:
+      - ifcopenshell # BIM
+      - pip
+      - scikit-sparse
+    stage:
+      - -pyvenv.cfg
+      - -lib/python3.10/site-packages/scipy*
+      - -lib/python3.10/site-packages/numpy*
+
+  graphviz:
+    plugin: nil
+    build-packages:
+      - graphviz
+    stage-packages:
+      - graphviz
+    override-build: |
+      dot -c
+      cp \
+        /usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/graphviz/config* \
+        ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/graphviz/
+
+  cleanup:
+    after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
+    plugin: nil
+    build-snaps: [kf5-5-108-qt-5-15-10-core22-sdk]
+    override-prime: |
+      set -eux
+      for snap in "kf5-5-108-qt-5-15-10-core22-sdk"; do  # List all content-snaps you're using here
+        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
+      done
+      for cruft in bug lintian man; do
+        rm -rf $CRAFT_PRIME/usr/share/$cruft
+      done
+      find $CRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
+      find $CRAFT_PRIME/usr/share -type d -empty -delete
+      find $CRAFT_PRIME/usr/lib -type f,l \
+        -name 'libQt*.so*' `# remove all Qt libs pulled in from Ubuntu repos` \
+        -not -name 'libQt5Gamepad.so*' -delete `# for OpenSCAD`
