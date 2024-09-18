@@ -2,10 +2,10 @@
 
 ## How to make a new stable release
 
-  * Create a PR that updates the `snap/snapcraft.yaml` file (see https://github.com/FreeCAD/FreeCAD-snap/pull/75 for example) and merge it to the stable branch  
+  * Create a PR that updates the `snap/snapcraft.yaml` file (see https://github.com/FreeCAD/FreeCAD-snap/pull/75 for example) and merge it to the stable branch
   **Result:** Once merged this will build a **candidate** release.
   * Test the 'candidate' release. If no issues present then...
-  * Login to https://snapcraft.io/freecad/releases and promote the **candidate** release to **stable**  
+  * Login to https://snapcraft.io/freecad/releases and promote the **candidate** release to **stable**
   **Result:** Stable will now be the latest stable branch
 
 ## How to update the Snap store credentials
@@ -38,7 +38,7 @@ This automatically sets the `PovrayExecutable` parameter to the correct path ins
 
 ## Publishing Daily
 
-The github action called 'Publish Daily' is an automated process that is triggered every evening to publish a new 'edge' build. It can also be triggered manually to build on-demand. 
+The github action called 'Publish Daily' is an automated process that is triggered every evening to publish a new 'edge' build. It can also be triggered manually to build on-demand.
 
 ![Publish-Daily](assets/images/Snap-Publish-Daily.png)
 
@@ -53,13 +53,13 @@ The green `Run workflow` button actually triggers the build to start. Once this 
 
 Running multiple snaps AKA 'Parallel Installs' (parallel but separate).
 
-By default, snap packages that have several 'channels' will share configs between them. For testing purposes sometimes this isn't wanted, the solution per the snapcraft docs is using the [parallel install](https://snapcraft.io/docs/parallel-installs) feature. 
+By default, snap packages that have several 'channels' will share configs between them. For testing purposes sometimes this isn't wanted, the solution per the snapcraft docs is using the [parallel install](https://snapcraft.io/docs/parallel-installs) feature.
 
 > Parallel installs enable you to run multiple instances of the same snap on the same system. Each instance is completely isolated from all other instances, including its name, configuration, interface connections, data locations, services, applications and aliases.
 
 Note: at the time of writing this the parallel install feature is still considered experimental
 
-In the context of FreeCAD, this feature would be useful for example if there are experimental changes (in an experimental build) to the FreeCAD config files that could corrupt the snap stable or snap edge channel FreeCAD config files.   
+In the context of FreeCAD, this feature would be useful for example if there are experimental changes (in an experimental build) to the FreeCAD config files that could corrupt the snap stable or snap edge channel FreeCAD config files.
 
 Example: Install edge snap in parallel to the stable snap
 
@@ -81,7 +81,7 @@ It is possible to build snaps from any branch of fork of the FreeCAD repository.
 1. Open *[snap/snapcraft.yaml](./snap/snapcraft.yaml)* in a text editor
 1. Locate the `freecad` block of the yaml file
 1. Modify the `source:` variable to reflect the specific fork of FreeCAD master to build. Note: must end with `.git` extension.
-1. Add a  `source-branch:` variable to indicate what specific branch of said fork to build.  In the **example below** is a before and after in which we're building a snap of user @WandererFan's `hlrThreadrc1` branch from his FreeCAD clone ([borrowed from actual example](https://github.com/FreeCAD/FreeCAD-snap/pull/44)):  
+1. Add a  `source-branch:` variable to indicate what specific branch of said fork to build.  In the **example below** is a before and after in which we're building a snap of user @WandererFan's `hlrThreadrc1` branch from his FreeCAD clone ([borrowed from actual example](https://github.com/FreeCAD/FreeCAD-snap/pull/44)):
     ```yaml
      freecad:
       plugin: cmake
@@ -95,12 +95,12 @@ It is possible to build snaps from any branch of fork of the FreeCAD repository.
 1. Save the `snap/snapcraft.yaml` changes to the branch and make Pull Request to FreeCAD-snap.
 1. Ask a maintainer to assign the 'safe to publish' green tag to the PR.
 1. Result: the snap should build and output 'Installation Instructions'.
-1. PR should be closed when said experimental snap builds aren't further necessary. 
+1. PR should be closed when said experimental snap builds aren't further necessary.
 1. **Important note:** each commit to the branch will need a manual retrigger in order to re-build the snap. See below:
 
 ### Triggering re-builds
 
-As mentioned above, new commits to a branch will not retrigger the rebuilding of a snap. It needs to be done manually. 
+As mentioned above, new commits to a branch will not retrigger the rebuilding of a snap. It needs to be done manually.
 1. Open the same `snap/snapcraft.yaml` above
 1. Find the `environment:` block
 1. Add `BUILD_ME: 1` to the end of the block
@@ -115,7 +115,7 @@ As mentioned above, new commits to a branch will not retrigger the rebuilding of
       ...
       POVINI: $SNAP/etc/povray/3.7/povray.ini #     Raytracing
     ```
-  
+
     ```yaml
       environment:
       LD_LIBRARY_PATH: $SNAP/usr/lib/   $SNAPCRAFT_ARCH_TRIPLET/blas:$SNAP/usr/lib/   $SNAPCRAFT_ARCH_TRIPLET/lapack # numpy
@@ -132,15 +132,15 @@ See example https://github.com/FreeCAD/FreeCAD-snap/pull/44
 
 ## Updating KDE Frameworks version
 
-Every so often it is necessary to update the KDE Frameworks. See https://github.com/FreeCAD/FreeCAD-snap/pull/80. 
+Every so often it is necessary to update the KDE Frameworks. See https://github.com/FreeCAD/FreeCAD-snap/pull/80.
 
 This is related to the `kde-neon` extension, read the official documentation (may be outdated) https://snapcraft.io/docs/kde-neon-extension.
 
 ## Checking if a 3rd party depedency is available
 
-Different package ecosystems name their dependencies differently. 
-Questions:  
-1. Where does Snap pull dependencies from ?  
+Different package ecosystems name their dependencies differently.
+Questions:
+1. Where does Snap pull dependencies from ?
 2. How does one query to ascertain the correct name of the dependency ?
 
 Answers:
