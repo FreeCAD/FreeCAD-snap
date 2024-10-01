@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: snapcore/action-build@v1
+    - uses: canonical/action-build@v1
       id: build
       with:
         snapcraft-args: "--enable-experimental-extensions"
-    - uses: snapcore/action-publish@v1
+    - uses: canonical/action-publish@v1
       env:
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
       with:
