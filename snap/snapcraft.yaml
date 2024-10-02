@@ -255,8 +255,11 @@ parts:
       kde_sdk_dir="/snap/kf5-5-108-qt-5-15-10-core22-sdk/current"
       mkdir -p /etc/xdg/qtchooser
       cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
-      mkdir -p /workspace/usr/bin
-      ln -s /usr/bin/shiboken2 /workspace/usr/bin/shiboken2
+      SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
+      if [ ! -e $SHIBOKEN_BIN_PATH ]
+        mkdir -p "$(dirname "${SHIBOKEN_BIN_PATH}")"
+        ln -s /usr/bin/shiboken2 $SHIBOKEN_BIN_PATH
+      fi
       craftctl default
       sed -i -E \
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg|g" \
