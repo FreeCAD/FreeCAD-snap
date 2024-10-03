@@ -256,7 +256,7 @@ parts:
       mkdir -p /etc/xdg/qtchooser
       cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
-      if [ ! -e $SHIBOKEN_BIN_PATH ]
+      if [ ! -e $SHIBOKEN_BIN_PATH ]; then
         mkdir -p "$(dirname "${SHIBOKEN_BIN_PATH}")"
         ln -s /usr/bin/shiboken2 $SHIBOKEN_BIN_PATH
       fi
