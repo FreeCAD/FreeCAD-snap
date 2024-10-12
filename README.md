@@ -1,6 +1,7 @@
 # freecad: Official snap package for FreeCAD
 
 [![freecad](https://snapcraft.io/freecad/badge.svg)](https://snapcraft.io/freecad)
+[![Publish Daily](https://github.com/furgo16/FreeCAD-snap/actions/workflows/publish-daily.yml/badge.svg)](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml)
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/freecad)
 
