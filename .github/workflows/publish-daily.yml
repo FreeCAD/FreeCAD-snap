@@ -14,14 +14,32 @@ jobs:
       run: sudo snap install snapcraft --classic
     - name: build snap
       run: |
-        sudo snapcraft --destructive-mode
+        sudo snapcraft --destructive-mode --verbose
         sudo rm -rf $HOME/.config/snapcraft
     - name: publish snap
+      if: github.repository_owner == 'FreeCAD' # Do not run on forks
       env:
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
       run: snapcraft upload --release=edge freecad*.snap
-    - name: upload snap artifacts
+
+    - name: Gather snap package name
+      run: |
+        snapArtifactPath=$(find . -type f -name *.snap)
+        echo "Snap package name is: '$snapArtifactPath'"
+        echo "snapArtifactPath=$snapArtifactPath" >> $GITHUB_ENV
+
+    - name: Upload snap package artifact
       uses: actions/upload-artifact@v4
       with:
-        name: freecad.snap
-        path: freecad*.snap
+        name: snap-package
+        path: ${{ env.snapArtifactPath }}
+
+    - name: Copy snapcraft logs
+      run: |
+        sudo cp -r /root/.local/state/snapcraft/log/ ./
+
+    - name: Upload log artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: snapcraft-log
+        path: log/*
