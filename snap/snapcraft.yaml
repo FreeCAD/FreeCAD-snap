@@ -268,8 +268,8 @@ parts:
       cd $CRAFT_PART_SRC
       version_major=$(grep "set(PACKAGE_VERSION_MAJOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
       version_minor=$(grep "set(PACKAGE_VERSION_MINOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
-      git_hash=$(git rev-parse --short=8 HEAD)
-      version="${version_major}.${version_minor}-g$git_hash"
+      version_patch=$(grep "set(PACKAGE_VERSION_PATCH" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
+      version="${version_major}.${version_minor}.{version_patch}"
       craftctl set version="$version"
 
   python-packages:
