@@ -288,6 +288,7 @@ parts:
       - libsuitesparseconfig5 # scikit-sparse
     python-packages:
       - ifcopenshell # BIM
+      - opencamlib # CAM
       - pip
       - scikit-sparse
     stage:
