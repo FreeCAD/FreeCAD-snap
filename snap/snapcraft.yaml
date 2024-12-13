@@ -161,7 +161,6 @@ parts:
       - -DPYTHON_EXECUTABLE=/usr/bin/python3
       - -DPYTHON_INCLUDE_DIR=/usr/include/python3.10
       - -DPYTHON_LIBRARY=/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libpython3.10.so
-      - -DFREECAD_USE_EXTERNAL_ZIPIOS=OFF
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
@@ -221,7 +220,6 @@ parts:
       - libsz2
       - libxerces-c3.2
       - libyaml-cpp0.7
-      - libzipios++0v5
       - python3-tk # FEM
       - python3-yaml # FEM
       - python3-numba # FEM (fcFEM)
