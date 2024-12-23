@@ -154,8 +154,8 @@ parts:
 
   freecad:
     plugin: cmake
-    source: https://github.com/luzpaz/FreeCAD.git
-    source-branch: PR18599
+    source: https://github.com/ein-shved/FreeCAD.git
+    source-branch: about-thumbnail
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DCMAKE_INSTALL_LIBDIR=lib
