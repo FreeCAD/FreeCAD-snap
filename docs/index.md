@@ -93,7 +93,7 @@ It is possible to build snaps from any branch of fork of the FreeCAD repository.
        source: https://github.com/WandererFan/FreeCAD.git
        source-branch: hlrThreadrc1
 1. Save the `snap/snapcraft.yaml` changes to the branch and make Pull Request to FreeCAD-snap.
-1. Ask a maintainer to assign the 'safe to publish' green tag to the PR.
+1. Ask a maintainer to assign the https://github.com/FreeCAD/FreeCAD-snap/labels/safe%20to%20publish tag to the PR.
 1. Result: the snap should build and output 'Installation Instructions'.
 1. PR should be closed when said experimental snap builds aren't further necessary.
 1. **Important note:** each commit to the branch will need a manual retrigger in order to re-build the snap. See below:
