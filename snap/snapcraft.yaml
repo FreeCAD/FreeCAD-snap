@@ -320,7 +320,7 @@ parts:
       for cruft in bug lintian man; do
         rm -rf $CRAFT_PRIME/usr/share/$cruft
       done
-      find $CRAFT_PRIME/usr/share/doc/ -type f -not -name 'ThirdPartyLibraries.html|LICENSE.html|copyright' -delete
+      find $CRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -not -name 'ThirdPartyLibraries.html' -not -name 'LICENSE.html' -delete
       find $CRAFT_PRIME/usr/share -type d -empty -delete
       find $CRAFT_PRIME/usr/lib -type f,l \
         -name 'libQt*.so*' `# remove all Qt libs pulled in from Ubuntu repos` \
