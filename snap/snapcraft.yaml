@@ -1,5 +1,5 @@
 name: freecad
-base: core22
+base: core24
 adopt-info: freecad
 donation: https://wiki.freecad.org/Donate
 issues: https://github.com/FreeCAD/FreeCAD-snap/issues
@@ -74,10 +74,10 @@ plugs:
   shared-memory:
     private: true
   # QT5 libs
-  kf5-5-113-qt-5-15-11-core22:
-    content: kf5-5-113-qt-5-15-11-core22-all
+  kf5-core24:
+    content: kf5-core24-all
     interface: content
-    default-provider: kf5-5-113-qt-5-15-11-core22
+    default-provider: kf5-core24
     target: $SNAP/kf5
 
 environment:
@@ -165,9 +165,9 @@ parts:
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
     build-snaps:
-      - freecad-deps-core22/candidate
+      - freecad-deps-core24/candidate
     stage-snaps:
-      - freecad-deps-core22/candidate
+      - freecad-deps-core24/candidate
     build-packages:
       - g++
       - git
@@ -250,7 +250,7 @@ parts:
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
     override-build: |
-      kde_sdk_dir="/snap/kf5-5-113-qt-5-15-11-core22-sdk/current"
+      kde_sdk_dir="/snap/kf5-core24-sdk/current"
       mkdir -p /etc/xdg/qtchooser
       cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
@@ -311,10 +311,10 @@ parts:
   cleanup:
     after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
     plugin: nil
-    build-snaps: [kf5-5-113-qt-5-15-11-core22-sdk]
+    build-snaps: [kf5-core24-sdk]
     override-prime: |
       set -eux
-      for snap in "kf5-5-113-qt-5-15-11-core22-sdk"; do  # List all content-snaps you're using here
+      for snap in "kf5-core24-sdk"; do  # List all content-snaps you're using here
         cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
       done
       for cruft in bug lintian man; do
