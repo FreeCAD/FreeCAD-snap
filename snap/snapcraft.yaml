@@ -149,20 +149,7 @@ parts:
     organize:
       "*": usr/Mod/SnapSetup/
 
-  # Workaround to build with the newer kf5-* snaps
-  # and FreeCAD's expectation to find this file
-  # See https://github.com/FreeCAD/FreeCAD-snap/pull/154
-  # TODO: investigate a better way to resolve the Qt version
-  # and remove this part
-  qtchooser:
-    plugin: dump
-    source: $CRAFT_PROJECT_DIR/snap/local/qtchooser
-    source-type: local
-    organize:
-      qt5-x86_64-linux-gnu.conf: /etc/xdg/qtchooser/default.conf
-
   freecad:
-    after: [qtchooser]
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
     cmake-parameters:
@@ -261,6 +248,8 @@ parts:
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
     override-build: |
+      mkdir -p /etc/xdg/qtchooser
+      cp "$CRAFT_PROJECT_DIR/snap/local/qtchooser/qt5-x86_64-linux-gnu.conf" "/etc/xdg/qtchooser/default.conf"
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
       if [ ! -e $SHIBOKEN_BIN_PATH ]; then
         mkdir -p "$(dirname "${SHIBOKEN_BIN_PATH}")"
