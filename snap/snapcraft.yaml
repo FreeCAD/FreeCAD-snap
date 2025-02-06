@@ -248,7 +248,7 @@ parts:
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
     override-build: |
-      kde_sdk_dir="/snap/kf5-core22/current"
+      kde_sdk_dir="/snap/kf5-core22-sdk/current"
       mkdir -p /etc/xdg/qtchooser
       cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
@@ -309,10 +309,10 @@ parts:
   cleanup:
     after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
     plugin: nil
-    build-snaps: [kf5-core22]
+    build-snaps: [kf5-core22-sdk]
     override-prime: |
       set -eux
-      for snap in "kf5-core22"; do  # List all content-snaps you're using here
+      for snap in "kf5-core22-sdk"; do  # List all content-snaps you're using here
         cd "/snap/$snap/current" && find . -type f,l -not -name 'libboost_filesystem.so*' -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
       done
       for cruft in bug lintian man; do
