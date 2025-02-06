@@ -163,6 +163,7 @@ parts:
       qt5-x86_64-linux-gnu.conf: /etc/xdg/qtchooser/default.conf
 
   freecad:
+    after: [qtchooser]
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
     cmake-parameters:
