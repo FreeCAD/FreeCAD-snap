@@ -248,9 +248,6 @@ parts:
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
     override-build: |
-      kde_sdk_dir="/snap/kf5-core22-sdk/current"
-      mkdir -p /etc/xdg/qtchooser
-      cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
       if [ ! -e $SHIBOKEN_BIN_PATH ]; then
         mkdir -p "$(dirname "${SHIBOKEN_BIN_PATH}")"
