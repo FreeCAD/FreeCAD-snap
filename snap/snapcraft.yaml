@@ -149,6 +149,19 @@ parts:
     organize:
       "*": usr/Mod/SnapSetup/
 
+  # Workaround to build with the newer kf5-* snaps
+  # and FreeCAD's expectation to find this file
+  # See https://github.com/FreeCAD/FreeCAD-snap/pull/154
+  # TODO: investigate a better way to resolve the Qt version
+  # and remove this part
+  qtchooser:
+    before: freecad
+    plugin: dump
+    source: $CRAFT_PROJECT_DIR/snap/local/qtchooser
+    source-type: local
+    organize:
+      qt5-x86_64-linux-gnu.conf: /etc/xdg/qtchooser/default.conf
+
   freecad:
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
