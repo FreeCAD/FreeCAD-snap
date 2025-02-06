@@ -155,7 +155,6 @@ parts:
   # TODO: investigate a better way to resolve the Qt version
   # and remove this part
   qtchooser:
-    before: freecad
     plugin: dump
     source: $CRAFT_PROJECT_DIR/snap/local/qtchooser
     source-type: local
