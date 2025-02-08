@@ -162,6 +162,8 @@ parts:
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
+      - -DCMAKE_FIND_ROOT_PATH=$CRAFT_STAGE\;/snap/kde-qt6-core22-sdk/current\;/snap/kf6-core22-sdk/current/usr
+      
     build-snaps:
       - freecad-deps-core22/candidate
     stage-snaps:
@@ -248,8 +250,6 @@ parts:
       - elmerfem-csc # FEM
       - openscad  # OpenSCAD
     override-build: |
-      mkdir -p /etc/xdg/qtchooser
-      cp "$CRAFT_PROJECT_DIR/snap/local/qtchooser/qt5-x86_64-linux-gnu.conf" "/etc/xdg/qtchooser/default.conf"
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
       if [ ! -e $SHIBOKEN_BIN_PATH ]; then
         mkdir -p "$(dirname "${SHIBOKEN_BIN_PATH}")"
