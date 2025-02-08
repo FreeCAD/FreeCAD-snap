@@ -164,10 +164,10 @@ parts:
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
-      - -DCMAKE_FIND_ROOT_PATH=$CRAFT_STAGE\;/snap/kde-qt6-core22-sdk/current\;/snap/kf6-core22-sdk/current/usr
-
+      - -DCMAKE_FIND_ROOT_PATH=$CRAFT_STAGE\;/snap/kde-qt5-core22-sdk/current\;/snap/kf5-core22-sdk/current/usr
     build-snaps:
       - freecad-deps-core22/candidate
+      - kde-qt5-core22-sdk
     stage-snaps:
       - freecad-deps-core22/candidate
     build-packages:
