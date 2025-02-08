@@ -165,7 +165,7 @@ parts:
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
       - -DCMAKE_FIND_ROOT_PATH=$CRAFT_STAGE\;/snap/kde-qt6-core22-sdk/current\;/snap/kf6-core22-sdk/current/usr
-      
+
     build-snaps:
       - freecad-deps-core22/candidate
     stage-snaps:
