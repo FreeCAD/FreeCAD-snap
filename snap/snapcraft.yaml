@@ -140,7 +140,7 @@ parts:
     build-packages:
     - meson
     meson-parameters:
-      - setup --prefix=/usr
+      - --prefix=/usr
 
   snap-setup-mod:
     plugin: dump
