@@ -194,6 +194,7 @@ parts:
       - libfreeimage-dev
       - openscad
       - python3-pivy
+      - python3-matplotlib
     stage-packages:
       - libaec0
       - libboost-filesystem1.74.0
