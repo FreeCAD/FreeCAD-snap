@@ -193,6 +193,7 @@ parts:
       - pybind11-dev
       - libfreeimage-dev
       - openscad
+      - python3-pivy
     stage-packages:
       - libaec0
       - libboost-filesystem1.74.0
