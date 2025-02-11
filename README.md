@@ -1,6 +1,8 @@
 # Snap package for FreeCAD [![Publish Daily](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml/badge.svg)](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml)
 
-Source code repository for distributing FreeCAD using the snap packaging format.
+Source code repository for distributing FreeCAD on Linux using the [snap packaging format](https://snapcraft.io/docs).
+
+If you are just looking for a way to get FreeCAD on your Linux-based OS, you can skip to the installation:
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/freecad)
 
