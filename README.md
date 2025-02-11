@@ -1,7 +1,6 @@
-# freecad: Official snap package for FreeCAD
+# Snap package for FreeCAD [![Publish Daily](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml/badge.svg)](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml)
 
-[![freecad](https://snapcraft.io/freecad/badge.svg)](https://snapcraft.io/freecad)
-[![Publish Daily](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml/badge.svg)](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml)
+Source code repository for distributing FreeCAD using the snap packaging format.
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/freecad)
 
@@ -20,7 +19,10 @@ Visit the upstream project: https://www.freecad.org/ and https://github.com/Free
 
 ## Channels
 
-There are three maintained channels for this snap:
+![Stable version](https://img.shields.io/snapcraft/v/freecad/latest/stable?label=stable&color=green) ![Edge version](https://img.shields.io/snapcraft/v/freecad/latest/edge?label=edge&color=gold) ![Beta version](https://img.shields.io/snapcraft/v/freecad/latest/beta?label=beta&color=gold) ![Candidate Version](https://img.shields.io/snapcraft/v/freecad/latest/candidate?label=candidate&color=gold)
+
+
+There are multiple maintained channels for this snap:
 
 - `stable` contains the latest upstream release, i.e. the most recent tagged commit. **Use this if you don't know what you're doing.**
 - `edge` contains automated (daily) builds from the latest master commit. **Use this to test new features. Might be unstable.**
