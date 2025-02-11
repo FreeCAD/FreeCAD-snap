@@ -1,7 +1,6 @@
-# freecad: Official snap package for FreeCAD
+# Snap package for FreeCAD [![Publish Daily](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml/badge.svg)](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml)
 
-[![freecad](https://snapcraft.io/freecad/badge.svg)](https://snapcraft.io/freecad)
-[![Publish Daily](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml/badge.svg)](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml)
+Source code repository for distributing FreeCAD using the snap packaging format.
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/freecad)
 
@@ -19,6 +18,9 @@ file formats such as STEP, IGES, STL and others.
 Visit the upstream project: https://www.freecad.org/ and https://github.com/FreeCAD/FreeCAD/
 
 ## Channels
+
+![Stable version](https://img.shields.io/snapcraft/v/freecad/latest/stable?label=stable&color=green) ![Edge version](https://img.shields.io/snapcraft/v/freecad/latest/edge?label=edge&color=gold) ![Beta version](https://img.shields.io/snapcraft/v/freecad/latest/beta?label=beta&color=gold) ![Candidate Version](https://img.shields.io/snapcraft/v/freecad/latest/candidate?label=candidate&color=gold)
+
 
 There are multiple maintained channels for this snap:
 
