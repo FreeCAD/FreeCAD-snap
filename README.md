@@ -21,7 +21,7 @@ Visit the upstream project: https://www.freecad.org/ and https://github.com/Free
 
 ## Channels
 
-![Stable version](https://img.shields.io/snapcraft/v/freecad/latest/stable?label=stable&color=green) ![Edge version](https://img.shields.io/snapcraft/v/freecad/latest/edge?label=edge&color=gold) ![Beta version](https://img.shields.io/snapcraft/v/freecad/latest/beta?label=beta&color=gold) ![Candidate Version](https://img.shields.io/snapcraft/v/freecad/latest/candidate?label=candidate&color=gold)
+![Stable version](https://img.shields.io/snapcraft/v/freecad/latest/stable?label=stable&color=1c862c) ![Edge version](https://img.shields.io/snapcraft/v/freecad/latest/edge?label=edge&color=gold) ![Beta version](https://img.shields.io/snapcraft/v/freecad/latest/beta?label=beta&color=gold) ![Candidate Version](https://img.shields.io/snapcraft/v/freecad/latest/candidate?label=candidate&color=gold)
 
 
 There are multiple maintained channels for this snap:
