@@ -317,6 +317,7 @@ parts:
         cd "/snap/$snap/current" && \
         find . -type f,l -not -path "./usr/lib/python3/dist-packages/numpy*" \
         -not -name 'libblas.so*' \
+        -not -name 'liblapack.so*' \
         -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
       done
       for cruft in bug lintian man; do
