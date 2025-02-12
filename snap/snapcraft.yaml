@@ -316,6 +316,7 @@ parts:
       for snap in "kf5-core22-sdk"; do  # List all content-snaps you're using here
         cd "/snap/$snap/current" && \
         find . -type f,l -not -path "./usr/lib/python3/dist-packages/numpy*" \
+        -not -name 'libblas.so*' \
         -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
       done
       for cruft in bug lintian man; do
