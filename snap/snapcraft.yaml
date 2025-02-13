@@ -33,8 +33,6 @@ assumes: [snapd2.55.3] # for cups interface & private shared memory
 layout:
   /usr/share/X11:
     symlink: $SNAP/kf5/usr/share/X11
-  /usr/share/libdrm/amdgpu.ids:
-    bind-file: $SNAP/kf5/usr/share/libdrm/amdgpu.ids
   /usr/bin/mpirun: # ElmerSolver_mpi
     symlink: $SNAP/usr/bin/orterun
   /usr/share/openmpi:
@@ -316,13 +314,7 @@ parts:
     build-snaps: [kf5-core24-sdk]
     override-prime: |
       set -eux
-      for snap in "kf5-core24-sdk"; do  # List all content-snaps you're using here
-        cd "/snap/$snap/current" && \
-        find . -type f,l -not -path "./usr/lib/python3/dist-packages/numpy*" \
-        -not -name 'libblas.so*' \
-        -not -name 'liblapack.so*' \
-        -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
-      done
+
       for cruft in bug lintian man; do
         rm -rf $CRAFT_PRIME/usr/share/$cruft
       done
