@@ -222,7 +222,7 @@ parts:
       - libspnav0
       - libsz2
       - libxerces-c3.2
-      - libyaml-cpp0.7
+      - libyaml-cpp0.8
       - python3-tk # FEM
       - python3-yaml # FEM
       - python3-numba # FEM (fcFEM)
