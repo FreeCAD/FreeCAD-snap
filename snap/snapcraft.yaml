@@ -250,7 +250,7 @@ parts:
       - calculix-ccx # FEM
       - libcoin80t64
       - libfreeimage3
-      - libtbb2
+      - libtbb12
       - libvtk9.1t64
 #      - elmerfem-csc # FEM
       - openscad  # OpenSCAD
