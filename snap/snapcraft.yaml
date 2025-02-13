@@ -282,17 +282,17 @@ parts:
       - libsuitesparse-dev
     stage-packages:
       - python3-distutils # pip
-      - libamd2 # scikit-sparse
-      - libcamd2 # scikit-sparse
-      - libccolamd2 # scikit-sparse
-      - libcholmod3 # scikit-sparse
-      - libcolamd2 # scikit-sparse
-      - libsuitesparseconfig5 # scikit-sparse
+#      - libamd2 # scikit-sparse
+#      - libcamd2 # scikit-sparse
+#      - libccolamd2 # scikit-sparse
+#      - libcholmod3 # scikit-sparse
+#      - libcolamd2 # scikit-sparse
+#      - libsuitesparseconfig5 # scikit-sparse
     python-packages:
       - ifcopenshell # BIM
       - opencamlib # CAM
       - pip
-      - scikit-sparse
+#      - scikit-sparse
     stage:
       - -pyvenv.cfg
       - -lib/python3.12/site-packages/scipy*
