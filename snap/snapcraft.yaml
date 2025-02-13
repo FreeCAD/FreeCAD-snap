@@ -91,7 +91,7 @@ environment:
   PYTHONPYCACHEPREFIX: $SNAP_USER_COMMON/.pycache
   PYTHONUSERBASE: $SNAP_USER_COMMON/.local
   PIP_USER: 1
-  PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.10/site-packages:$SNAP/lib/python3.10/site-packages:$SNAP/usr/lib/python3/dist-packages
+  PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.12/site-packages:$SNAP/lib/python3.12/site-packages:$SNAP/usr/lib/python3/dist-packages
   SNAP_PYTHONPATH: *pypath
   QT_QPA_PLATFORM: xcb # Coin3D cannot run on Wayland
   POVINI: $SNAP/etc/povray/3.7/povray.ini # Raytracing
@@ -159,8 +159,8 @@ parts:
       - -DCMAKE_INSTALL_LIBDIR=lib
       - -DCMAKE_BUILD_TYPE=Release
       - -DPYTHON_EXECUTABLE=/usr/bin/python3
-      - -DPYTHON_INCLUDE_DIR=/usr/include/python3.10
-      - -DPYTHON_LIBRARY=/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libpython3.10.so
+      - -DPYTHON_INCLUDE_DIR=/usr/include/python3.12
+      - -DPYTHON_LIBRARY=/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libpython3.12.so
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
@@ -215,9 +215,9 @@ parts:
       - libopenexr25
       - libopenmpi3
       - on amd64: [libpsm-infinipath1]
-      - libpython3.10
-      - libpython3.10-minimal
-      - libpython3.10-stdlib
+      - libpython3.12
+      - libpython3.12-minimal
+      - libpython3.12-stdlib
       - libraw20
       - libspnav0
       - libsz2
@@ -294,8 +294,8 @@ parts:
       - scikit-sparse
     stage:
       - -pyvenv.cfg
-      - -lib/python3.10/site-packages/scipy*
-      - -lib/python3.10/site-packages/numpy*
+      - -lib/python3.12/site-packages/scipy*
+      - -lib/python3.12/site-packages/numpy*
 
   graphviz:
     plugin: nil
