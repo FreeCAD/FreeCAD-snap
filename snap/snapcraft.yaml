@@ -206,22 +206,23 @@ parts:
       - libboost-system1.74.0
       - libboost-thread1.74.0
       - libboost-date-time1.74.0
-      - libhdf5-openmpi-103
+      - libhdf5-openmpi-103t64
       - libhwloc15
-      - libilmbase25
-      - libjxr0
-      - libmedc11
+#      - libilmbase25      # <= Unavailable in noble, still missing: libHalf, libIexMath
+      - libimath-3-1-29t64 # Potential partial replacement
+      - libjxr0t64
+      - libmedc11t64
       - libmed11
-      - libopenexr25
-      - libopenmpi3
+      - libopenexr-3-1-30  # Potential partial replacement
+      - libopenmpi3t64
       - on amd64: [libpsm-infinipath1]
       - libpython3.12
       - libpython3.12-minimal
       - libpython3.12-stdlib
-      - libraw20
+      - libraw23t64
       - libspnav0
       - libsz2
-      - libxerces-c3.2
+      - libxerces-c3.2t64
       - libyaml-cpp0.8
       - python3-tk # FEM
       - python3-yaml # FEM
@@ -247,7 +248,7 @@ parts:
       - python3-pyside2.qtuitools
       - python3-requests
       - calculix-ccx # FEM
-      - libcoin80c
+      - libcoin80t64
       - libfreeimage3
       - libtbb2
       - libvtk9.1t64
