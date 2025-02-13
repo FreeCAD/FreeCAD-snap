@@ -290,7 +290,7 @@ parts:
 #      - libsuitesparseconfig5 # scikit-sparse
     python-packages:
       - ifcopenshell # BIM
-      - opencamlib # CAM
+#      - opencamlib # CAM, experimental (https://wiki.freecad.org/OpenCamLib) - Not available in Python 3.12 - https://github.com/aewallin/opencamlib/issues/164
       - pip
 #      - scikit-sparse
     stage:
