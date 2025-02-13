@@ -189,7 +189,7 @@ parts:
       - swig
       - python3-dev
       - libcoin-dev
-      - libvtk7-dev
+      - libvtk9-dev
       - libpyside2-dev
       - libshiboken2-dev
       - pybind11-dev
@@ -250,7 +250,7 @@ parts:
       - libcoin80c
       - libfreeimage3
       - libtbb2
-      - libvtk7.1p
+      - libvtk9.1t64
 #      - elmerfem-csc # FEM
       - openscad  # OpenSCAD
     override-build: |
