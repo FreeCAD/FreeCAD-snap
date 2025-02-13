@@ -278,10 +278,10 @@ parts:
     plugin: python
     source: .
     source-type: local
-    build-packages:
-      - libsuitesparse-dev
-    stage-packages:
-      - python3-distutils # pip
+#    build-packages:
+#      - libsuitesparse-dev
+#    stage-packages:
+#      - python3-distutils # pip
 #      - libamd2 # scikit-sparse
 #      - libcamd2 # scikit-sparse
 #      - libccolamd2 # scikit-sparse
