@@ -206,7 +206,7 @@ parts:
       - libboost-system1.74.0
       - libboost-thread1.74.0
       - libboost-date-time1.74.0
-      - libhdf5-openmpi-103t64
+      - libhdf5-openmpi-103-1t64
       - libhwloc15
 #      - libilmbase25      # <= Unavailable in noble, still missing: libHalf, libIexMath
       - libimath-3-1-29t64 # Potential partial replacement
