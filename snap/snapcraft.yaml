@@ -123,13 +123,13 @@ apps:
     plugs: *plugs
 
 package-repositories:
-  - type: apt
-    ppa: elmer-csc-ubuntu/elmer-csc-ppa
+#  - type: apt
+#    ppa: elmer-csc-ubuntu/elmer-csc-ppa
   - type: apt
     components:
       - main
     suites:
-      - jammy
+      - noble
     key-id: 444DABCF3667D0283F894EDDE6D4736255751E5D
     url: http://origin.archive.neon.kde.org/user
     key-server: keyserver.ubuntu.com
@@ -164,10 +164,12 @@ parts:
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
+      - -DCMAKE_FIND_ROOT_PATH=$CRAFT_STAGE\;/snap/kde-qt5-core24-sdk/current\;/snap/kf5-core24-sdk/current/usr
     build-snaps:
-      - freecad-deps-core24/candidate
+      - furgo-freecad-deps-core24/candidate
+      - kde-qt5-core24-sdk
     stage-snaps:
-      - freecad-deps-core24/candidate
+      - furgo-freecad-deps-core24/candidate
     build-packages:
       - g++
       - git
@@ -193,6 +195,8 @@ parts:
       - pybind11-dev
       - libfreeimage-dev
       - openscad
+      - python3-pivy
+      - python3-matplotlib
     stage-packages:
       - libaec0
       - libboost-filesystem1.74.0
@@ -247,12 +251,9 @@ parts:
       - libfreeimage3
       - libtbb2
       - libvtk7.1p
-      - elmerfem-csc # FEM
+#      - elmerfem-csc # FEM
       - openscad  # OpenSCAD
     override-build: |
-      kde_sdk_dir="/snap/kf5-core24-sdk/current"
-      mkdir -p /etc/xdg/qtchooser
-      cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
       if [ ! -e $SHIBOKEN_BIN_PATH ]; then
         mkdir -p "$(dirname "${SHIBOKEN_BIN_PATH}")"
@@ -315,7 +316,11 @@ parts:
     override-prime: |
       set -eux
       for snap in "kf5-core24-sdk"; do  # List all content-snaps you're using here
-        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
+        cd "/snap/$snap/current" && \
+        find . -type f,l -not -path "./usr/lib/python3/dist-packages/numpy*" \
+        -not -name 'libblas.so*' \
+        -not -name 'liblapack.so*' \
+        -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
       done
       for cruft in bug lintian man; do
         rm -rf $CRAFT_PRIME/usr/share/$cruft
