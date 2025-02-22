@@ -50,8 +50,6 @@ layout:
     bind-file: $SNAP/etc/matplotlibrc
   /usr/share/matplotlib:
     symlink: $SNAP/usr/share/matplotlib
-  /usr/share/qt5:
-    symlink: $SNAP/kf5/usr/share/qt5
   /usr/bin/dot: # Graphviz for dependency graph
     symlink: $SNAP/usr/bin/dot
   /usr/bin/unflatten: # Graphviz for dependency graph
