@@ -16,9 +16,6 @@ description: |
   FreeCAD is multiplatfom, and reads and writes many open
   file formats such as STEP, IGES, STL and others.
 
-  Please also consider RealThunder's well-known FreeCAD fork
-  `freecad-realthunder`: https://snapcraft.io/freecad-realthunder
-
   Commands:
         freecad:      Run FreeCAD
         freecad.cmd:  Run FreeCAD command line interface
