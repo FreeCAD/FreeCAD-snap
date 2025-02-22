@@ -319,3 +319,7 @@ parts:
       find $CRAFT_PRIME/usr/lib -type f,l \
         -name 'libQt*.so*' `# remove all Qt libs pulled in from Ubuntu repos` \
         -not -name 'libQt5Gamepad.so*' -delete `# for OpenSCAD`
+
+lint:
+  ignore:
+    - library
