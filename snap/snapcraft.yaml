@@ -32,8 +32,6 @@ license: LGPL-2.1-or-later
 assumes: [snapd2.55.3] # for cups interface & private shared memory
 
 layout:
-  /usr/share/X11:
-    symlink: $SNAP/kf5/usr/share/X11
   /usr/bin/mpirun: # ElmerSolver_mpi
     symlink: $SNAP/usr/bin/orterun
   /usr/share/openmpi:
