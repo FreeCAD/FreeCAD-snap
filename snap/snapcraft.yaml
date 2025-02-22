@@ -155,7 +155,6 @@ parts:
       - -DCMAKE_FIND_ROOT_PATH=$CRAFT_STAGE\;/snap/kde-qt5-core22-sdk/current\;/snap/kf5-core22-sdk/current/usr
     build-snaps:
       - freecad-deps-core22/candidate
-      - kde-qt5-core22-sdk
     stage-snaps:
       - freecad-deps-core22/candidate
     build-packages:
@@ -300,10 +299,10 @@ parts:
   cleanup:
     after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
     plugin: nil
-    build-snaps: [kf5-core22-sdk]
+    build-snaps: [kf5-core22]
     override-prime: |
       set -eux
-      for snap in "kf5-core22-sdk"; do  # List all content-snaps you're using here
+      for snap in "kf5-core22"; do  # List all content-snaps you're using here
         cd "/snap/$snap/current" && \
         find . -type f,l -not -path "./usr/lib/python3/dist-packages/numpy*" \
         -not -name 'libblas.so*' \
