@@ -21,6 +21,6 @@ def fix_theme():
   if param.GetBool("ThemeSearchPaths", False)  != param.GetBool("ThemeSearchPaths", True):
     param.SetBool("ThemeSearchPaths", False)
 
-add_snap_pythonpath()
+# add_snap_pythonpath()
 configure_mod_mesh()
 fix_theme()
