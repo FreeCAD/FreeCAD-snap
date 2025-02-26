@@ -22,7 +22,7 @@ def fix_theme():
     param.SetBool("ThemeSearchPaths", False)
 
 # Disabled to provide user packages preference over system packages
-# For details, see https://github.com/FreeCAD/FreeCAD-snap/pull/176 
+# For details, see https://github.com/FreeCAD/FreeCAD-snap/pull/176
 # add_snap_pythonpath()
 configure_mod_mesh()
 fix_theme()
