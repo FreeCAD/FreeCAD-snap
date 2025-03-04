@@ -151,7 +151,7 @@ parts:
     build-snaps:
       - furgo-freecad-deps-core24/candidate
     stage-snaps:
-      - furgo-freecad-deps-core24/candidate
+      - furgo-freecad-deps-core24/candidate  # TODO(furgo16): rename to `freecad-deps-core24` once the snap is available
     build-packages:
       - g++
       - git
