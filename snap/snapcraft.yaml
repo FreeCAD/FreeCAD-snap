@@ -149,9 +149,9 @@ parts:
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
     build-snaps:
-      - furgo-freecad-deps-core24/candidate
+      - freecad-deps-core24/edge
     stage-snaps:
-      - furgo-freecad-deps-core24/candidate  # TODO(furgo16): rename to `freecad-deps-core24` once the snap is available
+      - freecad-deps-core24/edge
     build-packages:
       - g++
       - git
