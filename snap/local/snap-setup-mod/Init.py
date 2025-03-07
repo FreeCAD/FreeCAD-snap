@@ -36,4 +36,4 @@ def fix_wayland():
 add_snap_pythonpath()
 configure_mod_mesh()
 fix_theme()
-fix_wayland()
+# fix_wayland()
