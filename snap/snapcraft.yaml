@@ -319,8 +319,7 @@ parts:
       find $CRAFT_PRIME/usr/share -type d -empty -delete
       find $CRAFT_PRIME/usr/lib -type f,l \
         -name 'libQt*.so*' `# remove all Qt libs pulled in from Ubuntu repos` \
-        -not -name 'libQt6Gamepad.so*' `# for OpenSCAD` \
-        -not -name 'libQt6Network.so*' -delete
+        -not -name 'libQt6Gamepad.so*' -delete `# for OpenSCAD`
 
 lint:
   ignore:
