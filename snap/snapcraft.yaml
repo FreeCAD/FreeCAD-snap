@@ -65,7 +65,7 @@ plugs:
     private: true
 
 environment:
-  LD_LIBRARY_PATH: "$SNAP/usr/lib/:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf5/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf5/usr/lib:/$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack:$LD_LIBRARY_PATH"
+  LD_LIBRARY_PATH: "$SNAP/usr/lib/:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf6/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf6/usr/lib:/$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack:$LD_LIBRARY_PATH"
   LD_PRELOAD: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libstubchown.so
   FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
@@ -172,8 +172,8 @@ parts:
       - python3-dev
       - libcoin-dev
       - libvtk9-dev
-      - libpyside2-dev
-      - libshiboken2-dev
+      - libpyside6-dev
+      - libshiboken6-dev
       - pybind11-dev
       - libfreeimage-dev
       - openscad
@@ -222,12 +222,12 @@ parts:
       - python3-git
       - python3-ply # OpenSCAD
       - python3-pivy
-      - python3-pyside2.qtcore
-      - python3-pyside2.qtgui
-      - python3-pyside2.qtsvg
-      - python3-pyside2.qtwidgets
-      - python3-pyside2.qtnetwork
-      - python3-pyside2.qtuitools
+      - python3-pyside6.qtcore
+      - python3-pyside6.qtgui
+      - python3-pyside6.qtsvg
+      - python3-pyside6.qtwidgets
+      - python3-pyside6.qtnetwork
+      - python3-pyside6.qtuitools
       - python3-requests
       - calculix-ccx # FEM
       - libcoin80t64
@@ -237,7 +237,7 @@ parts:
 #      - elmerfem-csc # FEM
       - openscad  # OpenSCAD
     override-build: |
-      SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
+      SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken6"
       if [ ! -e $SHIBOKEN_BIN_PATH ]; then
         mkdir -p "$(dirname "${SHIBOKEN_BIN_PATH}")"
         ln -s /usr/bin/shiboken2 $SHIBOKEN_BIN_PATH
@@ -295,10 +295,10 @@ parts:
   cleanup:
     after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
     plugin: nil
-    build-snaps: [kf5-core24]
+    build-snaps: [kf6-core24]
     override-prime: |
       set -eux
-      for snap in "kf5-core24"; do  # List all content-snaps you're using here
+      for snap in "kf6-core24"; do  # List all content-snaps you're using here
         cd "/snap/$snap/current" && \
         find . -type f,l \
         -not -path "./usr/lib/python3/dist-packages/*" \
@@ -313,7 +313,7 @@ parts:
       find $CRAFT_PRIME/usr/share -type d -empty -delete
       find $CRAFT_PRIME/usr/lib -type f,l \
         -name 'libQt*.so*' `# remove all Qt libs pulled in from Ubuntu repos` \
-        -not -name 'libQt5Gamepad.so*' -delete `# for OpenSCAD`
+        -not -name 'libQt6Gamepad.so*' -delete `# for OpenSCAD`
 
 lint:
   ignore:
