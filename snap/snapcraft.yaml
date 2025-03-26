@@ -167,6 +167,7 @@ parts:
       - libkdtree++-dev
       - libmedc-dev
       - libopencv-dev
+      - libpcl-dev
       - libproj-dev
       - libx11-dev
       - libxerces-c-dev
