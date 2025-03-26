@@ -150,6 +150,7 @@ parts:
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
+      - -DFREECAD_USE_PCL=OFF
       - -DCMAKE_FIND_ROOT_PATH=$CRAFT_STAGE\;/snap/kde-qt5-core22-sdk/current\;/snap/kf5-core22-sdk/current/usr
     build-snaps:
       - freecad-deps-core22/candidate
@@ -167,7 +168,6 @@ parts:
       - libkdtree++-dev
       - libmedc-dev
       - libopencv-dev
-      - libpcl-dev
       - libproj-dev
       - libx11-dev
       - libxerces-c-dev
