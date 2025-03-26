@@ -150,6 +150,7 @@ parts:
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
+      - -DFREECAD_USE_PCL=OFF
     build-snaps:
       - freecad-deps-core24/edge
     stage-snaps:
@@ -166,7 +167,6 @@ parts:
       - libkdtree++-dev
       - libmedc-dev
       - libopencv-dev
-      - libpcl-dev
       - libproj-dev
       - libx11-dev
       - libxerces-c-dev
