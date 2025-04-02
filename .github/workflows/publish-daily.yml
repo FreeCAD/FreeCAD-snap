@@ -31,8 +31,8 @@ jobs:
 
     - name: Publish snap
       continue-on-error: true
+      uses: snapcore/action-publish@v1
       if: ${{ (github.repository_owner == 'FreeCAD') && (steps.snapcraft.outcome == 'success') }}
-    - uses: snapcore/action-publish@v1
       env:
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
       with:
