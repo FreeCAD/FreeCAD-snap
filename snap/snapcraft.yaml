@@ -291,7 +291,7 @@ parts:
       - graphviz
     override-build: |
       # Disable dot configuration, there is another dot in the kde6-core24 snap
-      # For some reason that's the one that's the one that's called
+      # For some reason that's the one that's called
       # The config file seems to already exist, though, so let's keep the copy
       # operation
       # ${CRAFT_PART_INSTALL}/usr/bin/dot -c
