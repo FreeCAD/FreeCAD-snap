@@ -10,7 +10,7 @@ env:
 
 jobs:
   publish_amd64:
-    runs-on: ubuntu-42.04
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout packaging repository
       uses: actions/checkout@v4
