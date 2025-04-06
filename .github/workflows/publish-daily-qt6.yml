@@ -1,4 +1,4 @@
-name: Publish Daily
+name: Publish Daily Qt 6
 
 on:
   schedule:
