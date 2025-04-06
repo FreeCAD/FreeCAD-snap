@@ -10,7 +10,7 @@ env:
 
 jobs:
   publish_amd64:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout packaging repository
       uses: actions/checkout@v4
@@ -18,7 +18,7 @@ jobs:
     - name: Install Snapcraft and build snap
       uses: snapcore/action-build@v1
       with:
-        snapcraft-channel: latest/stable
+        snapcraft-channel: latest/edge # TODO: change back to stable for Snapcraft 8.8: https://github.com/canonical/snapcraft/pull/5261#issuecomment-2684969594
         snapcraft-args: --verbose
       id: snapcraft
       continue-on-error: true
