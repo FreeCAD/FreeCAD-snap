@@ -146,3 +146,10 @@ Questions:
 Answers:
 1. Dependencies are listed using their apt package names and are retrieved from the set of repositories officially supported by the distribution (make sure you pulling an apt package for the correct distro version that the snap packaging is utilizing).
 2. https://packages.ubuntu.com (it may be beneficial to cross-reference https://repology.org)
+
+## Accessing 3rd-party devices (samba, usb etc..) via FreeCAD Snap
+
+```shell
+sudo snap connect freecad:removable-media
+```
+Reference: https://askubuntu.com/questions/1226304/how-do-i-access-mounted-hard-drive-with-a-snap-application
