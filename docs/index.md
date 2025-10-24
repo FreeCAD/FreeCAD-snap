@@ -49,29 +49,6 @@ The `Branch:` button indicates what branch of FreeCAD-snap you'd like to trigger
 The green `Run workflow` button actually triggers the build to start. Once this is clicked, the build takes whatever time it takes to build FreeCAD from source and then push the new build to the 'edge' channel. After that all the user has to do is `snap refresh` and the latest 'edge' will auto-download to their machine
 
 
-## Parallel Installs
-
-Running multiple snaps AKA 'Parallel Installs' (parallel but separate).
-
-By default, snap packages that have several 'channels' will share configs between them. For testing purposes sometimes this isn't wanted, the solution per the snapcraft docs is using the [parallel install](https://snapcraft.io/docs/parallel-installs) feature.
-
-> Parallel installs enable you to run multiple instances of the same snap on the same system. Each instance is completely isolated from all other instances, including its name, configuration, interface connections, data locations, services, applications and aliases.
-
-Note: at the time of writing this the parallel install feature is still considered experimental
-
-In the context of FreeCAD, this feature would be useful for example if there are experimental changes (in an experimental build) to the FreeCAD config files that could corrupt the snap stable or snap edge channel FreeCAD config files.
-
-Example: Install edge snap in parallel to the stable snap
-
-```shell
-# Enable experimental parallel instances feature
-$ sudo snap set system experimental.parallel-instances=true
-# Install freecad snap from channel edge as 'freecad_edge'
-$ sudo snap install freecad_edge --channel=edge
-# run FreeCAD from this parallel install
-$ freecad_edge
-```
-
 ## Build snaps from FreeCAD branches or forks
 
 It is possible to build snaps from any branch of fork of the FreeCAD repository. This option is also open to outside users that can simply make a PR to trigger and re-trigger a build.
@@ -149,7 +126,8 @@ Answers:
 
 ## Accessing 3rd-party devices (samba, usb etc..) via FreeCAD Snap
 
-```shell
-sudo snap connect freecad:removable-media
-```
-Reference: https://askubuntu.com/questions/1226304/how-do-i-access-mounted-hard-drive-with-a-snap-application
+This user documentation section has been moved to the main [README.md](README.md) file. It has been left here to not break URLs linking to the original section location.
+
+## Parallel Installs
+
+This user documentation section has been moved to the main [README.md](README.md) file. It has been left here to not break URLs linking to the original section location.
