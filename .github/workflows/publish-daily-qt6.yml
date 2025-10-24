@@ -21,7 +21,7 @@ jobs:
       uses: canonical/action-build@v1
       with:
         snapcraft-channel: latest/stable
-        snapcraft-args: --verbose
+        snapcraft-args: --verbosity=trace
       id: snapcraft
       continue-on-error: true
 
