@@ -1,0 +1,66 @@
+name: Reusable Daily Snap Publisher
+
+on:
+  workflow_call:
+    inputs:
+      # The Ubuntu version for the runner (e.g., "ubuntu-22.04", "ubuntu-24.04").
+      os:
+        type: string
+        required: true
+      # The specific git ref (branch or tag) to check out. Uses the default if not provided.
+      checkout_ref:
+        type: string
+        required: false
+      # The FreeCAD channel in the Snap Store to release the package to (e.g., "edge", "edge/qt6").
+      release_channel:
+        type: string
+        required: true
+    secrets:
+      # The Snapcraft store login credentials, passed from the caller workflow.
+      store_login:
+        required: true
+
+env:
+  LOG_PATH: /home/runner/.local/state/snapcraft/log/
+
+jobs:
+  publish:
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: Checkout packaging repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.checkout_ref }}
+
+      - name: Install Snapcraft and build snap
+        id: snapcraft-pack
+        uses: canonical/action-build@v1
+        with:
+          snapcraft-channel: latest/stable
+          snapcraft-args: --verbosity=trace
+
+      # Upload logs regardless of build success or failure.
+      - name: Upload log artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapcraft-log-${{ inputs.release_channel }}
+          path: ${{ env.LOG_PATH }}/*
+
+      # Run only on the main FreeCAD repository (not forks) and only if the build was successful.
+      - name: Publish snap to Snap Store
+        if: ${{ (github.repository_owner == 'FreeCAD') && (steps.snapcraft-pack.outcome == 'success') }}
+        uses: canonical/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.store_login }}
+        with:
+          snap: ${{ steps.snapcraft-pack.outputs.snap }}
+          release: ${{ inputs.release_channel }}
+        continue-on-error: true
+
+      - name: Upload snap package artifact
+        if: ${{ steps.snapcraft-pack.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: snap-package-${{ inputs.release_channel }}
+          path: ${{ steps.snapcraft-pack.outputs.snap }}
