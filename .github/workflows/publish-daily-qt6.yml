@@ -18,7 +18,7 @@ jobs:
         ref: core24-kde-neon-6
 
     - name: Install Snapcraft and build snap
-      uses: snapcore/action-build@v1
+      uses: canonical/action-build@v1
       with:
         snapcraft-channel: latest/edge
         snapcraft-args: --verbose
@@ -33,7 +33,7 @@ jobs:
 
     - name: Publish snap
       continue-on-error: true
-      uses: snapcore/action-publish@v1
+      uses: canonical/action-publish@v1
       if: ${{ (github.repository_owner == 'FreeCAD') && (steps.snapcraft.outcome == 'success') }}
       env:
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
