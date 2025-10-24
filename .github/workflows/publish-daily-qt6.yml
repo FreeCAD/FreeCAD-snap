@@ -20,7 +20,7 @@ jobs:
     - name: Install Snapcraft and build snap
       uses: canonical/action-build@v1
       with:
-        snapcraft-channel: latest/edge
+        snapcraft-channel: latest/stable
         snapcraft-args: --verbose
       id: snapcraft
       continue-on-error: true
