@@ -32,6 +32,23 @@ jobs:
         with:
           ref: ${{ inputs.checkout_ref }}
 
+      # --- WORKAROUND: Free up tens of gigabytes from the runner ---
+      # This is to prevent not enough disk space errors during snapcraft build.
+      # See https://carlosbecker.com/posts/github-actions-disk-space/
+      - name: Free Up Disk Space on Runner
+        run: |
+          echo "--- Initial Disk Space ---"
+          df -h
+          # These directories contain large toolchains we don't need for this build.
+          # Removing them can free up some GB of space.
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          echo "--- Disk Space After Cleaning Runner ---"
+          df -h
+      # --- END WORKAROUND ---
+
       - name: Install Snapcraft and build snap
         id: snapcraft-pack
         uses: canonical/action-build@v1
