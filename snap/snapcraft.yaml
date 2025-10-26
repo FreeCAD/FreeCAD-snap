@@ -155,62 +155,86 @@ parts:
     stage-snaps:
       - freecad-deps-core22/candidate
     build-packages:
+      # --- Build Toolchain ---
       - g++
       - git
+      - swig
+
+      # --- C++ Core & 3D Kernel Development Libraries ---
       - libboost-all-dev
-      - libsimage-dev # optional
-      - libspnav-dev # optional
+      - libcoin-dev
       - libeigen3-dev
+      - libfreeimage-dev
       - libgts-bin
       - libgts-dev
       - libkdtree++-dev
       - libmedc-dev
       - libopencv-dev
       - libproj-dev
+      - libvtk9-dev
       - libx11-dev
       - libxerces-c-dev
       - libyaml-cpp-dev
-      - swig
-      - python3-dev
-      - libcoin-dev
-      - libvtk9-dev
+
+      # --- Optional Libraries for Specific Features ---
+      - libsimage-dev   # Optional: For extra image format support
+      - libspnav-dev    # Optional: For 3D mouse support
+
+      # --- Python & GUI Binding Development ---
       - libpyside2-dev
       - libshiboken2-dev
       - pybind11-dev
-      - libfreeimage-dev
+      - python3-dev
+
+      # --- Pre-packaged Build-Time Dependencies ---
+      # These provide specific functionality during the build itself.
       - openscad
-      - python3-pivy
       - python3-matplotlib
+      - python3-pivy
+
     stage-packages:
+      # --- Core C++ Runtime Libraries ---
+      - libboost-date-time1.74.0
       - libboost-python1.74.0
       - libboost-regex1.74.0
       - libboost-system1.74.0
       - libboost-thread1.74.0
-      - libboost-date-time1.74.0
+      - libfreeimage3
       - libhdf5-openmpi-103
-      - libmedc11
       - libmed11
-      - on amd64: [libpsm-infinipath1]
+      - libmedc11
+      - libtbb2
       - libxerces-c3.2
       - libyaml-cpp0.7
-      - python3-yaml # FEM
-      - python3-numba # FEM (fcFEM)
-      - python3-defusedxml # Addon Manager
+
+      # --- FEM Workbench Solvers & Libraries ---
+      - calculix-ccx
+      - elmerfem-csc
+      - python3-numba           # For the fcFEM solver
+      - python3-yaml
+
+      # --- OpenSCAD Workbench Integration ---
+      - openscad
+
+      # --- GUI & Graphics Libraries ---
       - python3-matplotlib
-      - python3-setuptools-scm
-      - python3-collada # DAE import
-      - python3-git
       - python3-pivy
-      - python3-pyside2.qtsvg
       - python3-pyside2.qtnetwork
+      - python3-pyside2.qtsvg
       - python3-pyside2.qtuitools
-      - python3-requests
       - python3-vtk9
-      - calculix-ccx # FEM
-      - libfreeimage3
-      - libtbb2
-      - elmerfem-csc # FEM
-      - openscad  # OpenSCAD
+
+      # --- Python Ecosystem & Tooling ---
+      - python3-defusedxml      # For Addon Manager security
+      - python3-git
+      - python3-requests
+      - python3-setuptools-scm
+
+      # --- File Format Support ---
+      - python3-collada         # For DAE file import/export
+
+      # --- Architecture-Specific Packages ---
+      - on amd64: [libpsm-infinipath1]
     override-build: |
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
       if [ ! -e $SHIBOKEN_BIN_PATH ]; then
