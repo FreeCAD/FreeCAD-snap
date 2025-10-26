@@ -70,11 +70,11 @@ environment:
   FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
-  GIT_CONFIG_NOSYSTEM: 1
+  GIT_CONFIG_NOSYSTEM: "1"
   ELMER_HOME: $SNAP/usr
   PYTHONPYCACHEPREFIX: $SNAP_USER_COMMON/.pycache
   PYTHONUSERBASE: $SNAP_USER_COMMON/.local
-  PIP_USER: 1
+  PIP_USER: "1"
   PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.10/site-packages:$SNAP/lib/python3.10/site-packages:$SNAP/usr/lib/python3/dist-packages
   SNAP_PYTHONPATH: *pypath
   QT_QPA_PLATFORM: xcb # Coin3D cannot run on Wayland
