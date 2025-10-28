@@ -59,7 +59,7 @@ jobs:
       # Upload logs regardless of build success or failure.
       - name: Upload log artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: snapcraft-log-${{ inputs.release_channel }}
           path: ${{ env.LOG_PATH }}/*
@@ -77,7 +77,7 @@ jobs:
 
       - name: Upload snap package artifact
         if: ${{ steps.snapcraft-pack.outcome == 'success' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: snap-package-${{ inputs.release_channel }}
           path: ${{ steps.snapcraft-pack.outputs.snap }}
