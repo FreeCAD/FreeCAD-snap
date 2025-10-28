@@ -269,11 +269,8 @@ parts:
       - libcholmod3 # scikit-sparse
       - libcolamd2 # scikit-sparse
       - libsuitesparseconfig5 # scikit-sparse
-    python-packages:
-      - ifcopenshell == 0.8.2 # BIM
-      - opencamlib # CAM
-      - pip
-      - scikit-sparse
+    python-requirements:
+      - requirements.txt
     stage:
       - -pyvenv.cfg
       - -lib/python3.10/site-packages/scipy*

@@ -1,0 +1,4 @@
+ifcopenshell==0.8.2    # BIM
+opencamlib==2023.1.11  # CAM
+pip==25.3
+scikit-sparse==0.4.16
