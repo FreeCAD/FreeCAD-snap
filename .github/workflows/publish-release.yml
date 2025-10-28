@@ -6,17 +6,10 @@ on:
       - stable
 
 jobs:
-  publish_amd64:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v5
-    - uses: canonical/action-build@v1
-      id: build
-      with:
-        snapcraft-args: "--enable-experimental-extensions"
-    - uses: canonical/action-publish@v1
-      env:
-        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-      with:
-        snap: ${{ steps.build.outputs.snap }}
-        release: candidate
+  call-reusable-workflow:
+    uses: ./.github/workflows/reusable-publish-daily.yml
+    with:
+      os: ubuntu-22.04
+      release_channel: candidate
+    secrets:
+      store_login: ${{ secrets.STORE_LOGIN }}
