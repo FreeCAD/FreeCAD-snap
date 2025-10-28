@@ -7,8 +7,8 @@ on:
   workflow_dispatch: # Allows manual triggering
 
 jobs:
-  call-reusable-workflow:
-    uses: ./.github/workflows/reusable-publish-daily.yml
+  publish:
+    uses: ./.github/workflows/reusable-publish.yml
     with:
       os: ubuntu-24.04
       checkout_ref: core24-kde-neon-6
