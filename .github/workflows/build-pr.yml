@@ -23,7 +23,7 @@ jobs:
         )
       )
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: install snapcraft
       run: |
         sudo snap install snapcraft --classic
@@ -35,11 +35,11 @@ jobs:
         mkdir -p ./pr-data
         echo '${{ github.event.number }}' > ./pr-data/pr-number
         echo '${{ github.event.pull_request.head.sha }}' > ./pr-data/pr-commit
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: snap
         path: freecad*.snap
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: pr-data
         path: pr-data/

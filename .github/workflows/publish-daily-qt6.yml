@@ -1,0 +1,17 @@
+name: Publish Daily Qt 6
+
+on:
+  schedule:
+    # Runs every day at 02:00 UTC to avoid overlapping with the Qt 5 build.
+    - cron: "0 2 * * *"
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  publish:
+    uses: ./.github/workflows/reusable-publish.yml
+    with:
+      os: ubuntu-24.04
+      checkout_ref: core24-kde-neon-6
+      release_channel: edge/qt6
+    secrets:
+      store_login: ${{ secrets.STORE_LOGIN }}

@@ -1,0 +1,17 @@
+name: Publish Daily Qt 5
+
+on:
+  schedule:
+    # Runs every day at 00:00 UTC.
+    - cron: "0 0 * * *"
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  publish:
+    uses: ./.github/workflows/reusable-publish.yml
+    with:
+      os: ubuntu-22.04
+      # No checkout_ref is needed, so it will use the default branch
+      release_channel: edge
+    secrets:
+      store_login: ${{ secrets.STORE_LOGIN }}
