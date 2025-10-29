@@ -283,6 +283,13 @@ The snap system provides its own way to ship Qt via extensions. The FreeCAD snap
 
 TBD: list the relevant repositories for the code related to this extension, and the relevant Snap Store packages
 
+#### PySide
+
+The `kde-neon` extensions ship only Qt, but not PySide. For PySide, we rely on apt packages from the KDE Neon archive. KDE Neon is based on Ubuntu LTS versions, but has newer packages for Qt available. This is how we'll be able to support Qt 6 in the `core24` snap. Without the KDE Neon packages, the Ubuntu 24.04 archive alone would not be able to provide the PySide6 packages, which were only included from Ubuntu 24.10 onwards.
+
+> [!IMPORTANT]
+> The PySide packages version must match the `major.minor` version of the Qt framework provided by the `kde-neon` extensions, otherwise FreeCAD won't work. This is another weak link, as we depend on two different upstreams to keep their versions in sync.
+
 ## Legacy user documentation
 
 ### Accessing 3rd-party devices (samba, usb etc..) via FreeCAD Snap
