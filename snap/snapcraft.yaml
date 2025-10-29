@@ -70,11 +70,11 @@ environment:
   FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
-  GIT_CONFIG_NOSYSTEM: 1
+  GIT_CONFIG_NOSYSTEM: "1"
   ELMER_HOME: $SNAP/usr
   PYTHONPYCACHEPREFIX: $SNAP_USER_COMMON/.pycache
   PYTHONUSERBASE: $SNAP_USER_COMMON/.local
-  PIP_USER: 1
+  PIP_USER: "1"
   PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.10/site-packages:$SNAP/lib/python3.10/site-packages:$SNAP/usr/lib/python3/dist-packages
   SNAP_PYTHONPATH: *pypath
   QT_QPA_PLATFORM: xcb # Coin3D cannot run on Wayland
@@ -155,90 +155,86 @@ parts:
     stage-snaps:
       - freecad-deps-core22/candidate
     build-packages:
+      # --- Build Toolchain ---
       - g++
       - git
+      - swig
+
+      # --- C++ Core & 3D Kernel Development Libraries ---
       - libboost-all-dev
-      - libsimage-dev # optional
-      - libspnav-dev # optional
+      - libcoin-dev
       - libeigen3-dev
+      - libfreeimage-dev
       - libgts-bin
       - libgts-dev
       - libkdtree++-dev
       - libmedc-dev
       - libopencv-dev
       - libproj-dev
+      - libvtk9-dev
       - libx11-dev
       - libxerces-c-dev
       - libyaml-cpp-dev
-      - swig
-      - python3-dev
-      - libcoin-dev
-      - libvtk9-dev
+
+      # --- Optional Libraries for Specific Features ---
+      - libsimage-dev   # Optional: For extra image format support
+      - libspnav-dev    # Optional: For 3D mouse support
+
+      # --- Python & GUI Binding Development ---
       - libpyside2-dev
       - libshiboken2-dev
       - pybind11-dev
-      - libfreeimage-dev
+      - python3-dev
+
+      # --- Pre-packaged Build-Time Dependencies ---
+      # These provide specific functionality during the build itself.
       - openscad
-      - python3-pivy
       - python3-matplotlib
+      - python3-pivy
+
     stage-packages:
-      - libaec0
-      - libboost-filesystem1.74.0
-      - libboost-program-options1.74.0
+      # --- Core C++ Runtime Libraries ---
+      - libboost-date-time1.74.0
       - libboost-python1.74.0
       - libboost-regex1.74.0
       - libboost-system1.74.0
       - libboost-thread1.74.0
-      - libboost-date-time1.74.0
+      - libfreeimage3
       - libhdf5-openmpi-103
-      - libhwloc15
-      - libilmbase25
-      - libjxr0
-      - libmedc11
       - libmed11
-      - libopenexr25
-      - libopenmpi3
-      - on amd64: [libpsm-infinipath1]
-      - libpython3.10
-      - libpython3.10-minimal
-      - libpython3.10-stdlib
-      - libraw20
-      - libspnav0
-      - libsz2
+      - libmedc11
+      - libtbb2
       - libxerces-c3.2
       - libyaml-cpp0.7
-      - python3-tk # FEM
-      - python3-yaml # FEM
-      - python3-numba # FEM (fcFEM)
-      - python3-scipy # FEM
-      - python3-defusedxml # Addon Manager
-      - python3-numpy
+
+      # --- FEM Workbench Solvers & Libraries ---
+      - calculix-ccx
+      - elmerfem-csc
+      - python3-numba           # For the fcFEM solver
+      - python3-yaml
+
+      # --- OpenSCAD Workbench Integration ---
+      - openscad
+
+      # --- GUI & Graphics Libraries ---
       - python3-matplotlib
-      - python3-six
-      - python3-packaging # Path
-      - python3-pyparsing
-      - python3-setuptools-scm
-      - python3-collada # DAE import
-      - python3-cycler
-      - python3-dateutil
-      - python3-git
-      - python3-ply # OpenSCAD
       - python3-pivy
-      - python3-pyside2.qtcore
-      - python3-pyside2.qtgui
-      - python3-pyside2.qtsvg
-      - python3-pyside2.qtwidgets
       - python3-pyside2.qtnetwork
+      - python3-pyside2.qtsvg
       - python3-pyside2.qtuitools
-      - python3-requests
       - python3-vtk9
-      - calculix-ccx # FEM
-      - libcoin80c
-      - libfreeimage3
-      - libtbb2
-      - libvtk9.1
-      - elmerfem-csc # FEM
-      - openscad  # OpenSCAD
+
+      # --- Python Ecosystem & Tooling ---
+      - python3-defusedxml      # For Addon Manager security
+      - python3-git
+      - python3-requests
+      - python3-setuptools-scm
+
+      # --- File Format Support ---
+      - python3-collada         # For DAE file import/export
+
+      # --- Architecture-Specific Packages ---
+      - on amd64: [libpsm-infinipath1]
     override-build: |
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken2"
       if [ ! -e $SHIBOKEN_BIN_PATH ]; then
@@ -273,11 +269,8 @@ parts:
       - libcholmod3 # scikit-sparse
       - libcolamd2 # scikit-sparse
       - libsuitesparseconfig5 # scikit-sparse
-    python-packages:
-      - ifcopenshell == 0.8.2 # BIM
-      - opencamlib # CAM
-      - pip
-      - scikit-sparse
+    python-requirements:
+      - requirements.txt
     stage:
       - -pyvenv.cfg
       - -lib/python3.10/site-packages/scipy*
