@@ -1,4 +1,4 @@
-name: Reusable Daily Snap Publisher
+name: Reusable Snap Publisher
 
 on:
   workflow_call:
@@ -61,7 +61,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v5
         with:
-          name: snapcraft-log-${{ inputs.release_channel }}
+          name: snapcraft-log
           path: ${{ env.LOG_PATH }}/*
 
       # Run only on the main FreeCAD repository (not forks) and only if the build was successful.
@@ -75,9 +75,10 @@ jobs:
           release: ${{ inputs.release_channel }}
         continue-on-error: true
 
+      # Upload the final snap package as an artifact if the build was successful.
       - name: Upload snap package artifact
         if: ${{ steps.snapcraft-pack.outcome == 'success' }}
         uses: actions/upload-artifact@v5
         with:
-          name: snap-package-${{ inputs.release_channel }}
+          name: snap-package
           path: ${{ steps.snapcraft-pack.outputs.snap }}
