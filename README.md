@@ -21,13 +21,14 @@ Visit the upstream project: https://www.freecad.org/ and https://github.com/Free
 
 ## Channels
 
-![Stable version](https://img.shields.io/snapcraft/v/freecad/latest/stable?label=stable&color=1c862c) ![Edge version](https://img.shields.io/snapcraft/v/freecad/latest/edge?label=edge&color=gold) ![Beta version](https://img.shields.io/snapcraft/v/freecad/latest/beta?label=beta&color=gold) ![Candidate Version](https://img.shields.io/snapcraft/v/freecad/latest/candidate?label=candidate&color=gold)
+![Stable version](https://img.shields.io/snapcraft/v/freecad/latest/stable?label=stable&color=1c862c) ![Edge version](https://img.shields.io/snapcraft/v/freecad/latest/edge?label=edge&color=gold) ![Edge Qt 6 version](https://img.shields.io/snapcraft/v/freecad/latest/edge?label=edge/qt6&color=gold) ![Beta version](https://img.shields.io/snapcraft/v/freecad/latest/beta?label=beta&color=gold) ![Candidate Version](https://img.shields.io/snapcraft/v/freecad/latest/candidate?label=candidate&color=gold)
 
 
 There are multiple maintained channels for this snap:
 
 - `stable` contains the latest upstream release, i.e. the most recent tagged commit. **Use this if you don't know what you're doing.**
-- `edge` contains automated (daily) builds from the latest master commit. **Use this to test new features. Might be unstable.**
+- `edge` contains automated (daily) Qt 5 builds from the latest master commit. **Use this to test new features. Might be unstable.**
+- `edge/qt6` contains automated (daily) Qt 6 builds from the latest master commit. **Use this to test Qt 6 and new features. Might be unstable.**
 - `beta` contains automated weekly promotions from `edge`. **Use this if you want edge with fewer updates.**
 - `candidate` contains release candidate (RC) builds. **Use this if you want to test release candidates before a major release.**
 
