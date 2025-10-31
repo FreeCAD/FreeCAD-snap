@@ -1,4 +1,4 @@
-# Snap package for FreeCAD [![Publish Daily](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml/badge.svg)](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily.yml)
+# Snap package for FreeCAD [![Publish Daily](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily-qt6.yml/badge.svg)](https://github.com/FreeCAD/FreeCAD-snap/actions/workflows/publish-daily-qt6.yml)
 
 Source code repository for distributing FreeCAD on Linux using the [snap packaging format](https://snapcraft.io/docs).
 
