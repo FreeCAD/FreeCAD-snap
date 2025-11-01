@@ -5,14 +5,17 @@ on:
     types: [created]
 
 jobs:
-  publish-pr:
+  # This job acts as a gatekeeper. It checks the trigger conditions
+  # and outputs the PR number for the other jobs.
+  get_pr_data:
     # This job only runs if a maintainer/admin comments "/publish" on a pull request
     if: |
       github.event.issue.pull_request &&
       contains(github.event.comment.body, '/publish') &&
       (github.actor_permissions == 'admin' || github.actor_permissions == 'write')
     runs-on: ubuntu-latest
-
+    outputs:
+      pr_number: ${{ steps.get_number.outputs.pr_number }}
     steps:
       - name: 'Add reaction to acknowledge command'
         uses: actions/github-script@v6
@@ -25,37 +28,40 @@ jobs:
               content: 'rocket'
             });
 
-      - name: 'Get PR data'
-        id: pr_data
-        run: |
-          echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+      - name: 'Get PR number'
+        id: get_number
+        run: echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
 
-      - name: 'Checkout PR code'
-        uses: actions/checkout@v4
-        with:
-          ref: 'refs/pull/${{ steps.pr_data.outputs.pr_number }}/merge'
+  # This job's sole purpose is to call the reusable workflow.
+  # It is replaced entirely by the content of that workflow file.
+  publish:
+    needs: get_pr_data
+    uses: ./.github/workflows/reusable-publish.yml
+    with:
+      os: ubuntu-22.04
+      # Get the PR number from the output of the 'get_pr_data' job
+      release_channel: 'edge/pr-${{ needs.get_pr_data.outputs.pr_number }}'
+    # 'secrets: inherit' is a safe way to pass all the caller's secrets
+    # to the reusable workflow.
+    secrets: inherit
 
-      - name: 'Build and Publish to PR Channel'
-        id: publish
-        uses: ./.github/workflows/reusable-publish.yml
-        with:
-          os: ubuntu-22.04
-          release_channel: 'edge/pr-${{ steps.pr_data.outputs.pr_number }}'
-        secrets:
-          store_login: ${{ secrets.STORE_LOGIN }}
-
+  # This job runs only after the 'publish' job has succeeded.
+  # It provides the final feedback on the PR.
+  report_status:
+    needs: [get_pr_data, publish]
+    runs-on: ubuntu-latest
+    steps:
       - name: 'Add "snap-published" label to PR'
-        if: success() && steps.publish.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.pr_data.outputs.pr_number }}
+          PR_NUMBER: ${{ needs.get_pr_data.outputs.pr_number }}
         run: |
           gh pr edit ${PR_NUMBER} --add-label "snap-published"
 
       - name: 'Comment on PR with installation instructions'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.pr_data.outputs.pr_number }}
+          PR_NUMBER: ${{ needs.get_pr_data.outputs.pr_number }}
         run: |
           snap_channel="edge/pr-${PR_NUMBER}"
           comment_body="A build for this PR has been published to the Snap Store.
