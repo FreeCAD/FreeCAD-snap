@@ -236,6 +236,7 @@ parts:
       - python3-pyside6.qtnetwork
       - python3-pyside6.qtuitools
       - python3-requests
+      - python3-vtk9 # FEM
       - calculix-ccx # FEM
       - libcoin80t64
       - libfreeimage3
