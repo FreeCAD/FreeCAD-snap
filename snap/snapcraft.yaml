@@ -308,12 +308,16 @@ parts:
     build-snaps: [kf6-core24]
     override-prime: |
       set -eux
-      for snap in "kf6-core24"; do  # List all content-snaps you're using here
+      for snap in "kf6-core24"; do
         cd "/snap/$snap/current" && \
         find . -type f,l \
         -not -path "./usr/lib/python3/dist-packages/*" \
         -not -name 'libblas.so*' \
         -not -name 'liblapack.so*' \
+        -not -name 'mca_*.so' \         # <-- Protects shmem plugins
+        -not -name 'libmpi.so*' \       # <-- Protects core MPI libs
+        -not -name 'libopen-rte.so*' \  # <-- Protects runtime libs
+        -not -name 'libopen-pal.so*' \  # <-- Protects support libs
         -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
       done
       for cruft in bug lintian man; do
