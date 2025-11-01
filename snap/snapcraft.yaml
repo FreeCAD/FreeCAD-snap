@@ -311,14 +311,14 @@ parts:
       for snap in "kf6-core24"; do
         cd "/snap/$snap/current" && \
         find . -type f,l \
-        -not -path "./usr/lib/python3/dist-packages/*" \
-        -not -name 'libblas.so*' \
-        -not -name 'liblapack.so*' \
-        -not -name 'mca_*.so' \         # <-- Protects shmem plugins
-        -not -name 'libmpi.so*' \       # <-- Protects core MPI libs
-        -not -name 'libopen-rte.so*' \  # <-- Protects runtime libs
-        -not -name 'libopen-pal.so*' \  # <-- Protects support libs
-        -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
+          -not -path "./usr/lib/python3/dist-packages/*" \
+          -not -name 'libblas.so*' \
+          -not -name 'liblapack.so*' \
+          -not -name 'mca_*.so' \
+          -not -name 'libmpi.so*' \
+          -not -name 'libopen-rte.so*' \
+          -not -name 'libopen-pal.so*' \
+          -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
       done
       for cruft in bug lintian man; do
         rm -rf $CRAFT_PRIME/usr/share/$cruft
