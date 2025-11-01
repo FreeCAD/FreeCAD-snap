@@ -191,6 +191,7 @@ parts:
       - openscad
       - python3-matplotlib
       - python3-pivy
+      - python3-lark
 
     stage-packages:
       # --- Core C++ Runtime Libraries ---
@@ -227,6 +228,7 @@ parts:
       # --- Python Ecosystem & Tooling ---
       - python3-defusedxml      # For Addon Manager security
       - python3-git
+      - python3-lark
       - python3-requests
       - python3-setuptools-scm
 
