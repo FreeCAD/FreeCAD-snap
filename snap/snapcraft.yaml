@@ -216,6 +216,7 @@ parts:
       - python3-numpy
       - python3-matplotlib
       - python3-six
+      - python3-opencamlib # CAM, experimental (https://wiki.freecad.org/OpenCamLib)
       - python3-packaging # Path
       - python3-pyparsing
       - python3-setuptools-scm
