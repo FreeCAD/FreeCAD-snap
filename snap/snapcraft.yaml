@@ -27,29 +27,34 @@ compression: lzo
 license: LGPL-2.0-or-later
 
 layout:
-  /usr/bin/mpirun: # ElmerSolver_mpi
+  # --- Layouts for ElmerFEM / OpenMPI ---
+  /usr/share/elmersolver: # For Elmer's own data files (e.g., elements.def)
+    bind: $SNAP/usr/share/elmersolver
+  /usr/bin/mpirun: # For MPI commands like 'mpirun'
     symlink: $SNAP/usr/bin/orterun
-  /usr/share/openmpi:
+  /usr/share/openmpi: # For OpenMPI's help/data files
     symlink: $SNAP/usr/share/openmpi
-  /etc/openmpi:
+  /etc/openmpi: # For OpenMPI's system-wide configuration
     bind: $SNAP/etc/openmpi
-  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/openmpi:
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/openmpi: # For OpenMPI's component plugins
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/openmpi
-  /usr/bin/orted:
+  /usr/bin/orted: # For the OpenMPI runtime daemon
     symlink: $SNAP/usr/bin/orted
-  /usr/share/pmix:
+  /usr/share/pmix: # For PMIX (an OpenMPI dependency) data files
     symlink: $SNAP/usr/share/pmix
-  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pmix:
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pmix: # For PMIX libraries
     symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pmix
-  /etc/matplotlibrc:
+
+  # --- Layouts for other FreeCAD Dependencies ---
+  /etc/matplotlibrc: # For Matplotlib's configuration
     bind-file: $SNAP/etc/matplotlibrc
-  /usr/share/matplotlib:
+  /usr/share/matplotlib: # For Matplotlib's data files (fonts, styles)
     symlink: $SNAP/usr/share/matplotlib
-  /usr/bin/dot: # Graphviz for dependency graph
+  /usr/bin/dot: # For Graphviz (dependency graph)
     symlink: $SNAP/usr/bin/dot
-  /usr/bin/unflatten: # Graphviz for dependency graph
+  /usr/bin/unflatten: # For Graphviz (dependency graph)
     symlink: $SNAP/usr/bin/unflatten
-  /usr/share/povray-3.7: # Raytracing
+  /usr/share/povray-3.7: # For POV-Ray (raytracing workbench)
     symlink: $SNAP/usr/share/povray-3.7
 
 plugs:
@@ -108,8 +113,6 @@ apps:
     plugs: *plugs
 
 package-repositories:
-#  - type: apt
-#    ppa: elmer-csc-ubuntu/elmer-csc-ppa
   - type: apt
     components:
       - main
@@ -237,7 +240,6 @@ parts:
       - libfreeimage3
       - libtbb12
       - libvtk9.1t64
-#      - elmerfem-csc # FEM
       - openscad  # OpenSCAD
     override-build: |
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken6"
