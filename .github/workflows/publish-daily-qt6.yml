@@ -4,14 +4,24 @@ on:
   schedule:
     # Runs every day at 02:00 UTC to avoid overlapping with the Qt 5 build.
     - cron: "0 2 * * *"
-  workflow_dispatch: # Allows manual triggering
+  workflow_dispatch:
+    inputs:
+      checkout_ref:
+        description: 'The git ref to check out. Defaults to core24-kde-neon-6.'
+        required: false
+        type: string
+      release_channel:
+        description: 'The Snap Store channel to release to. Defaults to edge/qt6.'
+        required: false
+        type: string
 
 jobs:
   publish:
     uses: ./.github/workflows/reusable-publish.yml
     with:
       os: ubuntu-24.04
-      checkout_ref: core24-kde-neon-6
-      release_channel: edge/qt6
+      # If an input is provided, use it. Otherwise, fall back to the hardcoded default.
+      checkout_ref: ${{ github.event.inputs.checkout_ref || 'core24-kde-neon-6' }}
+      release_channel: ${{ github.event.inputs.release_channel || 'edge/qt6' }}
     secrets:
       store_login: ${{ secrets.STORE_LOGIN }}
