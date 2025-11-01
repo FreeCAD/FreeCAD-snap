@@ -1,0 +1,82 @@
+name: 'Publish PR from Command'
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  publish-pr:
+    # This job only runs if a maintainer/admin comments "/publish" on a pull request
+    if: |
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/publish') &&
+      (github.actor_permissions == 'admin' || github.actor_permissions == 'write')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Add reaction to acknowledge command'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'rocket'
+            });
+
+      - name: 'Get PR data'
+        id: pr_data
+        run: |
+          echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+
+      - name: 'Checkout PR code'
+        uses: actions/checkout@v4
+        with:
+          ref: 'refs/pull/${{ steps.pr_data.outputs.pr_number }}/merge'
+
+      - name: 'Build and Publish to PR Channel'
+        id: publish
+        uses: ./.github/workflows/reusable-publish.yml
+        with:
+          os: ubuntu-22.04
+          release_channel: 'edge/pr-${{ steps.pr_data.outputs.pr_number }}'
+        secrets:
+          store_login: ${{ secrets.STORE_LOGIN }}
+
+      - name: 'Add "snap-published" label to PR'
+        if: success() && steps.publish.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr_data.outputs.pr_number }}
+        run: |
+          gh pr edit ${PR_NUMBER} --add-label "snap-published"
+
+      - name: 'Comment on PR with installation instructions'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr_data.outputs.pr_number }}
+        run: |
+          snap_channel="edge/pr-${PR_NUMBER}"
+          comment_body="A build for this PR has been published to the Snap Store.
+
+          The recommended way to test this build is to use a parallel installation, which will not affect your existing \`freecad\` snap installation.
+
+          ## Installation and Testing Instructions
+
+          \`\`\`bash
+          # (One-time setup) Enable the experimental parallel-instances feature in snapd.
+          # You only need to run this command once on your system.
+          sudo snap set system experimental.parallel-instances=true
+
+          # Install this PR's snap alongside your current FreeCAD installation.
+          # The instance will be named after the PR number.
+          sudo snap install --channel=${snap_channel} freecad_pr${PR_NUMBER}
+
+          # Run the newly installed PR build.
+          freecad_pr${PR_NUMBER}
+
+          # When you are finished testing, you can remove this specific build.
+          sudo snap remove freecad_pr${PR_NUMBER}
+          \`\`\`"
+          gh pr comment ${PR_NUMBER} --body "$comment_body"
