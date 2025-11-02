@@ -226,6 +226,7 @@ parts:
       - python3-vtk9
 
       # --- Python Ecosystem & Tooling ---
+      - libpython3.10-stdlib
       - python3-defusedxml      # For Addon Manager security
       - python3-git
       - python3-lark
