@@ -267,20 +267,8 @@ parts:
     plugin: python
     source: .
     source-type: local
-#    build-packages:
-#      - libsuitesparse-dev
-#    stage-packages:
-#      - python3-distutils # pip
-#      - libamd2 # scikit-sparse
-#      - libcamd2 # scikit-sparse
-#      - libccolamd2 # scikit-sparse
-#      - libcholmod3 # scikit-sparse
-#      - libcolamd2 # scikit-sparse
-#      - libsuitesparseconfig5 # scikit-sparse
-    python-packages:
-      - ifcopenshell # BIM
-      - pip
-#      - scikit-sparse
+    python-requirements:
+      - requirements.txt
     stage:
       - -pyvenv.cfg
       - -lib/python3.12/site-packages/scipy*
