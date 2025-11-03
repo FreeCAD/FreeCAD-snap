@@ -187,47 +187,24 @@ parts:
       - python3-pivy
       - python3-matplotlib
     stage-packages:
-      - libaec0
-      - libboost-filesystem1.83.0
-      - libboost-program-options1.83.0
-      - libboost-python1.83.0
       - libboost-regex1.83.0
       - libboost-system1.83.0
       - libboost-thread1.83.0
       - libboost-date-time1.83.0
-      - libhdf5-openmpi-103-1t64
-      - libhwloc15
 #      - libilmbase25      # <= Unavailable in noble, still missing: libHalf, libIexMath
-      - libimath-3-1-29t64 # Potential partial replacement
-      - libjxr0t64
       - libmedc11t64
       - libmed11
-      - libopenexr-3-1-30  # Potential partial replacement
-      - libopenmpi3t64
       - on amd64: [libpsm-infinipath1]
       - libpython3.12
-      - libpython3.12-minimal
       - libpython3.12-stdlib
-      - libraw23t64
-      - libspnav0
-      - libsz2
       - libxerces-c3.2t64
       - libyaml-cpp0.8
-      - python3-tk # FEM
       - python3-yaml # FEM
-#      - python3-numba # FEM (fcVM-workbench)
-      - python3-scipy # FEM
       - python3-lark
-      - python3-numpy
       - python3-matplotlib
-      - python3-six
       - python3-opencamlib # CAM, experimental (https://wiki.freecad.org/OpenCamLib)
-      - python3-packaging # Path
-      - python3-pyparsing
       - python3-setuptools-scm
       - python3-collada # DAE import
-      - python3-cycler
-      - python3-dateutil
       - python3-git
       - python3-ply # OpenSCAD
       - python3-pivy
@@ -240,10 +217,7 @@ parts:
       - python3-requests
       - python3-vtk9 # FEM
       - calculix-ccx # FEM
-      - libcoin80t64
       - libfreeimage3
-      - libtbb12
-      - libvtk9.1t64
       - openscad  # OpenSCAD
     override-build: |
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken6"
