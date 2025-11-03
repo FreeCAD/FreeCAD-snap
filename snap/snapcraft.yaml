@@ -51,9 +51,9 @@ layout:
   /usr/share/matplotlib: # For Matplotlib's data files (fonts, styles)
     symlink: $SNAP/usr/share/matplotlib
   /usr/bin/dot: # For Graphviz (dependency graph)
-    symlink: $SNAP/usr/bin/dot
+    symlink: $SNAP/kf6/usr/bin/dot
   /usr/bin/unflatten: # For Graphviz (dependency graph)
-    symlink: $SNAP/usr/bin/unflatten
+    symlink: $SNAP/kf6/usr/bin/unflatten
   /usr/share/povray-3.7: # For POV-Ray (raytracing workbench)
     symlink: $SNAP/usr/share/povray-3.7
 
@@ -75,14 +75,13 @@ environment:
   FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
-  GIT_CONFIG_NOSYSTEM: 1
+  GIT_CONFIG_NOSYSTEM: "1"
   ELMER_HOME: $SNAP/usr
   PYTHONPYCACHEPREFIX: $SNAP_USER_COMMON/.pycache
   PYTHONUSERBASE: $SNAP_USER_COMMON/.local
-  PIP_USER: 1
+  PIP_USER: "1"
   PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.12/site-packages:$SNAP/lib/python3.12/site-packages:$SNAP/usr/lib/python3/dist-packages
   SNAP_PYTHONPATH: *pypath
-  DISABLE_WAYLAND: 1 # Coin3D cannot run on Wayland
   WAYLAND_DISPLAY: unset # https://forum.snapcraft.io/t/kde-neon-6-extension-snap-qt-qpa-platform-overwritten/46054/8
   POVINI: $SNAP/etc/povray/3.7/povray.ini # Raytracing
 
@@ -183,49 +182,28 @@ parts:
       - pybind11-dev
       - libfreeimage-dev
       - openscad
+      - python3-lark
       - python3-pivy
       - python3-matplotlib
     stage-packages:
-      - libaec0
-      - libboost-filesystem1.83.0
-      - libboost-program-options1.83.0
-      - libboost-python1.83.0
       - libboost-regex1.83.0
       - libboost-system1.83.0
       - libboost-thread1.83.0
       - libboost-date-time1.83.0
-      - libhdf5-openmpi-103-1t64
-      - libhwloc15
 #      - libilmbase25      # <= Unavailable in noble, still missing: libHalf, libIexMath
-      - libimath-3-1-29t64 # Potential partial replacement
-      - libjxr0t64
       - libmedc11t64
       - libmed11
-      - libopenexr-3-1-30  # Potential partial replacement
-      - libopenmpi3t64
       - on amd64: [libpsm-infinipath1]
       - libpython3.12
-      - libpython3.12-minimal
       - libpython3.12-stdlib
-      - libraw23t64
-      - libspnav0
-      - libsz2
       - libxerces-c3.2t64
       - libyaml-cpp0.8
-      - python3-tk # FEM
       - python3-yaml # FEM
-#      - python3-numba # FEM (fcFEM)
-      - python3-scipy # FEM
-      - python3-numpy
+      - python3-lark
       - python3-matplotlib
-      - python3-six
       - python3-opencamlib # CAM, experimental (https://wiki.freecad.org/OpenCamLib)
-      - python3-packaging # Path
-      - python3-pyparsing
       - python3-setuptools-scm
       - python3-collada # DAE import
-      - python3-cycler
-      - python3-dateutil
       - python3-git
       - python3-ply # OpenSCAD
       - python3-pivy
@@ -238,10 +216,7 @@ parts:
       - python3-requests
       - python3-vtk9 # FEM
       - calculix-ccx # FEM
-      - libcoin80t64
       - libfreeimage3
-      - libtbb12
-      - libvtk9.1t64
       - openscad  # OpenSCAD
     override-build: |
       SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken6"
@@ -267,43 +242,15 @@ parts:
     plugin: python
     source: .
     source-type: local
-#    build-packages:
-#      - libsuitesparse-dev
-#    stage-packages:
-#      - python3-distutils # pip
-#      - libamd2 # scikit-sparse
-#      - libcamd2 # scikit-sparse
-#      - libccolamd2 # scikit-sparse
-#      - libcholmod3 # scikit-sparse
-#      - libcolamd2 # scikit-sparse
-#      - libsuitesparseconfig5 # scikit-sparse
-    python-packages:
-      - ifcopenshell # BIM
-      - pip
-#      - scikit-sparse
+    python-requirements:
+      - requirements.txt
     stage:
       - -pyvenv.cfg
       - -lib/python3.12/site-packages/scipy*
       - -lib/python3.12/site-packages/numpy*
 
-  graphviz:
-    plugin: nil
-    build-packages:
-      - graphviz
-    stage-packages:
-      - graphviz
-    override-build: |
-      # Disable dot configuration, there is another dot in the kde6-core24 snap
-      # For some reason that's the one that's called
-      # The config file seems to already exist, though, so let's keep the copy
-      # operation
-      # ${CRAFT_PART_INSTALL}/usr/bin/dot -c
-      cp \
-        /usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/graphviz/config* \
-        ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/graphviz/
-
   cleanup:
-    after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
+    after: [stub-chown, freecad, python-packages, snap-setup-mod]
     plugin: nil
     build-snaps: [kf6-core24]
     override-prime: |
