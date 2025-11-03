@@ -51,9 +51,9 @@ layout:
   /usr/share/matplotlib: # For Matplotlib's data files (fonts, styles)
     symlink: $SNAP/usr/share/matplotlib
   /usr/bin/dot: # For Graphviz (dependency graph)
-    symlink: $SNAP/usr/bin/dot
+    symlink: $SNAP/kf6/usr/bin/dot
   /usr/bin/unflatten: # For Graphviz (dependency graph)
-    symlink: $SNAP/usr/bin/unflatten
+    symlink: $SNAP/kf6/usr/bin/unflatten
   /usr/share/povray-3.7: # For POV-Ray (raytracing workbench)
     symlink: $SNAP/usr/share/povray-3.7
 
@@ -249,24 +249,8 @@ parts:
       - -lib/python3.12/site-packages/scipy*
       - -lib/python3.12/site-packages/numpy*
 
-  graphviz:
-    plugin: nil
-    build-packages:
-      - graphviz
-    stage-packages:
-      - graphviz
-    override-build: |
-      # Disable dot configuration, there is another dot in the kde6-core24 snap
-      # For some reason that's the one that's called
-      # The config file seems to already exist, though, so let's keep the copy
-      # operation
-      # ${CRAFT_PART_INSTALL}/usr/bin/dot -c
-      cp \
-        /usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/graphviz/config* \
-        ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/graphviz/
-
   cleanup:
-    after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
+    after: [stub-chown, freecad, python-packages, snap-setup-mod]
     plugin: nil
     build-snaps: [kf6-core24]
     override-prime: |
