@@ -84,6 +84,7 @@ environment:
   SNAP_PYTHONPATH: *pypath
   WAYLAND_DISPLAY: unset # https://forum.snapcraft.io/t/kde-neon-6-extension-snap-qt-qpa-platform-overwritten/46054/8
   POVINI: $SNAP/etc/povray/3.7/povray.ini # Raytracing
+  GVPLUGIN_PATH: "$SNAP/kf6/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz"
 
 apps:
   freecad:
