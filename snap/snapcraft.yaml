@@ -75,14 +75,14 @@ environment:
   FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
-  GIT_CONFIG_NOSYSTEM: 1
+  GIT_CONFIG_NOSYSTEM: "1"
   ELMER_HOME: $SNAP/usr
   PYTHONPYCACHEPREFIX: $SNAP_USER_COMMON/.pycache
   PYTHONUSERBASE: $SNAP_USER_COMMON/.local
-  PIP_USER: 1
+  PIP_USER: "1"
   PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.12/site-packages:$SNAP/lib/python3.12/site-packages:$SNAP/usr/lib/python3/dist-packages
   SNAP_PYTHONPATH: *pypath
-  DISABLE_WAYLAND: 1 # Coin3D cannot run on Wayland
+  DISABLE_WAYLAND: "1" # Coin3D cannot run on Wayland
   WAYLAND_DISPLAY: unset # https://forum.snapcraft.io/t/kde-neon-6-extension-snap-qt-qpa-platform-overwritten/46054/8
   POVINI: $SNAP/etc/povray/3.7/povray.ini # Raytracing
 
