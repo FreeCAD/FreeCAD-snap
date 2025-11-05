@@ -54,8 +54,6 @@ layout:
     symlink: $SNAP/kf6/usr/bin/dot
   /usr/bin/unflatten: # For Graphviz (dependency graph)
     symlink: $SNAP/kf6/usr/bin/unflatten
-  /kf6/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz/config6a: # For Graphviz (dependency graph)
-    bind-file: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz/config6a
   /usr/share/povray-3.7: # For POV-Ray (raytracing workbench)
     symlink: $SNAP/usr/share/povray-3.7
 
@@ -84,6 +82,7 @@ environment:
   PIP_USER: "1"
   PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.12/site-packages:$SNAP/lib/python3.12/site-packages:$SNAP/usr/lib/python3/dist-packages
   SNAP_PYTHONPATH: *pypath
+  GVBINDIR: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz-runtime"
   WAYLAND_DISPLAY: unset # https://forum.snapcraft.io/t/kde-neon-6-extension-snap-qt-qpa-platform-overwritten/46054/8
   POVINI: $SNAP/etc/povray/3.7/povray.ini # Raytracing
 
@@ -251,20 +250,41 @@ parts:
       - -lib/python3.12/site-packages/scipy*
       - -lib/python3.12/site-packages/numpy*
 
-  graphviz:
+  # The kf6-core24 snap provides the Qt6 libraries via the kde-neon-6 extension. However, it also
+  # incidentally brings in graphviz. The graphviz installation in kf6-core24 is incomplete, missing
+  # the generated config file. That installation also cannot be overriden, so we need to make it
+  # work. The config file location is hardcoded into the graphviz binaries, thus we provide it
+  # ourselves and tell graphviz where to find it via the the GVBINDIR environment variable in the
+  # `freecad` part.
+  #
+  # This part creates a self-contained graphviz CLI runtime environment with all the necessary
+  # plugins and the config file. The reason we need to provide the plugin libraries is that using
+  # the GVBINDIR environment variable method we're employing expects both the config file and the
+  # plugins to be in the same directory.
+  graphviz-config:
     plugin: nil
     build-packages:
       - graphviz
-    stage-packages:
-      - graphviz
+    build-environment:
+      - LD_LIBRARY_PATH: "" # Unset to avoid picking up the kf6-core24 libraries during build
     override-build: |
-      ${CRAFT_PART_INSTALL}/usr/bin/dot -c
-      cp \
-        /usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/graphviz/config* \
-        ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/graphviz/
+      # 1. Generate the config file using the binary from /usr/bin/dot.
+      # This binary is provided by the build-packages: [graphviz] directive.
+      dot -c
+
+      # 2. Create the directory for the self-contained graphviz environment.
+      mkdir -p $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz-runtime
+
+      # 3. Copy the generated config file into that directory.
+      cp /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz/config6a \
+         $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz-runtime/
+
+      # 4. Copy all the plugin libraries into that directory, making it self-sufficient.
+      cp /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz/*.so* \
+         $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz-runtime/
 
   cleanup:
-    after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz]
+    after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz-config]
     plugin: nil
     build-snaps: [kf6-core24]
     override-prime: |
