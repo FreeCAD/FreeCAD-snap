@@ -22,6 +22,7 @@ jobs:
     uses: ./.github/workflows/reusable-publish.yml
     with:
       os: ubuntu-22.04
+      arch: amd64
       # If a checkout_ref is provided by the dispatch, use it. Otherwise, use nothing (which means default branch).
       checkout_ref: ${{ github.event.inputs.checkout_ref }}
       # Use the release_channel from the dispatch input. The default is already 'edge'.
