@@ -1,2 +1,2 @@
-ifcopenshell==0.8.2    # BIM
+ifcopenshell==0.8.2; platform_machine == 'x86_64'    # BIM
 pip==25.3
