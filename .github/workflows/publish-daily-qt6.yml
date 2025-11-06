@@ -28,7 +28,8 @@ jobs:
     uses: ./.github/workflows/reusable-publish.yml
     with:
       os: ${{ matrix.os }}
-      # If an input is provided, use it. Otherwise, fall back to the hardcoded default.
+      # Pass the arch from the matrix to the reusable workflow
+      arch: ${{ matrix.arch }}
       checkout_ref: ${{ github.event.inputs.checkout_ref || 'core24-kde-neon-6' }}
       release_channel: ${{ github.event.inputs.release_channel || 'edge/qt6' }}
     secrets:

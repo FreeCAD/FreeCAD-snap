@@ -7,6 +7,10 @@ on:
       os:
         type: string
         required: true
+      # The architecture to build for (e.g., "amd64", "arm64").
+      arch:
+        type: string
+        required: true
       # The specific git ref (branch or tag) to check out. Uses the default if not provided.
       checkout_ref:
         type: string
@@ -54,14 +58,14 @@ jobs:
         uses: canonical/action-build@v1
         with:
           snapcraft-channel: latest/stable
-          snapcraft-args: --verbosity=trace
+          snapcraft-args: --destructive-mode --verbose
 
       # Upload logs regardless of build success or failure.
       - name: Upload log artifact
         if: always()
         uses: actions/upload-artifact@v5
         with:
-          name: snapcraft-log
+          name: snapcraft-log-${{ inputs.arch }}
           path: ${{ env.LOG_PATH }}/*
 
       # Run only on the main FreeCAD repository (not forks) and only if the build was successful.
@@ -80,5 +84,5 @@ jobs:
         if: ${{ steps.snapcraft-pack.outcome == 'success' }}
         uses: actions/upload-artifact@v5
         with:
-          name: snap-package
+          name: snap-package-${{ inputs.arch }}
           path: ${{ steps.snapcraft-pack.outputs.snap }}
