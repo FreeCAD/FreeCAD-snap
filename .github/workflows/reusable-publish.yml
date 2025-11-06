@@ -35,7 +35,9 @@ on:
         required: true
 
 env:
-  LOG_PATH: /home/runner/.local/state/snapcraft/log/
+  # Log path for LXC-containerized builds: /home/runner/.local/state/snapcraft/log/
+  # Log path for non-containerized builds: /root/.local/state/snapcraft/log/
+  LOG_PATH: /root/.local/state/snapcraft/log/
 
 jobs:
   publish:
