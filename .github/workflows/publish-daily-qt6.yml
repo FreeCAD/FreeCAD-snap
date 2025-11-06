@@ -17,9 +17,17 @@ on:
 
 jobs:
   publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            arch: arm64
     uses: ./.github/workflows/reusable-publish.yml
     with:
-      os: ubuntu-24.04
+      os: ${{ matrix.os }}
       # If an input is provided, use it. Otherwise, fall back to the hardcoded default.
       checkout_ref: ${{ github.event.inputs.checkout_ref || 'core24-kde-neon-6' }}
       release_channel: ${{ github.event.inputs.release_channel || 'edge/qt6' }}
