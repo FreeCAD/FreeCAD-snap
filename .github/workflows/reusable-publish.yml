@@ -34,11 +34,6 @@ on:
       store_login:
         required: true
 
-env:
-  # Log path for LXC-containerized builds: /home/runner/.local/state/snapcraft/log/
-  # Log path for non-containerized builds: /root/.local/state/snapcraft/log/
-  LOG_PATH: /root/.local/state/snapcraft/log/
-
 jobs:
   publish:
     runs-on: ${{ inputs.os }}
@@ -83,11 +78,21 @@ jobs:
 
       # Change ownership of the log directory back to the runner user
       # so the upload-artifact action can read it.
-      - name: Change log ownership
+      - name: Prepare log file for upload
+        id: prepare-logs
         if: always()
         continue-on-error: true
+        env:
+          # Log path for LXC-containerized builds: /home/runner/.local/state/snapcraft/log/
+          # Log path for non-containerized builds: /root/.local/state/snapcraft/log/
+          SOURCE_LOG_PATH: /root/.local/state/snapcraft/log
+          DEST_PARENT: /home/runner
         run: |
-          sudo chown -R runner:runner ${{ env.LOG_PATH }}
+          LOG_PATH="${DEST_PARENT}/$(basename "$SOURCE_LOG_PATH")"
+
+          sudo cp -R "$SOURCE_LOG_PATH" "$DEST_PARENT"
+          sudo chown -R runner:runner "$LOG_PATH"
+          echo "LOG_PATH=${LOG_PATH}" >> $GITHUB_OUTPUT
 
       # Upload logs regardless of build success or failure.
       - name: Upload log artifact
@@ -96,7 +101,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: snapcraft-log-${{ inputs.arch }}
-          path: ${{ env.LOG_PATH }}/*
+          path: ${{ steps.prepare-logs.outputs.LOG_PATH }}/*
 
       # Run only on the main FreeCAD repository (not forks) and only if the build was successful.
       - name: Publish snap to Snap Store
