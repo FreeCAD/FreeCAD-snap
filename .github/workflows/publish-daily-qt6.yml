@@ -2,18 +2,19 @@ name: Publish Daily Qt 6
 
 on:
   schedule:
-    # Runs every day at 02:00 UTC to avoid overlapping with the Qt 5 build.
-    - cron: "0 2 * * *"
+    # Runs every day at 00:00 UTC.
+    - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       checkout_ref:
-        description: 'The git ref to check out. Defaults to core24-kde-neon-6.'
+        description: 'The git ref to check out. Defaults to the default branch.'
         required: false
         type: string
       release_channel:
-        description: 'The Snap Store channel to release to. Defaults to edge/qt6.'
+        description: 'The Snap Store channel to release to. Defaults to edge.'
         required: false
         type: string
+        default: 'edge'
 
 jobs:
   publish:
@@ -30,7 +31,9 @@ jobs:
       os: ${{ matrix.os }}
       # Pass the arch from the matrix to the reusable workflow
       arch: ${{ matrix.arch }}
-      checkout_ref: ${{ github.event.inputs.checkout_ref || 'core24-kde-neon-6' }}
-      release_channel: ${{ github.event.inputs.release_channel || 'edge/qt6' }}
+      # If a checkout_ref is provided by the dispatch, use it. Otherwise, use nothing (which means default branch).
+      checkout_ref: ${{ github.event.inputs.checkout_ref }}
+      # Use the release_channel from the dispatch input. The default is already 'edge'.
+      release_channel: ${{ github.event.inputs.release_channel }}
     secrets:
       store_login: ${{ secrets.STORE_LOGIN }}
