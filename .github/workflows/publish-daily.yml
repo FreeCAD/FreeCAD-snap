@@ -1,0 +1,47 @@
+name: Publish Daily
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Every day at 0:00
+  workflow_dispatch: # or manually
+
+env:
+  LOG_PATH: /home/runner/.local/state/snapcraft/log/
+
+jobs:
+  publish_amd64:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout packaging repository
+      uses: actions/checkout@v4
+
+    - name: Install Snapcraft and build snap
+      uses: snapcore/action-build@v1
+      with:
+        snapcraft-channel: latest/edge # TODO: change back to stable for Snapcraft 8.8: https://github.com/canonical/snapcraft/pull/5261#issuecomment-2684969594
+        snapcraft-args: --verbose
+      id: snapcraft
+      continue-on-error: true
+
+    - name: Upload log artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: snapcraft-log
+        path: ${{ env.LOG_PATH }}/*
+
+    - name: Publish snap
+      continue-on-error: true
+      uses: snapcore/action-publish@v1
+      if: ${{ (github.repository_owner == 'FreeCAD') && (steps.snapcraft.outcome == 'success') }}
+      env:
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
+      with:
+        snap: ${{ steps.snapcraft.outputs.snap }}
+        release: edge
+
+    - name: Upload snap package artifact
+      if: ${{ steps.snapcraft.outcome == 'success' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: snap-package
+        path: ${{ steps.snapcraft.outputs.snap }}

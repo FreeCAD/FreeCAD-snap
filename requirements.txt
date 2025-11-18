@@ -1,4 +1,2 @@
-ifcopenshell==0.8.2    # BIM
-opencamlib==2023.1.11  # CAM
+ifcopenshell==0.8.2; platform_machine == 'x86_64'    # BIM
 pip==25.3
-scikit-sparse==0.4.16
