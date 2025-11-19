@@ -141,6 +141,7 @@ parts:
   freecad:
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
+    source-branch: releases/FreeCAD-1-1
     cmake-parameters:
       - -DFREECAD_QT_VERSION=6
       - -DCMAKE_INSTALL_PREFIX=/usr
