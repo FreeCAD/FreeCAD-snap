@@ -4,12 +4,38 @@ on:
   push:
     branches:
       - stable
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch:
+    inputs:
+      checkout_ref:
+        description: 'The git ref to check out. Defaults to the stable branch.'
+        required: false
+        type: string
+        default: 'stable'
+      release_channel:
+        description: 'The Snap Store channel to release to. Defaults to the candidate channel.'
+        required: false
+        type: string
+        default: 'candidate'
 
 jobs:
   publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            arch: arm64
     uses: ./.github/workflows/reusable-publish.yml
     with:
-      os: ubuntu-22.04
-      release_channel: candidate
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      # If a checkout_ref is provided by the dispatch, use it. Otherwise, use the stable branch).
+      checkout_ref: ${{ github.event.inputs.checkout_ref || 'stable' }}
+      # Use the release_channel from the dispatch input; otherwise fallback to 'candidate'.
+      release_channel: ${{ github.event.inputs.release_channel || 'candidate' }}
     secrets:
       store_login: ${{ secrets.STORE_LOGIN }}
