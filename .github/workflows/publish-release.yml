@@ -4,19 +4,37 @@ on:
   push:
     branches:
       - stable
+  workflow_dispatch:
+    inputs:
+      checkout_ref:
+        description: 'The git ref to check out. Defaults to the stable branch.'
+        required: false
+        type: string
+        default: 'stable'
+      release_channel:
+        description: 'The Snap Store channel to release to. Defaults to the candidate channel.'
+        required: false
+        type: string
+        default: 'candidate'
 
 jobs:
-  publish_amd64:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: canonical/action-build@v1
-      id: build
-      with:
-        snapcraft-args: "--enable-experimental-extensions"
-    - uses: snapcore/action-publish@v1
-      env:
-        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-      with:
-        snap: ${{ steps.build.outputs.snap }}
-        release: candidate
+  publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+    uses: ./.github/workflows/reusable-publish.yml
+    with:
+      os: ${{ matrix.os }}
+      # Pass the arch from the matrix to the reusable workflow
+      arch: ${{ matrix.arch }}
+      # If a checkout_ref is provided by the dispatch, use it. Otherwise, use nothing (which means stable branch).
+      checkout_ref: ${{ github.event.inputs.checkout_ref }}
+      # Use the release_channel from the dispatch input. The default is already 'candidate'.
+      release_channel: ${{ github.event.inputs.release_channel }}
+    secrets:
+      store_login: ${{ secrets.STORE_LOGIN }}

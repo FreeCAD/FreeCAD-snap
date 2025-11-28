@@ -9,7 +9,7 @@ jobs:
   publish_amd64:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: install snapcraft
       run: sudo snap install snapcraft --classic
     - name: promote from edge to beta
