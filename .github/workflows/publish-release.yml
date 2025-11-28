@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - stable
+    paths-ignore:
+      - '**.md'
   workflow_dispatch:
     inputs:
       checkout_ref:
@@ -30,11 +32,10 @@ jobs:
     uses: ./.github/workflows/reusable-publish.yml
     with:
       os: ${{ matrix.os }}
-      # Pass the arch from the matrix to the reusable workflow
       arch: ${{ matrix.arch }}
-      # If a checkout_ref is provided by the dispatch, use it. Otherwise, use nothing (which means stable branch).
-      checkout_ref: ${{ github.event.inputs.checkout_ref }}
-      # Use the release_channel from the dispatch input. The default is already 'candidate'.
-      release_channel: ${{ github.event.inputs.release_channel }}
+      # If a checkout_ref is provided by the dispatch, use it. Otherwise, use the stable branch).
+      checkout_ref: ${{ github.event.inputs.checkout_ref || 'stable' }}
+      # Use the release_channel from the dispatch input; otherwise fallback to 'candidate'.
+      release_channel: ${{ github.event.inputs.release_channel || 'candidate' }}
     secrets:
       store_login: ${{ secrets.STORE_LOGIN }}
