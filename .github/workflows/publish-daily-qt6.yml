@@ -2,48 +2,38 @@ name: Publish Daily Qt 6
 
 on:
   schedule:
-    - cron: "0 0 * * *" # Every day at 0:00
-  workflow_dispatch: # or manually
-
-env:
-  LOG_PATH: /home/runner/.local/state/snapcraft/log/
+    # Runs every day at 00:00 UTC.
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+    inputs:
+      checkout_ref:
+        description: 'The git ref to check out. Defaults to the default branch.'
+        required: false
+        type: string
+      release_channel:
+        description: 'The Snap Store channel to release to. Defaults to edge.'
+        required: false
+        type: string
+        default: 'edge'
 
 jobs:
-  publish_amd64:
-    runs-on: ubuntu-24.04
-    steps:
-    - name: Checkout packaging repository
-      uses: actions/checkout@v4
-      with:
-        ref: core24-kde-neon-6
-
-    - name: Install Snapcraft and build snap
-      uses: snapcore/action-build@v1
-      with:
-        snapcraft-channel: latest/edge
-        snapcraft-args: --verbose
-      id: snapcraft
-      continue-on-error: true
-
-    - name: Upload log artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: snapcraft-log
-        path: ${{ env.LOG_PATH }}/*
-
-    - name: Publish snap
-      continue-on-error: true
-      uses: snapcore/action-publish@v1
-      if: ${{ (github.repository_owner == 'FreeCAD') && (steps.snapcraft.outcome == 'success') }}
-      env:
-        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-      with:
-        snap: ${{ steps.snapcraft.outputs.snap }}
-        release: edge/qt6
-
-    - name: Upload snap package artifact
-      if: ${{ steps.snapcraft.outcome == 'success' }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: snap-package
-        path: ${{ steps.snapcraft.outputs.snap }}
+  publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+    uses: ./.github/workflows/reusable-publish.yml
+    with:
+      os: ${{ matrix.os }}
+      # Pass the arch from the matrix to the reusable workflow
+      arch: ${{ matrix.arch }}
+      # If a checkout_ref is provided by the dispatch, use it. Otherwise, use nothing (which means default branch).
+      checkout_ref: ${{ github.event.inputs.checkout_ref }}
+      # Use the release_channel from the dispatch input. The default is already 'edge'.
+      release_channel: ${{ github.event.inputs.release_channel }}
+    secrets:
+      store_login: ${{ secrets.STORE_LOGIN }}

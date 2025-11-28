@@ -1,0 +1,30 @@
+name: Publish Daily Qt 5
+
+on:
+  schedule:
+    # Runs every day at 02:00 UTC to avoid overlapping with the Qt 6 build.
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      checkout_ref:
+        description: 'The git ref to check out.'
+        required: false
+        type: string
+      release_channel:
+        description: 'The Snap Store channel to release to. Defaults to edge/qt5.'
+        required: false
+        type: string
+        default: 'edge/qt5'
+
+
+jobs:
+  publish:
+    uses: ./.github/workflows/reusable-publish.yml
+    with:
+      os: ubuntu-22.04
+      arch: amd64
+      # If a checkout_ref is provided by the dispatch, use it.
+      checkout_ref: ${{ github.event.inputs.checkout_ref || 'core22-kde-neon' }}
+      release_channel: ${{ github.event.inputs.release_channel || 'edge/qt5' }}
+    secrets:
+      store_login: ${{ secrets.STORE_LOGIN }}

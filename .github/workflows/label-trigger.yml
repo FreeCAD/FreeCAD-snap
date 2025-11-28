@@ -1,0 +1,64 @@
+name: Manual PR Publish Trigger
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  pr-label-trigger:
+    # This job only runs if the event is a label being added to a Pull Request.
+    if: github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch build for PR branch
+        if: github.event.label.name == 'publish-qt5' || github.event.label.name == 'publish-qt6'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const label = context.payload.label.name;
+            const prNumber = context.issue.number;
+
+            // 1. Determine which workflow to call and its parameters
+            const workflow_id = (label === 'publish-qt5') ? 'publish-daily-qt5.yml' : 'publish-daily-qt6.yml';
+
+            // 2. Check user's permission level
+            const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner: context.repo.owner, repo: context.repo.repo, username: context.actor });
+            if (!['admin', 'write', 'maintain'].includes(permission.permission)) {
+              return core.setFailed(`User @${context.actor} does not have sufficient permission.`);
+            }
+
+            // 3. Get the PR's source branch
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber });
+            const prBranch = pr.head.ref;
+
+            // 4. Construct the Snap Store release channel for this PR
+            const releaseChannel = `edge/pr${prNumber}`;
+
+            // 5. Trigger the target workflow with the correct inputs
+            console.log(`Triggering '${workflow_id}' for PR branch '${prBranch}' to be published to '${releaseChannel}'`);
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: workflow_id,
+              ref: 'main', // The dispatch action must be triggered from a branch that has the workflow file
+              inputs: {
+                checkout_ref: prBranch,
+                release_channel: releaseChannel
+              }
+            });
+
+            // 6. Add a confirmation comment to the PR
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber,
+              body: `✅ \`${label}\` build triggered for branch \`${prBranch}\` by @${context.actor}. The snap will be published to the \`${releaseChannel}\` channel.`
+            });
+
+      - name: Remove trigger label
+        if: success() && (github.event.label.name == 'publish-qt5' || github.event.label.name == 'publish-qt6')
+        uses: actions/github-script@v8
+        with:
+          script: |
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, name: context.payload.label.name });
