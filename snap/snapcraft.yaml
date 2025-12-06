@@ -140,7 +140,42 @@ parts:
     organize:
       "*": usr/Mod/SnapSetup/
 
+  # The kde-neon-6 extension bundles a specific version of Qt but relies on
+  # the Neon archive for PySide. The archive frequently updates PySide to
+  # newer versions that are incompatible with the extension's bundled Qt
+  # libraries. Since Snapcraft installs build-packages before this part runs
+  # (pulling the latest incompatible versions), this part configures APT to
+  # pin the compatible 6.9 series and forcibly downgrades the packages.
+  setup-apt-pinning:
+    plugin: nil
+    override-pull: |
+      craftctl default
+
+      # Write the preferences file to /etc/apt/preferences.d/
+      # Use Priority 1001 to force this version even if a newer one exists
+      cat <<EOF > /etc/apt/preferences.d/snapcraft-pyside-pin
+
+      Package: *pyside6* *shiboken6*
+      Pin: version 6.9.*
+      Pin-Priority: 1001
+
+      EOF
+
+      apt-get update
+
+      # Snapcraft installs 'build-packages' during the initialization phase,
+      # before this script executes. As a result, the latest versions (6.10)
+      # are already installed if the packages are listed there. We install
+      # them here instead to force apt to apply the new preference file and
+      # effectively downgrade these packages to 6.9.
+      apt-get install -y \
+          libpyside6-dev \
+          libshiboken6-dev \
+          shiboken6
+
+
   freecad:
+    after: [setup-apt-pinning]
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
     cmake-parameters:
@@ -184,8 +219,8 @@ parts:
       - python3-dev
       - libcoin-dev
       - libvtk9-dev
-      - libpyside6-dev
-      - libshiboken6-dev
+      #- libpyside6-dev  # See setup-apt-pinning
+      #- libshiboken6-dev
       - pybind11-dev
       - python3-dev
 
