@@ -145,7 +145,7 @@ parts:
   # newer versions that are incompatible with the extension's bundled Qt
   # libraries. Since Snapcraft installs build-packages before this part runs
   # (pulling the latest incompatible versions), this part configures APT to
-  # pin the compatible 6.9 series and forcibly downgrades the packages.
+  # pin the compatible Qt series version and forcibly downgrades the packages.
   setup-apt-pinning:
     plugin: nil
     override-pull: |
@@ -156,7 +156,7 @@ parts:
       cat <<EOF > /etc/apt/preferences.d/snapcraft-pyside-pin
 
       Package: *pyside6* *shiboken6*
-      Pin: version 6.9.*
+      Pin: version 6.10.*
       Pin-Priority: 1001
 
       EOF
@@ -164,10 +164,10 @@ parts:
       apt-get update
 
       # Snapcraft installs 'build-packages' during the initialization phase,
-      # before this script executes. As a result, the latest versions (6.10)
+      # before this script executes. As a result, the latest versions
       # are already installed if the packages are listed there. We install
       # them here instead to force apt to apply the new preference file and
-      # effectively downgrade these packages to 6.9.
+      # effectively downgrade these packages to the pinned version.
       apt-get install -y \
           libpyside6-dev \
           libshiboken6-dev \
