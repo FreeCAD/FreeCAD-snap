@@ -193,9 +193,9 @@ parts:
     build-snaps:
       - freecad-deps-core24/edge
       - kf6-core24-sdk/beta
+      - kde-qt6-core24-sdk/beta
     stage-snaps:
       - freecad-deps-core24/edge
-      - kf6-core24-sdk/beta
     build-packages:
       # --- Build Toolchain ---
       - g++
