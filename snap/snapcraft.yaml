@@ -156,7 +156,7 @@ parts:
       cat <<EOF > /etc/apt/preferences.d/snapcraft-pyside-pin
 
       Package: *pyside6* *shiboken6*
-      Pin: version 6.10.*
+      Pin: version 6.9.*
       Pin-Priority: 1001
 
       EOF
