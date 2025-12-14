@@ -156,7 +156,7 @@ parts:
       cat <<EOF > /etc/apt/preferences.d/snapcraft-pyside-pin
 
       Package: *pyside6* *shiboken6*
-      Pin: version 6.9.*
+      Pin: version 6.10.*
       Pin-Priority: 1001
 
       EOF
@@ -192,8 +192,10 @@ parts:
       - -DFREECAD_USE_PCL=OFF
     build-snaps:
       - freecad-deps-core24/edge
+      - kf6-core24-sdk/beta
     stage-snaps:
       - freecad-deps-core24/edge
+      - kf6-core24-sdk/beta
     build-packages:
       # --- Build Toolchain ---
       - g++
