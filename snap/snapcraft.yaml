@@ -113,16 +113,6 @@ apps:
     command: bin/pip
     plugs: *plugs
 
-package-repositories:
-  - type: apt
-    components:
-      - main
-    suites:
-      - noble
-    key-id: 444DABCF3667D0283F894EDDE6D4736255751E5D
-    url: http://origin.archive.neon.kde.org/user
-    key-server: keyserver.ubuntu.com
-
 parts:
   stub-chown:
     plugin: meson
@@ -140,42 +130,7 @@ parts:
     organize:
       "*": usr/Mod/SnapSetup/
 
-  # The kde-neon-6 extension bundles a specific version of Qt but relies on
-  # the Neon archive for PySide. The archive frequently updates PySide to
-  # newer versions that are incompatible with the extension's bundled Qt
-  # libraries. Since Snapcraft installs build-packages before this part runs
-  # (pulling the latest incompatible versions), this part configures APT to
-  # pin the compatible Qt series version and forcibly downgrades the packages.
-  setup-apt-pinning:
-    plugin: nil
-    override-pull: |
-      craftctl default
-
-      # Write the preferences file to /etc/apt/preferences.d/
-      # Use Priority 1001 to force this version even if a newer one exists
-      cat <<EOF > /etc/apt/preferences.d/snapcraft-pyside-pin
-
-      Package: *pyside6* *shiboken6*
-      Pin: version 6.10.*
-      Pin-Priority: 1001
-
-      EOF
-
-      apt-get update
-
-      # Snapcraft installs 'build-packages' during the initialization phase,
-      # before this script executes. As a result, the latest versions
-      # are already installed if the packages are listed there. We install
-      # them here instead to force apt to apply the new preference file and
-      # effectively downgrade these packages to the pinned version.
-      apt-get install -y \
-          libpyside6-dev \
-          libshiboken6-dev \
-          shiboken6
-
-
   freecad:
-    after: [setup-apt-pinning]
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
     cmake-parameters:
@@ -192,10 +147,17 @@ parts:
       - -DFREECAD_USE_PCL=OFF
     build-snaps:
       - freecad-deps-core24/edge
-      - kf6-core24-sdk/beta
-      - kde-qt6-core24-sdk/beta
+      - kf6-core24-sdk/beta          # Remove once /stable has been updated
+      - kde-qt6-core24-sdk/beta      # Remove once /stable has been updated
+      - kde-pyside6-core24-sdk/beta  # Remove /beta once /stable has been updated
+    build-environment:
+      - PYTHONPATH: /snap/kde-pyside6-core24-sdk/current/usr/lib/python3/dist-packages${PYTHONPATH:+:$PYTHONPATH}
+      - LD_LIBRARY_PATH: /snap/kde-pyside6-core24-sdk/current/usr/lib:/snap/kde-pyside6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+      - CMAKE_PREFIX_PATH: /snap/kde-pyside6-core24-sdk/current/usr${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}
+      - PATH: /snap/kde-pyside6-core24-sdk/current/usr/bin${PATH:+:$PATH}
     stage-snaps:
       - freecad-deps-core24/edge
+      - kde-pyside6-core24-sdk/beta  # Remove /beta once /stable has been updated
     build-packages:
       # --- Build Toolchain ---
       - g++
@@ -221,8 +183,6 @@ parts:
       - python3-dev
       - libcoin-dev
       - libvtk9-dev
-      #- libpyside6-dev  # See setup-apt-pinning
-      #- libshiboken6-dev
       - pybind11-dev
       - python3-dev
 
@@ -257,23 +217,12 @@ parts:
       - python3-git
       - python3-ply # OpenSCAD
       - python3-pivy
-      - python3-pyside6.qtcore
-      - python3-pyside6.qtgui
-      - python3-pyside6.qtsvg
-      - python3-pyside6.qtwidgets
-      - python3-pyside6.qtnetwork
-      - python3-pyside6.qtuitools
       - python3-requests
       - python3-vtk9 # FEM
       - calculix-ccx # FEM
       - libfreeimage3
       - openscad  # OpenSCAD
     override-build: |
-      SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken6"
-      if [ ! -e $SHIBOKEN_BIN_PATH ]; then
-        mkdir -p "$(dirname "${SHIBOKEN_BIN_PATH}")"
-        ln -s /usr/bin/shiboken2 $SHIBOKEN_BIN_PATH
-      fi
       craftctl default
       sed -i -E \
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg|g" \
