@@ -200,12 +200,13 @@ parts:
       - libboost-system1.83.0
       - libboost-thread1.83.0
       - libboost-date-time1.83.0
-#      - libilmbase25      # <= Unavailable in noble, still missing: libHalf, libIexMath
       - libmedc11t64
       - libmed11
       - on amd64: [libpsm-infinipath1]
       - libpython3.12
       - libpython3.12-stdlib
+      - libssl3t64 # SSL support for opening https URLs via What's This? command
+      - ca-certificates   # Provides the trust store so SSL actually works
       - libxerces-c3.2t64
       - libyaml-cpp0.8
       - python3-yaml # FEM
