@@ -98,7 +98,7 @@ jobs:
       - name: Upload log artifact
         if: always()
         continue-on-error: true
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: snapcraft-log-${{ inputs.arch }}
           path: ${{ steps.prepare-logs.outputs.LOG_PATH }}/*
@@ -117,7 +117,7 @@ jobs:
       # Upload the final snap package as an artifact if the build was successful.
       - name: Upload snap package artifact
         if: ${{ steps.snapcraft-pack.outcome == 'success' }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: snap-package-${{ inputs.arch }}
           path: ${{ steps.snapcraft-pack.outputs.snap }}
