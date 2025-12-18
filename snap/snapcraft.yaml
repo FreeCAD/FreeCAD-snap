@@ -147,9 +147,7 @@ parts:
       - -DFREECAD_USE_PCL=OFF
     build-snaps:
       - freecad-deps-core24/edge
-      - kf6-core24-sdk/beta          # Remove once /stable has been updated
-      - kde-qt6-core24-sdk/beta      # Remove once /stable has been updated
-      - kde-pyside6-core24-sdk/beta  # Remove /beta once /stable has been updated
+      - kde-pyside6-core24-sdk  # Provides the PySide/Shiboken SDK
     build-environment:
       - PYTHONPATH: /snap/kde-pyside6-core24-sdk/current/usr/lib/python3/dist-packages${PYTHONPATH:+:$PYTHONPATH}
       - LD_LIBRARY_PATH: /snap/kde-pyside6-core24-sdk/current/usr/lib:/snap/kde-pyside6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
@@ -157,7 +155,7 @@ parts:
       - PATH: /snap/kde-pyside6-core24-sdk/current/usr/bin${PATH:+:$PATH}
     stage-snaps:
       - freecad-deps-core24/edge
-      - kde-pyside6-core24-sdk/beta  # Remove /beta once /stable has been updated
+      - kde-pyside6-core24-sdk  # Provides the PySide/Shiboken runtime
     build-packages:
       # --- Build Toolchain ---
       - g++
