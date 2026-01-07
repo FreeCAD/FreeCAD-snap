@@ -115,12 +115,6 @@ As mentioned above, new commits to a branch will not retrigger the rebuilding of
 
 See example https://github.com/FreeCAD/FreeCAD-snap/pull/44
 
-### Updating KDE Frameworks version
-
-Every so often it is necessary to update the KDE Frameworks. See https://github.com/FreeCAD/FreeCAD-snap/pull/80.
-
-This is related to the `kde-neon` extension, read the official documentation (may be outdated) https://snapcraft.io/docs/kde-neon-extension.
-
 ### Managing Dependencies in the FreeCAD Snap
 
 The FreeCAD snap is built using a specific Ubuntu `coreNN` base, which means all its dependencies are sourced from either a specific core's version archive (`core22` at this time, which corresponds to **Ubuntu 22.04 (Jammy Jellyfish)**), or other package managers. There are three primary sources for adding dependencies, each with a specific purpose.
@@ -266,35 +260,44 @@ Core version the main snap is built on:
 
 GMSH is also shipped in the same dependencies snap as OCCT.
 
-#### Qt
+#### Qt and PySide
 
-Similarly to OCCT, Qt is too complex and extensive framework to build every time. In addition,
-due to how Qt integrates in a host system in conjunction with snaps, it cannot simply be
-installed from apt dependency packages.
+Qt is a complex framework that presents specific challenges with integration and confinement within the snap environment. Installing Qt libraries directly from standard APT packages is often insufficient due to the specific requirements of the snap runtime environment, such as plugin loading paths and symbol versioning.
 
-The snap system provides its own way to ship Qt via extensions. The FreeCAD snap uses the
-[`kde-neon` extension](https://documentation.ubuntu.com/snapcraft/stable/reference/extensions/kde-neon-extensions/). Some notes:
+To address this, the FreeCAD snap uses the [`kde-neon-6` extension](https://documentation.ubuntu.com/snapcraft/stable/reference/extensions/kde-neon-extensions/). Within the context of this snap, the extension is essentially a mechanism to provide the **Qt 6** runtime environment aligned with the `core24` base.
 
-- We're using the `kde-neon` extension at the time, which is the one that supports `Qt 5` and is tied
-  to `core22`
-- This extension includes more than FreeCAD needs: it ships KDE and Qt. While FreeCAD would need only
-  Qt, there is no Qt-only extension available at this time.
-- The plan is to eventually migrate to `kde-neon-6` for a FreeCAD Qt 6 snap build, but there is an
-  issue blocking this migration
-- Crucially, `kde-neon` (and its `kde-neon-6` counterpart) are not very well maintained at this time.
-  Yet there is no other alternative available
-- This is the weakest point of the FreeCAD snap, as it depends on this very complex and virtually
-  unmaintained extension. Contributing changes to it requires deep knowledge of the snapcraft code
-  and the KDE ecosystem, none of which are well documented (or documented at all) in this specific area.
+**Architecture and PySide separation**
 
-TBD: list the relevant repositories for the code related to this extension, and the relevant Snap Store packages
+The components managed by the extension and the Python bindings (PySide) are handled separately:
 
-#### PySide
+1. **The extension (`kde-neon-6`):**
+   * **Runtime:** The extension is responsible for the Qt runtime. It instructs `snapd` to install and mount the `kf6-core24` content snap, which contains the shared Qt libraries.
+   * **Build-time:** By default, the extension configures the build environment using the `kde-qt6-core24-sdk` (Qt Base) and `kf6-core24-sdk` (KDE Frameworks) snaps.
+   * These snaps are generally not defined in the snapcraft.yaml file, since they are pulled by the `kde-neon-6` extension at build and install time. Only if the installation channel of any of those snaps needs to be another one than `stable`, will they be listed explicitly in the `build-snaps` section.
+2. **PySide and Shiboken:**
+   * The extension **does not** provide Python bindings.
+   * PySide6 and Shiboken6 are provided by a separate snap: `kde-pyside6-core24-sdk`, which needs to be explicitly defined in `snapcraft.yaml`
+   * Unlike the Qt libraries (which are external), the PySide runtime libraries are **bundled** inside the FreeCAD snap. The `kde-pyside6-core24-sdk` is used in `build-snaps` to compile the bindings and in `stage-snaps` to copy the necessary artifacts into the final package.
 
-The `kde-neon` extensions ship only Qt, but not PySide. For PySide, we rely on apt packages from the KDE Neon archive. KDE Neon is based on Ubuntu LTS versions, but has newer packages for Qt available. This is how we'll be able to support Qt 6 in the `core24` snap. Without the KDE Neon packages, the Ubuntu 24.04 archive alone would not be able to provide the PySide6 packages, which were only included from Ubuntu 24.10 onwards.
+**Snap Components Reference**
 
-> [!IMPORTANT]
-> The PySide packages version must match the `major.minor` version of the Qt framework provided by the `kde-neon` extensions, otherwise FreeCAD won't work. This is another weak link, as we depend on two different upstreams to keep their versions in sync.
+Snaps involved in the build and runtime process:
+
+| Snap name | Role | Description |
+| :--- | :--- | :--- |
+| **`kde-qt6-core24-sdk`** | Build-time | The base SDK. Builds Qt6 from source and provides headers, libraries, and `Qt6Config.cmake` for compilation. |
+| **`kf6-core24-sdk`** | Build-time | The Frameworks SDK. Stacks on top of the Qt SDK to provide KDE Frameworks headers. |
+| **`kde-pyside6-core24-sdk`** | Build-time and runtime | Stacks on top of the Qt SDK. Provides the build environment for Python bindings. Its contents are also staged (bundled) into the FreeCAD snap to provide the PySide runtime. |
+| **`kf6-core24`** | Runtime | The "Content Snap." Bundles runtime libraries from the Qt and KF6 SDKs. This is installed automatically on the user's system via the extension. |
+
+**Resources**
+
+| Snap package | Snap Store URL | Packaging source code |
+| :--- | :--- | :--- |
+| `kf6-core24` | [Link](https://snapcraft.io/kf6-core24) | [neon/snap-packaging/kf6-core](https://invent.kde.org/neon/snap-packaging/kf6-core/-/tree/work.core24) |
+| `kf6-core24-sdk` | [Link](https://snapcraft.io/kf6-core24-sdk) | [neon/snap-packaging/kf6-core-sdk](https://invent.kde.org/neon/snap-packaging/kf6-core-sdk/-/tree/work.core24) |
+| `kde-qt6-core24-sdk` | [Link](https://snapcraft.io/kde-qt6-core24-sdk) | [neon/snap-packaging/kde-qt6-core-sdk](https://invent.kde.org/neon/snap-packaging/kde-qt6-core-sdk/-/tree/work.core24) |
+| `kde-pyside6-core24-sdk` | [Link](https://snapcraft.io/kde-pyside6-core24-sdk) | [neon/snap-packaging/kde-pyside6-core-sdk](https://invent.kde.org/neon/snap-packaging/kde-pyside6-core-sdk/-/tree/work.core24) |
 
 ## Legacy user documentation
 

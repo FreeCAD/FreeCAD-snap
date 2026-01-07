@@ -113,16 +113,6 @@ apps:
     command: bin/pip
     plugs: *plugs
 
-package-repositories:
-  - type: apt
-    components:
-      - main
-    suites:
-      - noble
-    key-id: 444DABCF3667D0283F894EDDE6D4736255751E5D
-    url: http://origin.archive.neon.kde.org/user
-    key-server: keyserver.ubuntu.com
-
 parts:
   stub-chown:
     plugin: meson
@@ -143,7 +133,7 @@ parts:
   freecad:
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
-    source-tag: 1.1rc1
+    source-tag: 1.1rc2
     cmake-parameters:
       - -DFREECAD_QT_VERSION=6
       - -DCMAKE_INSTALL_PREFIX=/usr
@@ -158,8 +148,15 @@ parts:
       - -DFREECAD_USE_PCL=OFF
     build-snaps:
       - freecad-deps-core24/edge
+      - kde-pyside6-core24-sdk  # Provides the PySide/Shiboken SDK
+    build-environment:
+      - PYTHONPATH: /snap/kde-pyside6-core24-sdk/current/usr/lib/python3/dist-packages${PYTHONPATH:+:$PYTHONPATH}
+      - LD_LIBRARY_PATH: /snap/kde-pyside6-core24-sdk/current/usr/lib:/snap/kde-pyside6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+      - CMAKE_PREFIX_PATH: /snap/kde-pyside6-core24-sdk/current/usr${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}
+      - PATH: /snap/kde-pyside6-core24-sdk/current/usr/bin${PATH:+:$PATH}
     stage-snaps:
       - freecad-deps-core24/edge
+      - kde-pyside6-core24-sdk  # Provides the PySide/Shiboken runtime
     build-packages:
       # --- Build Toolchain ---
       - g++
@@ -185,8 +182,6 @@ parts:
       - python3-dev
       - libcoin-dev
       - libvtk9-dev
-      - libpyside6-dev
-      - libshiboken6-dev
       - pybind11-dev
       - python3-dev
 
@@ -204,12 +199,13 @@ parts:
       - libboost-system1.83.0
       - libboost-thread1.83.0
       - libboost-date-time1.83.0
-#      - libilmbase25      # <= Unavailable in noble, still missing: libHalf, libIexMath
       - libmedc11t64
       - libmed11
       - on amd64: [libpsm-infinipath1]
       - libpython3.12
       - libpython3.12-stdlib
+      - libssl3t64 # SSL support for opening https URLs via What's This? command
+      - ca-certificates   # Provides the trust store so SSL actually works
       - libxerces-c3.2t64
       - libyaml-cpp0.8
       - python3-yaml # FEM
@@ -221,23 +217,12 @@ parts:
       - python3-git
       - python3-ply # OpenSCAD
       - python3-pivy
-      - python3-pyside6.qtcore
-      - python3-pyside6.qtgui
-      - python3-pyside6.qtsvg
-      - python3-pyside6.qtwidgets
-      - python3-pyside6.qtnetwork
-      - python3-pyside6.qtuitools
       - python3-requests
       - python3-vtk9 # FEM
       - calculix-ccx # FEM
       - libfreeimage3
       - openscad  # OpenSCAD
     override-build: |
-      SHIBOKEN_BIN_PATH="/workspace/usr/bin/shiboken6"
-      if [ ! -e $SHIBOKEN_BIN_PATH ]; then
-        mkdir -p "$(dirname "${SHIBOKEN_BIN_PATH}")"
-        ln -s /usr/bin/shiboken2 $SHIBOKEN_BIN_PATH
-      fi
       craftctl default
       sed -i -E \
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg|g" \
