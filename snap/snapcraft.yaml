@@ -284,7 +284,7 @@ parts:
   cleanup:
     after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz-config]
     plugin: nil
-    build-snaps: [kf6-core24/beta]
+    build-snaps: [kf6-core24]
     override-prime: |
       set -eux
       for snap in "kf6-core24"; do
