@@ -1,2 +1,2 @@
 ifcopenshell==0.8.4    # BIM
-pip==25.3
+pip==26.0.1
