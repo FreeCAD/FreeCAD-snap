@@ -76,7 +76,6 @@ plugs:
 environment:
   LD_LIBRARY_PATH: "$SNAP/usr/lib/:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf6/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf6/usr/lib:/$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack:$LD_LIBRARY_PATH"
   LD_PRELOAD: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libstubchown.so
-  FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
   GIT_CONFIG_NOSYSTEM: "1"
@@ -108,11 +107,14 @@ apps:
       - cups
       - shared-memory
     command-chain:
+      - snap/command-chain/freecad-env-defaults
       - snap/command-chain/desktop-launch
   cmd:
     command: usr/bin/FreeCADCmd
     extensions: [kde-neon-6]
     plugs: *plugs
+    command-chain:
+      - snap/command-chain/freecad-env-defaults
   pip:
     command: bin/pip
     plugs: *plugs
