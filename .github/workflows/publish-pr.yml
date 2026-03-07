@@ -22,6 +22,7 @@ jobs:
     with:
       os: ${{ matrix.os }}
       arch: ${{ matrix.arch }}
+      checkout_repository: ${{ github.event.pull_request.head.repo.full_name }}
       checkout_ref: ${{ github.event.pull_request.head.ref }}
       release_channel: edge/pr${{ github.event.pull_request.number }}
     secrets:

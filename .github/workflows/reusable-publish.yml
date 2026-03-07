@@ -11,6 +11,10 @@ on:
       os:
         type: string
         required: true
+      # The repository to check out. Defaults to the current repository.
+      checkout_repository:
+        type: string
+        required: false
       # The architecture to build for (e.g., "amd64", "arm64").
       arch:
         type: string
@@ -45,6 +49,7 @@ jobs:
       - name: Checkout packaging repository
         uses: actions/checkout@v6
         with:
+          repository: ${{ inputs.checkout_repository }}
           ref: ${{ inputs.checkout_ref }}
 
       # --- WORKAROUND: Free up tens of gigabytes from the runner ---
