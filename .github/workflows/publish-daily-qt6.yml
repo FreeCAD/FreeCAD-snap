@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+
 name: Publish Daily Qt 6
 
 on:
@@ -14,7 +18,6 @@ on:
         description: 'The Snap Store channel to release to. Defaults to edge.'
         required: false
         type: string
-        default: 'edge'
 
 jobs:
   publish:
@@ -33,7 +36,7 @@ jobs:
       arch: ${{ matrix.arch }}
       # If a checkout_ref is provided by the dispatch, use it. Otherwise, use nothing (which means default branch).
       checkout_ref: ${{ github.event.inputs.checkout_ref }}
-      # Use the release_channel from the dispatch input. The default is already 'edge'.
-      release_channel: ${{ github.event.inputs.release_channel }}
+      # Use the release_channel from the dispatch input. The default is 'edge'.
+      release_channel: ${{ github.event.inputs.release_channel || 'edge' }}
     secrets:
       store_login: ${{ secrets.STORE_LOGIN }}
