@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+
 name: freecad
 base: core24
 adopt-info: freecad
@@ -133,7 +137,7 @@ parts:
   freecad:
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
-    source-tag: 1.1rc2
+    source-tag: 1.1.0
     cmake-parameters:
       - -DFREECAD_QT_VERSION=6
       - -DCMAKE_INSTALL_PREFIX=/usr
