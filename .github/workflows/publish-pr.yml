@@ -1,0 +1,86 @@
+name: Publish PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: publish-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+    uses: ./.github/workflows/reusable-publish.yml
+    with:
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      checkout_repository: ${{ github.event.pull_request.head.repo.full_name }}
+      checkout_ref: ${{ github.event.pull_request.head.ref }}
+      release_channel: edge/pr${{ github.event.pull_request.number }}
+    secrets:
+      store_login: ${{ secrets.STORE_LOGIN }}
+
+  comment:
+    runs-on: ubuntu-latest
+    needs: publish
+    if: github.repository_owner == 'FreeCAD' && (github.event.action == 'opened' || github.event.action == 'reopened')
+    steps:
+      - name: Post install instructions
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const pr = context.payload.pull_request.number;
+            const channel = `edge/pr${pr}`;
+            const body = [
+              `✅ Snap packages for this PR have been published to the \`${channel}\` channel.`,
+              ``,
+              `## Testing`,
+              ``,
+              `### Parallel install (recommended)`,
+              ``,
+              `Installs this PR as an isolated instance alongside your existing FreeCAD snap.`,
+              ``,
+              `If you haven't done so already, enable parallel installs:`,
+              `\`\`\``,
+              `sudo snap set system experimental.parallel-instances=true`,
+              `\`\`\``,
+              ``,
+              `Then install this PR:`,
+              `\`\`\``,
+              `sudo snap install freecad_pr${pr} --channel=${channel}`,
+              `\`\`\``,
+              ``,
+              `To remove it afterwards:`,
+              `\`\`\``,
+              `sudo snap remove freecad_pr${pr}`,
+              `\`\`\``,
+              ``,
+              `### Switch your existing installation`,
+              ``,
+              `\`\`\``,
+              `sudo snap refresh freecad --channel=${channel}`,
+              `\`\`\``,
+              ``,
+              `To switch back afterwards:`,
+              `\`\`\``,
+              `sudo snap refresh freecad --channel=edge`,
+              `\`\`\``,
+              ``,
+              `---`,
+              `*This channel is updated on every push and will be automatically closed 30 days after the last update.*`,
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr,
+              body
+            });
