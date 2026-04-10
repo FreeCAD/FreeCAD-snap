@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Dispatch build for PR branch
         if: github.event.label.name == 'publish-qt5' || github.event.label.name == 'publish-qt6'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const label = context.payload.label.name;
@@ -61,7 +61,7 @@ jobs:
 
       - name: Remove trigger label
         if: success() && (github.event.label.name == 'publish-qt5' || github.event.label.name == 'publish-qt6')
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             await github.rest.issues.removeLabel({
