@@ -2,5 +2,5 @@
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 
-ifcopenshell==0.8.4    # BIM
+ifcopenshell==0.8.5    # BIM
 pip==26.0.1
