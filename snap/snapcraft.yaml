@@ -236,8 +236,8 @@ parts:
         ln -sf ../libpsm1/libpsm_infinipath.so.1.16  $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libpsm_infinipath.so.1
       fi
       cd $CRAFT_PART_SRC
-      version_major=$(grep "set(PACKAGE_VERSION_MAJOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
-      version_minor=$(grep "set(PACKAGE_VERSION_MINOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
+      version_major=$(python3 -c "import json; print(json.load(open('version.json'))['version_major'])")
+      version_minor=$(python3 -c "import json; print(json.load(open('version.json'))['version_minor'])")
       git_hash=$(git rev-parse --short=8 HEAD)
       version="${version_major}.${version_minor}-g$git_hash"
       craftctl set version="$version"
