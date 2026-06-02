@@ -172,7 +172,10 @@ parts:
       - libboost-all-dev
       - libcoin-dev
       - libeigen3-dev
+      - libfmt-dev
       - libfreeimage-dev
+      - libgmock-dev
+      - libgtest-dev
       - libgts-bin
       - libgts-dev
       - libkdtree++-dev
