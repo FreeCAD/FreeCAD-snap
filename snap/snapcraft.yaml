@@ -212,6 +212,7 @@ parts:
       - libmed11
       - on amd64: [libpsm-infinipath1]
       - libpython3.12
+      - libpython3.12-minimal  # Provides the _ssl extension (see below)
       - libpython3.12-stdlib
       - libssl3t64 # SSL support for opening https URLs via What's This? command
       - ca-certificates   # Provides the trust store so SSL actually works
