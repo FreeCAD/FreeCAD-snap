@@ -318,6 +318,8 @@ parts:
           -not -name 'libmpi.so*' \
           -not -name 'libopen-rte.so*' \
           -not -name 'libopen-pal.so*' \
+          -not -iname 'libpyside6*' \
+          -not -iname 'libshiboken6*' \
           -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
       done
       for cruft in bug lintian man; do
