@@ -151,6 +151,7 @@ parts:
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
       - -DFREECAD_USE_PCL=OFF
+      - -DFREECAD_USE_EXTERNAL_COIN_PIVY=ON
     build-snaps:
       - freecad-deps-core24/edge
       - kde-pyside6-core24-sdk  # Provides the PySide/Shiboken SDK
