@@ -170,7 +170,6 @@ parts:
 
       # --- C++ Core & 3D Kernel Development Libraries ---
       - libboost-all-dev
-      - libcoin-dev
       - libeigen3-dev
       - libfmt-dev
       - libfreeimage-dev
@@ -188,7 +187,6 @@ parts:
       - libyaml-cpp-dev
       - swig
       - python3-dev
-      - libcoin-dev
       - libvtk9-dev
       - pybind11-dev
       - python3-dev
@@ -197,9 +195,7 @@ parts:
       # These provide specific functionality during the build itself.
       - openscad
       - python3-lark
-      - python3-pivy
       - python3-matplotlib
-      - python3-pivy
       - python3-lark
 
     stage-packages:
@@ -226,7 +222,6 @@ parts:
       - python3-collada # DAE import
       - python3-git
       - python3-ply # OpenSCAD
-      - python3-pivy
       - python3-requests
       - python3-vtk9 # FEM
       - calculix-ccx # FEM
