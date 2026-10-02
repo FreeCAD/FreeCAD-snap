@@ -2,5 +2,5 @@
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 defusedxml  # Add-On Manager
-ifcopenshell==0.8.5    # BIM
+ifcopenshell==0.9.0    # BIM
 pip==26.2.1
