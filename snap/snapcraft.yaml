@@ -72,6 +72,10 @@ plugs:
   # Necessary to enable semaphores for numba, OpenMP etc.
   shared-memory:
     private: true
+  dot-gitconfig:
+    interface: personal-files
+    read:
+      - $HOME/.gitconfig
 
 environment:
   LD_LIBRARY_PATH: "$SNAP/usr/lib/:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf6/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf6/usr/lib:/$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack:$LD_LIBRARY_PATH"
@@ -106,6 +110,7 @@ apps:
       - unity7
       - cups
       - shared-memory
+      - dot-gitconfig
     command-chain:
       - bin/freecad-env-defaults
       - snap/command-chain/desktop-launch
