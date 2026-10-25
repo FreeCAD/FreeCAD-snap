@@ -10,8 +10,8 @@ def add_snap_pythonpath():
   if pythonpath:
     print(f"Adding snap-specific PYTHONPATH to sys.path: {pythonpath}")
     os.environ["PYTHONPATH"] = pythonpath
-    for path in pythonpath.split(":"):
-      sys.path.insert(0, path)
+    # Prepend as a block, to preserve the order of precedence of the entries
+    sys.path[0:0] = pythonpath.split(":")
 
 def configure_mod_mesh():
   import FreeCAD
