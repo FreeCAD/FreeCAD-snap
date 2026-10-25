@@ -271,7 +271,19 @@ The components managed by the extension and the Python bindings (PySide) are han
 2. **PySide and Shiboken:**
    * The extension **does not** provide Python bindings.
    * PySide6 and Shiboken6 are provided by a separate snap: `kde-pyside6-core24-sdk`, which needs to be explicitly defined in `snapcraft.yaml`
-   * Unlike the Qt libraries (which are external), the PySide runtime libraries are **bundled** inside the FreeCAD snap. The `kde-pyside6-core24-sdk` is used in `build-snaps` to compile the bindings and in `stage-snaps` to copy the necessary artifacts into the final package.
+   * The `kde-pyside6-core24-sdk` snap is only used in `build-snaps`, to compile FreeCAD against the bindings. It is **not** staged into the FreeCAD snap.
+   * At runtime, PySide6 and Shiboken6 come from the `kf6-core24` content snap, which stages `kde-pyside6-core24-sdk` itself. The Python modules are found via `$SNAP/kf6/usr/lib/python3/dist-packages` in `PYTHONPATH`, and the libraries via `$SNAP/kf6/usr/lib` in `LD_LIBRARY_PATH`.
+
+> [!IMPORTANT]
+> PySide6 uses Qt's private API, which is tied to the exact Qt patch release (e.g. the `QtPrivate_6_11_1` tag in the `Qt_6_PRIVATE_API` symbol version). A PySide6 built against one Qt release cannot load against another, and fails with errors such as:
+>
+> ```
+> PySide6/QtCore.cpython-312-x86_64-linux-gnu.so: undefined symbol: _ZN14QObjectPrivateC2E16QtPrivate_6_11_1, version Qt_6_PRIVATE_API
+> ```
+>
+> `kf6-core24` is refreshed on users' systems independently of FreeCAD, so PySide must come from that same snap rather than being bundled. Do not stage `kde-pyside6-core24-sdk`: a bundled copy would break all installed FreeCAD snaps whenever a new Qt release of `kf6-core24` is published.
+>
+> Qt minor version bumps (e.g. 6.11 to 6.12) still require a rebuild of the FreeCAD snap, since FreeCAD links against the minor-versioned `libpyside6`/`libshiboken6` libraries (e.g. `.so.6.11`).
 
 **Snap Components Reference**
 
@@ -281,8 +293,8 @@ Snaps involved in the build and runtime process:
 | :--- | :--- | :--- |
 | **`kde-qt6-core24-sdk`** | Build-time | The base SDK. Builds Qt6 from source and provides headers, libraries, and `Qt6Config.cmake` for compilation. |
 | **`kf6-core24-sdk`** | Build-time | The Frameworks SDK. Stacks on top of the Qt SDK to provide KDE Frameworks headers. |
-| **`kde-pyside6-core24-sdk`** | Build-time and runtime | Stacks on top of the Qt SDK. Provides the build environment for Python bindings. Its contents are also staged (bundled) into the FreeCAD snap to provide the PySide runtime. |
-| **`kf6-core24`** | Runtime | The "Content Snap." Bundles runtime libraries from the Qt and KF6 SDKs. This is installed automatically on the user's system via the extension. |
+| **`kde-pyside6-core24-sdk`** | Build-time | Stacks on top of the Qt SDK. Provides the build environment for Python bindings. |
+| **`kf6-core24`** | Runtime | The "Content Snap." Bundles runtime libraries from the Qt, KF6 and PySide6 SDKs, including the PySide6 Python modules. This is installed automatically on the user's system via the extension. |
 
 **Resources**
 
