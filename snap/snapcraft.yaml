@@ -76,7 +76,6 @@ plugs:
 environment:
   LD_LIBRARY_PATH: "$SNAP/usr/lib/:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf6/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/:$SNAP/kf6/usr/lib:/$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack:$LD_LIBRARY_PATH"
   LD_PRELOAD: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libstubchown.so
-  FREECAD_USER_HOME: $SNAP_USER_COMMON
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
   GIT_CONFIG_NOSYSTEM: "1"
@@ -85,7 +84,7 @@ environment:
   PYTHONUSERBASE: $SNAP_USER_COMMON/.local
   PIP_USER: "1"
   PIP_BREAK_SYSTEM_PACKAGES: "1"
-  PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.12/site-packages:$SNAP/lib/python3.12/site-packages:$SNAP/usr/lib/python3/dist-packages
+  PYTHONPATH: &pypath $PYTHONUSERBASE/lib/python3.12/site-packages:$SNAP/lib/python3.12/site-packages:$SNAP/usr/lib/python3/dist-packages:$SNAP/kf6/usr/lib/python3/dist-packages # Last entry: PySide6 from kf6-core24
   SNAP_PYTHONPATH: *pypath
   GVBINDIR: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz-runtime"
   WAYLAND_DISPLAY: unset # https://forum.snapcraft.io/t/kde-neon-6-extension-snap-qt-qpa-platform-overwritten/46054/8
@@ -108,8 +107,11 @@ apps:
       - cups
       - shared-memory
     command-chain:
+      - bin/freecad-env-defaults
       - snap/command-chain/desktop-launch
   cmd:
+    command-chain:
+      - bin/freecad-env-defaults
     command: usr/bin/FreeCADCmd
     extensions: [kde-neon-6]
     plugs: *plugs
@@ -158,9 +160,9 @@ parts:
       - LD_LIBRARY_PATH: /snap/kde-pyside6-core24-sdk/current/usr/lib:/snap/kde-pyside6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
       - CMAKE_PREFIX_PATH: /snap/kde-pyside6-core24-sdk/current/usr${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}
       - PATH: /snap/kde-pyside6-core24-sdk/current/usr/bin${PATH:+:$PATH}
+    # PySide/Shiboken are not staged: the runtime comes from kf6-core24, built against the same Qt
     stage-snaps:
       - freecad-deps-core24/edge
-      - kde-pyside6-core24-sdk  # Provides the PySide/Shiboken runtime
     build-packages:
       # --- Build Toolchain ---
       - g++
@@ -169,9 +171,11 @@ parts:
 
       # --- C++ Core & 3D Kernel Development Libraries ---
       - libboost-all-dev
-      - libcoin-dev
       - libeigen3-dev
+      - libfmt-dev
       - libfreeimage-dev
+      - libgmock-dev
+      - libgtest-dev
       - libgts-bin
       - libgts-dev
       - libkdtree++-dev
@@ -184,7 +188,6 @@ parts:
       - libyaml-cpp-dev
       - swig
       - python3-dev
-      - libcoin-dev
       - libvtk9-dev
       - pybind11-dev
       - python3-dev
@@ -193,9 +196,7 @@ parts:
       # These provide specific functionality during the build itself.
       - openscad
       - python3-lark
-      - python3-pivy
       - python3-matplotlib
-      - python3-pivy
       - python3-lark
 
     stage-packages:
@@ -203,10 +204,12 @@ parts:
       - libboost-system1.83.0
       - libboost-thread1.83.0
       - libboost-date-time1.83.0
+      - libfmt9
       - libmedc11t64
       - libmed11
       - on amd64: [libpsm-infinipath1]
       - libpython3.12
+      - libpython3.12-minimal  # Provides the _ssl extension (see below)
       - libpython3.12-stdlib
       - libssl3t64 # SSL support for opening https URLs via What's This? command
       - ca-certificates   # Provides the trust store so SSL actually works
@@ -220,7 +223,6 @@ parts:
       - python3-collada # DAE import
       - python3-git
       - python3-ply # OpenSCAD
-      - python3-pivy
       - python3-requests
       - python3-vtk9 # FEM
       - calculix-ccx # FEM
@@ -235,8 +237,8 @@ parts:
         ln -sf ../libpsm1/libpsm_infinipath.so.1.16  $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libpsm_infinipath.so.1
       fi
       cd $CRAFT_PART_SRC
-      version_major=$(grep "set(PACKAGE_VERSION_MAJOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
-      version_minor=$(grep "set(PACKAGE_VERSION_MINOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
+      version_major=$(python3 -c "import json; print(json.load(open('version.json'))['version_major'])")
+      version_minor=$(python3 -c "import json; print(json.load(open('version.json'))['version_minor'])")
       git_hash=$(git rev-parse --short=8 HEAD)
       version="${version_major}.${version_minor}-g$git_hash"
       craftctl set version="$version"
@@ -284,6 +286,17 @@ parts:
       # 4. Copy all the plugin libraries into that directory, making it self-sufficient.
       cp /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz/*.so* \
          $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/graphviz-runtime/
+
+  setup-freecad-env:
+    plugin: dump
+    source: $CRAFT_PROJECT_DIR/snap/local/command-chain
+    source-type: local
+    organize:
+      freecad-env-defaults: bin/freecad-env-defaults
+    stage:
+      - bin/freecad-env-defaults
+    prime:
+      - bin/freecad-env-defaults
 
   cleanup:
     after: [stub-chown, freecad, python-packages, snap-setup-mod, graphviz-config]
