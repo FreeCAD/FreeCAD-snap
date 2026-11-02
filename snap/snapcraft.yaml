@@ -137,7 +137,7 @@ parts:
   freecad:
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
-    source-tag: 1.1.1
+    source-tag: 1.1.4
     cmake-parameters:
       - -DFREECAD_QT_VERSION=6
       - -DCMAKE_INSTALL_PREFIX=/usr
@@ -151,7 +151,7 @@ parts:
       - -DBUILD_FLAT_MESH=ON
       - -DFREECAD_USE_PCL=OFF
     build-snaps:
-      - freecad-deps-core24/edge
+      - freecad-deps-core24/stable
       - kde-pyside6-core24-sdk  # Provides the PySide/Shiboken SDK
     build-environment:
       - PYTHONPATH: /snap/kde-pyside6-core24-sdk/current/usr/lib/python3/dist-packages${PYTHONPATH:+:$PYTHONPATH}
@@ -159,7 +159,7 @@ parts:
       - CMAKE_PREFIX_PATH: /snap/kde-pyside6-core24-sdk/current/usr${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}
       - PATH: /snap/kde-pyside6-core24-sdk/current/usr/bin${PATH:+:$PATH}
     stage-snaps:
-      - freecad-deps-core24/edge
+      - freecad-deps-core24/stable
       - kde-pyside6-core24-sdk  # Provides the PySide/Shiboken runtime
     build-packages:
       # --- Build Toolchain ---
