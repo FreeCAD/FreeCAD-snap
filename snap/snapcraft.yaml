@@ -72,10 +72,13 @@ plugs:
   # Necessary to enable semaphores for numba, OpenMP etc.
   shared-memory:
     private: true
-  gitconfig:
+  dot-gitconfig:
     interface: personal-files
     read:
       - $HOME/.gitconfig
+  dot-config-git-config:
+    interface: personal-files
+    read:
       - $HOME/.config/git/config
 
 environment:
