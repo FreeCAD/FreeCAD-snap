@@ -27,8 +27,8 @@ jobs:
         include:
           - os: ubuntu-24.04
             arch: amd64
-          - os: ubuntu-24.04-arm
-            arch: arm64
+#          - os: ubuntu-24.04-arm  # Disabled as per https://bugs.kde.org/show_bug.cgi?id=528483
+#            arch: arm64
     uses: ./.github/workflows/reusable-publish.yml
     with:
       os: ${{ matrix.os }}
