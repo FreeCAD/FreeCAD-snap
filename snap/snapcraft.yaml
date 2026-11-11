@@ -114,8 +114,8 @@ apps:
       - unity7
       - cups
       - shared-memory
-      - dot-gitconfig:
-      - dot-config-git-config:
+      - dot-gitconfig
+      - dot-config-git-config
     command-chain:
       - bin/freecad-env-defaults
       - snap/command-chain/desktop-launch
